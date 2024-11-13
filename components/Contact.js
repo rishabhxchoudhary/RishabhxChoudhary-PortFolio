@@ -37,7 +37,7 @@ const Contact = () => {
           transition={{ duration: 1 }}
           viewport={{ once: true }}
         >
-          <h2 className="text-4xl font-semibold mb-6 text-text-light text-center">Contact</h2>
+          <span className="text-4xl font-semibold mb-6 text-text-light text-center">Contact</span>
         </motion.h2>
 
         <div className="max-w-2xl mx-auto">

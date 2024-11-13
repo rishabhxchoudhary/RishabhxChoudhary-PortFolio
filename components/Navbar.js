@@ -9,9 +9,9 @@ const Navbar = () => {
   const [darkMode, setDarkMode] = useState(true);
 
   // Toggle dark mode
-  const toggleDarkMode = () => {
-    setDarkMode(!darkMode);
-  };
+  // const toggleDarkMode = () => {
+  //   setDarkMode(!darkMode);
+  // };
 
   // Apply dark mode class to the html element
   useEffect(() => {
