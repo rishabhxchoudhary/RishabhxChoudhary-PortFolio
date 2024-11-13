@@ -2,13 +2,12 @@ import Head from 'next/head';
 import Navbar from '../components/Navbar';
 import Home1 from '../components/Home';
 import About from '../components/About';
-import Experience from '../components/Experience';
-import Projects from '../components/Projects';
 import Skills from '../components/Skills';
 import Achievements from '../components/Achievements';
-import Responsibilities from '../components/Responsibilities';
 import Contact from '../components/Contact';
 import {NextUIProvider} from "@nextui-org/react";
+import Projects from '../components/Projects'
+import Experience from '../components/Experience'
 
 
 export default function Home() {
@@ -21,14 +20,13 @@ export default function Home() {
         {/* Add more SEO tags as needed */}
       </Head>
       <Navbar />
-      <main className="pt-20">
+      <main>
         <Home1 />
         <About />
         <Experience />
         <Projects />
         <Skills />
         <Achievements />
-        <Responsibilities />
         <Contact />
       </main>
     </NextUIProvider>
