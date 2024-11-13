@@ -8,10 +8,12 @@ import Skills from '../components/Skills';
 import Achievements from '../components/Achievements';
 import Responsibilities from '../components/Responsibilities';
 import Contact from '../components/Contact';
+import {NextUIProvider} from "@nextui-org/react";
+
 
 export default function Home() {
   return (
-    <>
+    <NextUIProvider>
       <Head>
         <title>Rishabh Kumar Choudhary | Portfolio</title>
         <meta name="description" content="Portfolio of Rishabh Kumar Choudhary - Software Developer & IoT Specialist" />
@@ -29,6 +31,6 @@ export default function Home() {
         <Responsibilities />
         <Contact />
       </main>
-    </>
+    </NextUIProvider>
   );
 }
