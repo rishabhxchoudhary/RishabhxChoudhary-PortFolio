@@ -1,7 +1,7 @@
 // components/Contact.jsx
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { FaLinkedin, FaGithub, FaCode, FaEnvelope } from 'react-icons/fa';
+import { FaLinkedin, FaGithub, FaCode, FaEnvelope, FaYoutube } from 'react-icons/fa';
 
 const Contact = () => {
   const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' });
@@ -151,7 +151,7 @@ const Contact = () => {
             viewport={{ once: true }}
           >
             <a
-              href="https://linkedin.com/in/yourlinkedin"
+              href="https://www.linkedin.com/in/rishabhxchoudhary/"
               target="_blank"
               rel="noopener noreferrer"
               className="text-accent hover:text-accent-light transition-colors text-3xl"
@@ -160,7 +160,7 @@ const Contact = () => {
               <FaLinkedin />
             </a>
             <a
-              href="https://github.com/yourgithub"
+              href="https://github.com/rishabhxchoudhary"
               target="_blank"
               rel="noopener noreferrer"
               className="text-accent hover:text-accent-light transition-colors text-3xl"
@@ -169,7 +169,7 @@ const Contact = () => {
               <FaGithub />
             </a>
             <a
-              href="https://codechef.com/users/yourcodechef"
+              href="https://www.codechef.com/users/rk26072003"
               target="_blank"
               rel="noopener noreferrer"
               className="text-accent hover:text-accent-light transition-colors text-3xl"
@@ -178,7 +178,7 @@ const Contact = () => {
               <FaCode />
             </a>
             <a
-              href="https://codeforces.com/profile/yourcodeforces"
+              href="https://codeforces.com/profile/rishabh26072003"
               target="_blank"
               rel="noopener noreferrer"
               className="text-accent hover:text-accent-light transition-colors text-3xl"
@@ -186,7 +186,15 @@ const Contact = () => {
             >
               <FaCode />
             </a>
-            {/* Add more social links with appropriate icons as needed */}
+            <a
+              href="https://www.youtube.com/@rishabhxchoudhary"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent hover:text-accent-light transition-colors text-3xl"
+              aria-label="Youtube"
+            >
+              <FaYoutube />
+            </a>
           </motion.div>
         </div>
       </div>

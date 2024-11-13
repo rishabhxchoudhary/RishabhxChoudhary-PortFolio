@@ -1,7 +1,9 @@
 // components/Achievements.jsx
 import { motion } from "framer-motion";
-import { FaAward, FaCertificate } from "react-icons/fa";
-import Image from "next/image";
+import { FaAward } from "react-icons/fa";
+// import Image from "next/image";
+
+// FaCertificate
 
 const achievements = [
   {
@@ -17,30 +19,29 @@ const achievements = [
   // Add more achievements as needed
 ];
 
-const certifications = [
-  {
-    title: "Certified Blockchain Developer",
-    issuer: "Blockchain Council",
-    date: "March 2023",
-    image: "/certificates/blockchain-developer.png", // Add your certificate image path
-    link: "https://www.blockchain-council.org/certifications/blockchain-developer/",
-  },
-  {
-    title: "AWS Certified Solutions Architect",
-    issuer: "Amazon Web Services",
-    date: "July 2022",
-    image: "/certificates/aws-solutions-architect.png",
-    link: "https://aws.amazon.com/certification/certified-solutions-architect-associate/",
-  },
-  {
-    title: "Full Stack Web Development",
-    issuer: "Coursera",
-    date: "December 2021",
-    image: "/certificates/full-stack-web-development.png",
-    link: "https://www.coursera.org/account/accomplishments/specialization/certificate-id",
-  },
-  // Add more certifications as needed
-];
+// const certifications = [
+//   {
+//     title: "Certified Blockchain Developer",
+//     issuer: "Blockchain Council",
+//     date: "March 2023",
+//     image: "/certificates/blockchain-developer.png", // Add your certificate image path
+//     link: "https://www.blockchain-council.org/certifications/blockchain-developer/",
+//   },
+//   {
+//     title: "AWS Certified Solutions Architect",
+//     issuer: "Amazon Web Services",
+//     date: "July 2022",
+//     image: "/certificates/aws-solutions-architect.png",
+//     link: "https://aws.amazon.com/certification/certified-solutions-architect-associate/",
+//   },
+//   {
+//     title: "Full Stack Web Development",
+//     issuer: "Coursera",
+//     date: "December 2021",
+//     image: "/certificates/full-stack-web-development.png",
+//     link: "https://www.coursera.org/account/accomplishments/specialization/certificate-id",
+//   },
+// ];
 
 const Achievements = () => {
   return (
@@ -110,8 +111,7 @@ const Achievements = () => {
           </div>
         </div>
 
-        {/* Certifications Section */}
-        <div>
+        {/* <div>
           <motion.h3
             className="text-2xl font-bold mb-6 text-text-light text-center flex items-center justify-center space-x-2"
             initial={{ opacity: 0, y: -20 }}
@@ -139,7 +139,6 @@ const Achievements = () => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                {/* Certificate Image */}
                 <div className="relative w-full h-32 mb-4">
                   <Image
                     src={cert.image}
@@ -149,7 +148,6 @@ const Achievements = () => {
                     className="rounded-md"
                   />
                 </div>
-                {/* Certificate Details */}
                 <h4 className="text-lg font-semibold text-text-light text-center mb-1">
                   {cert.title}
                 </h4>
@@ -159,7 +157,7 @@ const Achievements = () => {
               </motion.a>
             ))}
           </motion.div>
-        </div>
+        </div> */}
       </div>
     </section>
   );
