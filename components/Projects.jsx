@@ -9,31 +9,34 @@ const projects = [
     technologies: ["MongoDB", "Express.js", "React.js", "Node.js"],
     description:
       "Developed a web application to support environmental initiatives with blockchain-based Ethereum donations and transaction recording.",
-    link: "https://github.com/yourgithub/environment-initiative-app",
-    image: "/images/environment-app.png", // Add your image path
+    link: "https://environment-initiative-app-frontend.vercel.app/",
+    github: "https://github.com/rishabhxchoudhary/Environment-Initiative-App",
+    image: "/images/environment-initiative-app.png", 
   },
   {
     title: "ShopWise",
     technologies: ["TypeScript", "Next.js", "MongoDB", "Docker"],
     description:
       "Created an e-commerce platform with efficient deployment processes, reducing deployment time by 40%.",
-    link: "https://github.com/yourgithub/shopwise",
-    image: "/images/shopwise.png", // Add your image path
+    link: "https://shop-wise.vercel.app/",
+    github: "https://github.com/rishabhxchoudhary/ShopWise",
+    image: "/images/shopwise.png", 
   },
   {
     title: "Manga Downloader in Rust",
     technologies: ["Rust", "CLI"],
     description:
       "Built a CLI tool for downloading manga chapters swiftly using asynchronous programming and concurrency.",
-    link: "https://github.com/yourgithub/manga-downloader",
-    image: "/images/manga-downloader.png", // Add your image path
+    github: "https://github.com/rishabhxchoudhary/Manga-Downloader-in-Rust",
+    image: "/images/manga.png", // Add your image path
   },
   {
     title: "TaskManager",
     technologies: ["Next.js", "TypeScript", "Node.js", "MongoDB", "Tailwind CSS"],
     description:
       "Developed a task management app that improved personal productivity by 20%.",
-    link: "https://github.com/yourgithub/taskmanager",
+    link: "https://task-manager-nu-one.vercel.app/",
+    github: "https://github.com/rishabhxchoudhary/TaskManager",
     image: "/images/taskmanager.png", // Add your image path
   },
 ];
@@ -107,8 +110,9 @@ const Projects = () => {
 
               {/* Project Links */}
               <div className="mt-auto flex space-x-4">
+                {project.github && <>
                 <a
-                  href={project.link}
+                  href={project.github}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center text-accent hover:text-highlight transition-colors"
@@ -119,6 +123,8 @@ const Projects = () => {
                   GitHub
                   {/* <ReactTooltip id={`github-${index}`} place="top" effect="solid" /> */}
                 </a>
+                </>}
+                {project.link && <>
                 <a
                   href={project.link}
                   target="_blank"
@@ -131,6 +137,7 @@ const Projects = () => {
                   View Project
                   {/* <ReactTooltip id={`live-${index}`} place="top" effect="solid" /> */}
                 </a>
+                </>}
               </div>
             </motion.div>
           ))}
