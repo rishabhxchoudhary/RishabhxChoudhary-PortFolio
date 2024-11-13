@@ -14,7 +14,7 @@ const experiences = [
       "Organized and curated a recruitment coding contest, including problem creation and writing editorials.",
       "Conducted over 40 interviews for recruiting freshers and sophomores.",
     ],
-    icon: <FaUniversity size={20} color="#FBBF24" />, // Changed color to match Tailwind 'highlight' color
+    icon: <FaUniversity size={20} color="#FBBF24" />,
   },
   {
     title: "Software Developer Intern",
@@ -26,19 +26,22 @@ const experiences = [
       "Created a LinkedIn automation tool with Selenium and Python, saving the team 30 hours weekly.",
       "Designed an automated contract template solution, saving over 60 hours monthly.",
     ],
-    icon: <FaBriefcase size={20} color="#14B8A6" />, // Changed color to match Tailwind 'accent' color
+    icon: <FaBriefcase size={20} color="#14B8A6" />,
   },
 
   // Add more experiences as needed
 ];
 
-const ExperienceItem = ({ exp, index }) => {
+const ExperienceItem = ({ exp, index, isLast }) => {
   const [isOpen, setIsOpen] = useState(false);
+
+  // Determine if the item should be centered (for odd items)
+  const isCentered = isLast && experiences.length % 2 !== 0;
 
   return (
     <motion.div
       className={`flex flex-col md:flex-row items-start ${
-        index % 2 === 0 ? "md:flex-row-reverse" : "md:flex-row"
+        isCentered ? "md:flex-row" : index % 2 === 0 ? "md:flex-row-reverse" : "md:flex-row"
       }`}
       initial={{ opacity: 0, x: index % 2 === 0 ? 100 : -100 }}
       whileInView={{ opacity: 1, x: 0 }}
@@ -48,7 +51,7 @@ const ExperienceItem = ({ exp, index }) => {
       {/* Connector Dot with Expand/Collapse */}
       <div className="relative flex flex-col items-center">
         {/* Connector Line */}
-        <div className="hidden md:block absolute top-0 h-full border-l-2 border-accent"></div>
+        <div className={`hidden md:block absolute top-0 ${isCentered ? "h-full" : "h-full"} border-l-2 border-accent`}></div>
 
         {/* Connector Dot */}
         <div
@@ -78,17 +81,13 @@ const ExperienceItem = ({ exp, index }) => {
       </div>
 
       {/* Content */}
-      <div className="mt-4 md:mt-0 md:px-6 lg:px-12 w-full md:w-1/2">
+      <div className={`mt-4 md:mt-0 md:px-6 lg:px-12 w-full ${isCentered ? "md:w-1/2" : "md:w-1/2"}`}>
         <div className="bg-background dark:bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-3xl transition-shadow duration-300">
           <h3 className="text-2xl font-bold text-text-light">{exp.title}</h3>
           <span className="text-gray-400">
             {exp.organization} | {exp.duration} | {exp.location}
           </span>
-          <ul
-            className={`mt-4 list-disc list-inside text-text ${
-              isOpen ? "block" : "hidden"
-            }`}
-          >
+          <ul className={`mt-4 list-disc list-inside text-text ${isOpen ? "block" : "hidden"}`}>
             {exp.responsibilities.map((item, idx) => (
               <li key={idx} className="mb-2">
                 {item}
@@ -121,7 +120,7 @@ const Experience = () => {
         {/* Add more decorative elements as desired */}
       </motion.div>
 
-      <div className="container mx-auto px-4 relative z-10">
+      <div className="container mx-auto px-4 max-w-6xl relative z-10">
         {/* Section Header */}
         <motion.h2
           className="text-4xl font-semibold mb-12 text-text-light text-center"
@@ -141,7 +140,12 @@ const Experience = () => {
           {/* Experience Items */}
           <div className="space-y-12">
             {experiences.map((exp, index) => (
-              <ExperienceItem key={index} exp={exp} index={index} />
+              <ExperienceItem
+                key={index}
+                exp={exp}
+                index={index}
+                isLast={index === experiences.length - 1}
+              />
             ))}
           </div>
         </div>

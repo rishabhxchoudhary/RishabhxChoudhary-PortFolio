@@ -58,7 +58,7 @@ const Projects = () => {
         {/* Add more decorative elements as desired */}
       </motion.div>
 
-      <div className="container mx-auto px-4 relative z-10">
+      <div className="container mx-auto px-4 max-w-6xl relative z-10">
         {/* Section Header */}
         <motion.h2
           className="text-4xl font-semibold mb-12 text-text-light text-center"

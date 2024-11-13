@@ -62,7 +62,7 @@ const Achievements = () => {
         {/* Add more decorative elements as desired */}
       </motion.div>
 
-      <div className="container mx-auto px-4 relative z-10">
+      <div className="container mx-auto px-4 max-w-6xl relative z-10">
         {/* Section Header */}
         <motion.h2
           className="text-4xl font-semibold mb-12 text-text-light text-center"
@@ -135,7 +135,7 @@ const Achievements = () => {
                 href={cert.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-background dark:bg-gray-800 p-4 rounded-lg shadow-lg flex flex-col items-center hover:shadow-3xl transition-shadow duration-300"
+                className="bg-background dark:bg-gray-800 p-4 rounded-lg shadow-lg flex flex-col items-center hover:shadow-3xl transition-shadow duration-300 max-w-xs mx-auto"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >

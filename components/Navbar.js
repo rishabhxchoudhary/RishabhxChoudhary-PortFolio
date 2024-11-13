@@ -84,7 +84,7 @@ const Navbar = () => {
         {/* Right Icons */}
         <div className="flex items-center space-x-4">
           <button
-            onClick={toggleDarkMode}
+            // onClick={toggleDarkMode}
             className="text-text-light focus:outline-none focus:ring-2 focus:ring-accent rounded"
             aria-label="Toggle Dark Mode"
           >

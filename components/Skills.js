@@ -64,7 +64,7 @@ const Skills = () => {
         <div className="absolute top-1/2 left-1/4 w-8 h-8 bg-secondary rounded-full opacity-50 animate-bounce"></div>
       </motion.div>
       
-      <div className="container mx-auto px-4 relative z-10">
+      <div className="container mx-auto px-4  max-w-6xl relative z-10">
         <motion.h2
           className="text-4xl font-semibold mb-12 text-text-light text-center"
           initial={{ opacity: 0, y: -50 }}
