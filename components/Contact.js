@@ -2,29 +2,25 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { FaLinkedin, FaGithub, FaCode, FaEnvelope, FaYoutube } from 'react-icons/fa';
+import axios from 'axios';
+
+import { useForm } from 'react-hook-form';
 
 const Contact = () => {
-  const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' });
+  const { register, handleSubmit, reset, formState: { errors, isSubmitting } } = useForm();
   const [submitted, setSubmitted] = useState(false);
-  const [loading, setLoading] = useState(false);
-
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    // Handle form submission (e.g., send email via API)
-    // Replace the below with actual form submission logic
-    console.log(formData);
-    // Simulate form submission delay
-    setTimeout(() => {
+  const [error, setError] = useState('');
+  
+  const onSubmit = async (data) => {
+    try {
+      const response = await axios.post("/api/mail", data);
+      console.log(response);
       setSubmitted(true);
-      setLoading(false);
-      // Reset form
-      setFormData({ name: '', email: '', subject: '', message: '' });
-    }, 2000);
+      reset(); // Reset form fields after submission
+    } catch (err) {
+      console.error(err);
+      setError('The email service is currently unavailable, please try again later.');
+    }
   };
 
   return (
@@ -52,81 +48,92 @@ const Contact = () => {
             </motion.p>
           ) : (
             <motion.form
-              onSubmit={handleSubmit}
+              onSubmit={handleSubmit(onSubmit)}
               className="space-y-6"
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 1 }}
               viewport={{ once: true }}
             >
+              {error && <p className="text-red-500 text-center">{error}</p>}
               <div>
                 <label htmlFor="name" className="block text-gray-300">
                   Name
                 </label>
                 <input
-                  type="text"
+                  {...register('name', { required: 'Name is required' })}
                   id="name"
-                  name="name"
+                  type="text"
                   className="w-full p-3 mt-1 bg-gray-700 text-white border border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-accent transition-colors"
-                  value={formData.name}
-                  onChange={handleChange}
-                  required
                   placeholder="Your Name"
                 />
+                {errors.name && <p className="text-red-500">{errors.name.message}</p>}
               </div>
               <div>
                 <label htmlFor="email" className="block text-gray-300">
                   Email
                 </label>
                 <input
-                  type="email"
+                  {...register('email', {
+                    required: 'Email is required',
+                    pattern: {
+                      value: /^\S+@\S+\.\S+$/,
+                      message: 'Invalid email format'
+                    }
+                  })}
                   id="email"
-                  name="email"
+                  type="email"
                   className="w-full p-3 mt-1 bg-gray-700 text-white border border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-accent transition-colors"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
                   placeholder="Your Email"
                 />
+                {errors.email && <p className="text-red-500">{errors.email.message}</p>}
               </div>
               <div>
                 <label htmlFor="subject" className="block text-gray-300">
                   Subject
                 </label>
                 <input
-                  type="text"
+                  {...register('subject', {
+                    required: 'Subject is required',
+                    minLength: {
+                      value: 10,
+                      message: 'Subject must be at least 10 characters'
+                    }
+                  })}
                   id="subject"
-                  name="subject"
+                  type="text"
                   className="w-full p-3 mt-1 bg-gray-700 text-white border border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-accent transition-colors"
-                  value={formData.subject}
-                  onChange={handleChange}
-                  required
                   placeholder="Subject"
                 />
+                {errors.subject && <p className="text-red-500">{errors.subject.message}</p>}
               </div>
               <div>
                 <label htmlFor="message" className="block text-gray-300">
                   Message
                 </label>
                 <textarea
+                  {...register('message', {
+                    required: 'Message is required',
+                    minLength: {
+                      value: 100,
+                      message: 'Message must be at least 100 characters'
+                    }
+                  })}
                   id="message"
-                  name="message"
                   className="w-full p-3 mt-1 bg-gray-700 text-white border border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-accent transition-colors"
                   rows="5"
-                  value={formData.message}
-                  onChange={handleChange}
-                  required
                   placeholder="Your Message"
                 ></textarea>
+                {errors.message && <p className="text-red-500">{errors.message.message}</p>}
               </div>
               <motion.button
                 type="submit"
                 className="w-full bg-accent text-background font-semibold py-3 rounded hover:bg-accent-light transition-colors flex items-center justify-center"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                disabled={loading}
+                disabled={isSubmitting}
               >
-                {loading ? 'Sending...' : 'Send Message'}
+                {isSubmitting ? 'Sending...' : 'Send Message'}
               </motion.button>
             </motion.form>
           )}
