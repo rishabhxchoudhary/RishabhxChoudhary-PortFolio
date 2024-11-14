@@ -1,21 +1,20 @@
 // components/Home.jsx
 import { motion } from "framer-motion";
-import { FaLinkedin, FaGithub, FaEnvelope } from "react-icons/fa";
+import { FaLinkedin, FaGithub, FaEnvelope, FaDownload } from "react-icons/fa";
+import useScrollPosition from '../hooks/useScrollPosition';
 
 const Home = () => {
+  const scrollY = useScrollPosition();
   return (
     <section className="min-h-screen flex flex-col justify-center items-center bg-background text-text p-4 sm:p-6 relative overflow-hidden">
-      
-      {/* Animated Background Circles */}
+      {/* Animated Background Circles with Parallax */}
       <motion.div
         className="absolute top-0 left-0 w-32 sm:w-48 h-32 sm:h-48 bg-primary opacity-30 rounded-full filter blur-3xl"
-        animate={{ y: [0, 50, 0], x: [0, 50, 0] }}
-        transition={{ repeat: Infinity, duration: 20, ease: "linear" }}
+        style={{ transform: `translate(${scrollY * 0.1}px, ${scrollY * 0.2}px)` }}
       />
       <motion.div
         className="absolute bottom-0 right-0 w-32 sm:w-48 h-32 sm:h-48 bg-secondary opacity-30 rounded-full filter blur-3xl"
-        animate={{ y: [0, -50, 0], x: [0, -50, 0] }}
-        transition={{ repeat: Infinity, duration: 25, ease: "linear" }}
+        style={{ transform: `translate(-${scrollY * 0.1}px, -${scrollY * 0.2}px)` }}
       />
 
       {/* Main Content */}
@@ -45,7 +44,7 @@ const Home = () => {
             href="https://www.linkedin.com/in/rishabhxchoudhary/"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-center space-x-2 bg-primary text-background px-4 py-2 rounded-full shadow-lg hover:bg-primary-light transition"
+            className="flex items-center justify-center space-x-2 bg-[#0077B5] text-background px-4 py-2 rounded-full shadow-lg hover:bg-primary-light transition"
           >
             <FaLinkedin size={20} />
             <span className="inline">LinkedIn</span>
@@ -58,6 +57,14 @@ const Home = () => {
           >
             <FaGithub size={20} />
             <span className="inline">GitHub</span>
+          </a>
+          <a
+            href="/resume.pdf" // Adjust the path if your resume is hosted online
+            download="RishabhKumarChoudhary_Resume.pdf" // This attribute will prompt the file to be downloaded with this filename
+            className="flex items-center justify-center space-x-2 bg-accent text-background px-4 py-2 rounded-full shadow-lg hover:bg-accent-light transition"
+          >
+            <FaDownload size={20} />
+            <span className="inline">Download Resume</span>
           </a>
         </div>
         
