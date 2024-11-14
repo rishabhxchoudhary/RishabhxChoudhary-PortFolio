@@ -50,7 +50,7 @@ export default function Component() {
       id="ask"
       className="py-20 w-full dark:bg-background bg-gray-800 text-text"
     >
-      <div>
+      <div className="">
         <SidebarContainer
           classNames={{
             header:
@@ -119,9 +119,11 @@ export default function Component() {
         >
           <div className="relative flex h-full flex-col px-6">
             <div className="flex h-full flex-col items-center justify-center gap-10">
+              {!chatStart &&
               <div className="flex rounded-full bg-foreground">
                 <Image width={69} height={69} className="border rounded-full" alt="photo" src="/profile.jpg"/>
               </div>
+              }
               <div className={ chatStart ? "flex flex-col gap-4 px-1 overflow-y-scroll" : "grid gap-2 sm:grid-cols-2 md:grid-cols-4"}>
                 {!chatStart && <>
                   {defaultMessages.map((message) => (
@@ -173,7 +175,7 @@ export default function Component() {
                 placeholder="Ask RishabhAI"
               />
               <p className="px-2 text-center text-small font-medium leading-5 text-default-500">
-                AcmeAI can make mistakes. Check important info.
+                Have a small query? Ask Rishabh AI.
               </p>
             </div>
           </div>

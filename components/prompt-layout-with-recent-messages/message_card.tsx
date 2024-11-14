@@ -1,10 +1,13 @@
 "use client";
 
 import React from "react";
-import {Avatar, Badge, Button, Link} from "@nextui-org/react";
-import {useClipboard} from "@nextui-org/use-clipboard";
-import {Icon} from "@iconify/react";
-import {cn} from "@nextui-org/react";
+import { Avatar, Badge, Button, Link } from "@nextui-org/react";
+import { useClipboard } from "@nextui-org/use-clipboard";
+import { Icon } from "@iconify/react";
+import { cn } from "@nextui-org/react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import rehypeRaw from "rehype-raw";
 
 export type MessageCardProps = React.HTMLAttributes<HTMLDivElement> & {
   avatar?: string;
@@ -28,25 +31,25 @@ const MessageCard = React.forwardRef<HTMLDivElement, MessageCardProps>(
       showFeedback,
       status,
       onMessageCopy,
-      onFeedback,
       className,
       messageClassName,
       ...props
     },
-    ref,
+    ref
   ) => {
-    const [feedback, setFeedback] = React.useState<"like" | "dislike">();
 
     const messageRef = React.useRef<HTMLDivElement>(null);
 
-    const {copied, copy} = useClipboard();
+    const { copied, copy } = useClipboard();
 
     const failedMessageClassName =
-      status === "failed" ? "bg-danger-100/50 border border-danger-100 text-foreground" : "";
+      status === "failed"
+        ? "bg-danger-100/50 border border-danger-100 text-foreground"
+        : "";
     const failedMessage = (
       <p>
-        Something went wrong, if the issue persists please contact us through our help center
-        at&nbsp;
+        Something went wrong, if the issue persists please contact us through
+        our help center at&nbsp;
         <Link href="mailto:support@acmeai.com" size="sm">
           support@acmeai.com
         </Link>
@@ -64,7 +67,9 @@ const MessageCard = React.forwardRef<HTMLDivElement, MessageCardProps>(
         message.forEach((child) => {
           // @ts-except-error:Some error here.
           const childString =
-            typeof child === "string" ? child : child?.props?.children?.toString();
+            typeof child === "string"
+              ? child
+              : child?.props?.children?.toString();
 
           if (childString) {
             stringValue += childString + "\n";
@@ -79,22 +84,18 @@ const MessageCard = React.forwardRef<HTMLDivElement, MessageCardProps>(
       onMessageCopy?.(valueToCopy);
     }, [copy, message, onMessageCopy]);
 
-    const handleFeedback = React.useCallback(
-      (liked: boolean) => {
-        setFeedback(liked ? "like" : "dislike");
-
-        onFeedback?.(liked ? "like" : "dislike");
-      },
-      [onFeedback],
-    );
-
     return (
       <div {...props} ref={ref} className={cn("flex gap-3", className)}>
         <div className="relative flex-none">
           <Badge
             isOneChar
             color="danger"
-            content={<Icon className="text-background" icon="gravity-ui:circle-exclamation-fill" />}
+            content={
+              <Icon
+                className="text-background"
+                icon="gravity-ui:circle-exclamation-fill"
+              />
+            }
             isInvisible={!hasFailed}
             placement="bottom-right"
             shape="circle"
@@ -107,45 +108,39 @@ const MessageCard = React.forwardRef<HTMLDivElement, MessageCardProps>(
             className={cn(
               "relative w-full rounded-medium bg-content2 px-4 py-3 text-default-600",
               failedMessageClassName,
-              messageClassName,
+              messageClassName
             )}
           >
             <div ref={messageRef} className={"pr-20 text-small"}>
-              {hasFailed ? failedMessage : message}
+                {hasFailed ? failedMessage : <>
+              <ReactMarkdown
+                remarkPlugins={[remarkGfm]}
+                rehypePlugins={[rehypeRaw]}
+              >
+                {message?.toString()}
+              </ReactMarkdown>
+                </>}
+              
             </div>
             {showFeedback && !hasFailed && (
               <div className="absolute right-2 top-2 flex rounded-full bg-content2 shadow-small">
-                <Button isIconOnly radius="full" size="sm" variant="light" onPress={handleCopy}>
+                <Button
+                  isIconOnly
+                  radius="full"
+                  size="sm"
+                  variant="light"
+                  onPress={handleCopy}
+                >
                   {copied ? (
-                    <Icon className="text-lg text-default-600" icon="gravity-ui:check" />
+                    <Icon
+                      className="text-lg text-default-600"
+                      icon="gravity-ui:check"
+                    />
                   ) : (
-                    <Icon className="text-lg text-default-600" icon="gravity-ui:copy" />
-                  )}
-                </Button>
-                <Button
-                  isIconOnly
-                  radius="full"
-                  size="sm"
-                  variant="light"
-                  onPress={() => handleFeedback(true)}
-                >
-                  {feedback === "like" ? (
-                    <Icon className="text-lg text-default-600" icon="gravity-ui:thumbs-up-fill" />
-                  ) : (
-                    <Icon className="text-lg text-default-600" icon="gravity-ui:thumbs-up" />
-                  )}
-                </Button>
-                <Button
-                  isIconOnly
-                  radius="full"
-                  size="sm"
-                  variant="light"
-                  onPress={() => handleFeedback(false)}
-                >
-                  {feedback === "dislike" ? (
-                    <Icon className="text-lg text-default-600" icon="gravity-ui:thumbs-down-fill" />
-                  ) : (
-                    <Icon className="text-lg text-default-600" icon="gravity-ui:thumbs-down" />
+                    <Icon
+                      className="text-lg text-default-600"
+                      icon="gravity-ui:copy"
+                    />
                   )}
                 </Button>
               </div>
@@ -154,7 +149,7 @@ const MessageCard = React.forwardRef<HTMLDivElement, MessageCardProps>(
         </div>
       </div>
     );
-  },
+  }
 );
 
 export default MessageCard;

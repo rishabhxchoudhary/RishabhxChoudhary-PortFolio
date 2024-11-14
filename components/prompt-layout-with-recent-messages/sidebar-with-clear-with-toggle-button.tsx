@@ -22,7 +22,7 @@ export default function Component({
 }) {
 
   return (
-    <div className="flex h-dvh w-full py-4 ">
+    <div className="flex h-dvh w-full ">
       <div className="flex w-full flex-col px-4 sm:max-w-[calc(100%_-_288px)] bg-black mx-auto">
         <header
           className={cn(
@@ -50,7 +50,7 @@ export default function Component({
           )}
           {header}
         </header>
-        <main className="flex h-full">
+        <main className="flex h-full pb-10">
           <div className="flex h-full w-full flex-col gap-4 rounded-none rounded-b-medium border-0 border-b border-l border-r border-divider py-3">
             {children}
           </div>
