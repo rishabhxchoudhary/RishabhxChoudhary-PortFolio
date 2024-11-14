@@ -1,6 +1,10 @@
 import axios from "axios";
 import type { NextApiRequest, NextApiResponse } from "next";
 
+export const config = {
+  maxDuration: 60,
+};
+
 const GEMINI_KEY = process.env.GEMINI_KEY;
 
 async function getResponse(currentUserQuery: string) {

@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import {
   Dropdown,
   DropdownTrigger,
@@ -14,9 +14,10 @@ import {Card, CardHeader, CardBody} from "@nextui-org/react";
 
 import SidebarContainer from "./sidebar-with-clear-with-toggle-button";
 
-import PromptInputWithEnclosedActions from "./prompt-input-with-enclosed-actions";
+import PromptInputWithEnclosedActions, { Message } from "./prompt-input-with-enclosed-actions";
+import MessageCard from "./message_card";
 
-const messages = [
+const defaultMessages = [
   {
     key: "message1",
     description: "What is your experience and background in development?",
@@ -37,9 +38,13 @@ const messages = [
     description: "What is your availability and estimated timeline for a project like this?",
     icon: <Icon className="text-success-600" icon="solar:gameboy-bold" width={24} />,
   },
-];
+]
+
 
 export default function Component() {
+  const [messages, setMessages] = useState<Message[]>([])
+  const [loading, setLoading] = useState(false);
+  const [chatStart, setChatStart] = useState(false);
   return (
     <section id="ask" className="py-20 dark:bg-background bg-gray-800 text-text">
       <div className="">
@@ -104,32 +109,57 @@ export default function Component() {
             </Dropdown>
           }
         >
-          <div className=" flex h-full flex-col px-6">
+          <div className=" flex w-full h-full flex-col px-6">
             <div className="flex h-full flex-col items-center justify-center gap-10">
               <div className="flex rounded-full bg-foreground"> 
               </div>
-              <div className="grid gap-2 sm:grid-cols-2 md:grid-cols-4">
-                {messages.map((message) => (
-                  <Card
-                    key={message.key}
-                    className="h-auto bg-default-100 px-[20px] py-[16px]"
-                    shadow="none"
-                  >
-                    <CardHeader className="p-0 pb-[9px]">{message.icon}</CardHeader>
-                    <CardBody className="p-0 text-small text-default-400">
-                      {message.description}
-                    </CardBody>
-                  </Card>
-                ))}
+              <div className={ chatStart ? "flex flex-col gap-4 px-1 overflow-y-scroll" : "grid gap-2 sm:grid-cols-2 md:grid-cols-4"}>
+                {!chatStart && <>
+                  {defaultMessages.map((message) => (
+                    <Card
+                      key={message.key}
+                      className="h-auto bg-default-100 px-[20px] py-[16px]"
+                      shadow="none"
+                    >
+                      <CardHeader className="p-0 pb-[9px]">{message.icon}</CardHeader>
+                      <CardBody className="p-0 text-small text-default-400">
+                        {message.description}
+                      </CardBody>
+                    </Card>
+                  ))}
+                </>}
+                {chatStart && <>
+                  {messages.map(({role, message}, index) => (
+                    <MessageCard
+                      key={index}
+                      attempts={index === 1 ? 2 : 1}
+                      avatar={
+                        role === "assistant"
+                          ? "/profile.jpg"
+                          : "https://d2u8k2ocievbld.cloudfront.net/memojis/male/6.png"
+                      }
+                      currentAttempt={index === 1 ? 2 : 1}
+                      message={message}
+                      messageClassName={role === "user" ? "bg-content3 text-content3-foreground" : ""}
+                      showFeedback={role === "assistant"}
+                    />
+                  ))}
+                </>}
               </div>
             </div>
             <div className="mt-auto flex flex-col gap-2">
               <PromptInputWithEnclosedActions
+              loading={loading}
+              setLoading={setLoading}
+              setChatStart={setChatStart}
+              messages={messages}
+              setMessages={setMessages}
                 classNames={{
                   button:
                     "bg-default-foreground opacity-100 w-[30px] h-[30px] self-center",
                   buttonIcon: "text-background",
                   input: "placeholder:text-default-500",
+                  innerWrapper: "additional-class-for-inner-wrapper"
                 }}
                 placeholder="Ask RishabhAI"
               />

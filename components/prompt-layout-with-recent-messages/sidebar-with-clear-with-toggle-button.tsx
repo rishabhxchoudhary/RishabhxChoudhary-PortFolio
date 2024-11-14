@@ -36,11 +36,11 @@ export default function Component({
   classNames?: Record<string, string>;
 }) {
   return (
-    <div className="flex min-h-dynamic max-h-screen py-4 max-w-6xl bg-black mx-auto">
+    <div className="flex min-h-dynamic max-h-screen py-4 max-w-6xl w-full bg-black mx-auto">
       <div className="flex flex-col px-4 ">
         <header
           className={cn(
-            "flex h-16 min-h-16 items-center justify-between gap-2 rounded-none rounded-t-medium border-small border-divider px-4 py-3",
+            "flex h-16 min-h-16 w-full items-center justify-between gap-2 rounded-none rounded-t-medium border-small border-divider px-4 py-3",
             classNames?.["header"],
           )}
         >
@@ -57,7 +57,7 @@ export default function Component({
           {header}
         </header>
         <main className="flex h-full">
-          <div className="flex h-full flex-col gap-4 rounded-none rounded-b-medium border-0 border-b border-l border-r border-divider py-3">
+          <div className="flex h-full w-full flex-col gap-4 rounded-none rounded-b-medium border-0 border-b border-l border-r border-divider py-3">
             {children}
           </div>
         </main>
