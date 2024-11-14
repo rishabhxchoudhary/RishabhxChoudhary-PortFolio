@@ -39,6 +39,14 @@ const projects = [
     github: "https://github.com/rishabhxchoudhary/TaskManager",
     image: "/images/taskmanager.png", // Add your image path
   },
+  {
+    title: "Telegram Bot",
+    technologies: ["Next.js", "TypeScript", "Webhooks", "Webscraping"],
+    description:
+      "Developed a Telegram Bot using Webhooks",
+    link: "https://task-manager-nu-one.vercel.app/",
+    image: "/images/telegram_bot.png", // Add your image path
+  },
 ];
 
 const Projects = () => {
@@ -84,6 +92,8 @@ const Projects = () => {
               transition={{ duration: 0.6, delay: index * 0.2 }}
               viewport={{ once: true }}
             >
+              <div className="img-scale">
+
               {/* Project Image */}
               {project.image && (
                 <div className="relative w-full h-40 mb-4 rounded-md overflow-hidden">
@@ -138,6 +148,7 @@ const Projects = () => {
                   {/* <ReactTooltip id={`live-${index}`} place="top" effect="solid" /> */}
                 </a>
                 </>}
+              </div>
               </div>
             </motion.div>
           ))}
