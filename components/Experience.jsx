@@ -25,6 +25,7 @@ const experiences = [
       "Developed and deployed WhatsApp bots using RML API, Facebook Graph API, and Google Calendar API for scheduling interviews and interactive sessions.",
       "Created a LinkedIn automation tool with Selenium and Python, saving the team 30 hours weekly.",
       "Designed an automated contract template solution, saving over 60 hours monthly.",
+      "Worked with Vector Databases and different approaches for efficient and effective querying from large vector database."
     ],
     icon: <FaBriefcase size={20} color="#14B8A6" />,
   },

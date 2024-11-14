@@ -6,7 +6,7 @@ import useScrollPosition from '../hooks/useScrollPosition';
 const Home = () => {
   const scrollY = useScrollPosition();
   return (
-    <section className="min-h-screen flex flex-col justify-center items-center bg-background text-text p-4 sm:p-6 relative overflow-hidden">
+    <section id="home" className="min-h-screen flex flex-col justify-center items-center bg-background text-text p-4 sm:p-6 relative overflow-hidden">
       {/* Animated Background Circles with Parallax */}
       <motion.div
         className="absolute top-0 left-0 w-32 sm:w-48 h-32 sm:h-48 bg-primary opacity-30 rounded-full filter blur-3xl"

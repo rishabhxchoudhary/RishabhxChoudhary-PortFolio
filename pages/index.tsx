@@ -8,7 +8,7 @@ import Contact from '../components/Contact';
 import {NextUIProvider} from "@nextui-org/react";
 import Projects from '../components/Projects'
 import Experience from '../components/Experience'
-
+import AI from '../components/prompt-layout-with-recent-messages/App'
 
 export default function Home() {
   return (
@@ -27,6 +27,7 @@ export default function Home() {
         <Projects />
         <Skills />
         <Achievements />
+        <AI/>
         <Contact />
       </main>
     </NextUIProvider>
