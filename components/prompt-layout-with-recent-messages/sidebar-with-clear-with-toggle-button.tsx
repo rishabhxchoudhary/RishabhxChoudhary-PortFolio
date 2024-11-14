@@ -1,26 +1,11 @@
 "use client";
-
 import React from "react";
 import {
+  Button,
   cn,
 } from "@nextui-org/react";
+import {Icon} from "@iconify/react";
 
-// import {RishabhIcon} from "./Rishabh";
-// import SidebarDrawer from "./sidebar-drawer";
-
-/**
- * 💡 TIP: You can use the usePathname hook from Next.js App Router to get the current pathname
- * and use it as the active key for the Sidebar component.
- *
- * ```tsx
- * import {usePathname} from "next/navigation";
- *
- * const pathname = usePathname();
- * const currentPath = pathname.split("/")?.[1]
- *
- * <Sidebar defaultSelectedKey="home" selectedKeys={[currentPath]} />
- * ```
- */
 
 export default function Component({
   children,
@@ -35,17 +20,26 @@ export default function Component({
   subTitle?: string;
   classNames?: Record<string, string>;
 }) {
+
   return (
-    <div className="flex min-h-dynamic max-h-screen py-4 max-w-6xl w-full bg-black mx-auto">
-      <div className="flex flex-col px-4 ">
+    <div className="flex h-dvh w-full py-4 ">
+      <div className="flex w-full flex-col px-4 sm:max-w-[calc(100%_-_288px)] bg-black mx-auto">
         <header
           className={cn(
-            "flex h-16 min-h-16 w-full items-center justify-between gap-2 rounded-none rounded-t-medium border-small border-divider px-4 py-3",
+            "flex h-16 min-h-16 items-center justify-between gap-2 rounded-none rounded-t-medium border-small border-divider px-4 py-3",
             classNames?.["header"],
           )}
         >
+          <Button isIconOnly className="flex sm:hidden" size="sm" variant="light" >
+            <Icon
+              className="text-default-500"
+              height={24}
+              icon="solar:hamburger-menu-outline"
+              width={24}
+            />
+          </Button>
           {(title || subTitle) && (
-            <div className="">
+            <div className="w-full min-w-[120px] sm:w-auto">
               <div className="truncate text-small font-semibold leading-5 text-foreground">
                 {title}
               </div>

@@ -9,13 +9,14 @@ import {
   DropdownItem,
   Button,
 } from "@nextui-org/react";
-import {Icon} from "@iconify/react";
-import {Card, CardHeader, CardBody} from "@nextui-org/react";
+import { Icon } from "@iconify/react";
+import { Card, CardHeader, CardBody } from "@nextui-org/react";
 
 import SidebarContainer from "./sidebar-with-clear-with-toggle-button";
 
 import PromptInputWithEnclosedActions, { Message } from "./prompt-input-with-enclosed-actions";
 import MessageCard from "./message_card";
+import Image from "next/image";
 
 const defaultMessages = [
   {
@@ -40,24 +41,27 @@ const defaultMessages = [
   },
 ]
 
-
 export default function Component() {
   const [messages, setMessages] = useState<Message[]>([])
   const [loading, setLoading] = useState(false);
   const [chatStart, setChatStart] = useState(false);
   return (
-    <section id="ask" className="py-20 dark:bg-background bg-gray-800 text-text">
-      <div className="">
+    <section
+      id="ask"
+      className="py-20 w-full dark:bg-background bg-gray-800 text-text"
+    >
+      <div>
         <SidebarContainer
           classNames={{
-            header: "min-h-[40px] h-[40px] py-[12px] justify-center overflow-hidden",
+            header:
+              "min-h-[40px] h-[40px] py-[12px] justify-center overflow-hidden",
           }}
           header={
-            <Dropdown className="">
+            <Dropdown className="bg-content1">
               <DropdownTrigger>
                 <Button
                   disableAnimation
-                  className="items-center text-default-400 data-[hover=true]:bg-[unset]"
+                  className="w-full min-w-[120px] items-center text-default-400 data-[hover=true]:bg-[unset]"
                   endContent={
                     <Icon
                       className="text-default-400"
@@ -71,20 +75,24 @@ export default function Component() {
                   Rishabh v4
                 </Button>
               </DropdownTrigger>
-              <DropdownMenu aria-label="Rishabh model version" className="p-0 pt-2" variant="faded">
+              <DropdownMenu
+                aria-label="acme model version"
+                className="p-0 pt-2"
+                variant="faded"
+              >
                 <DropdownSection
                   classNames={{
-                    heading: "text-tiny ",
+                    heading: "text-tiny px-[10px]",
                   }}
                   title="Model"
                 >
                   <DropdownItem
-                    key="Rishabh-v4"
+                    key="acme-v4"
                     className="text-default-500 data-[hover=true]:text-default-500"
                     classNames={{
                       description: "text-default-500 text-tiny",
                     }}
-                    description="Knows basic thing about Rishabh Kumar"
+                    description="Newest and most advanced model"
                     endContent={
                       <Icon
                         className="text-default-foreground"
@@ -109,9 +117,10 @@ export default function Component() {
             </Dropdown>
           }
         >
-          <div className=" flex w-full h-full flex-col px-6">
+          <div className="relative flex h-full flex-col px-6">
             <div className="flex h-full flex-col items-center justify-center gap-10">
-              <div className="flex rounded-full bg-foreground"> 
+              <div className="flex rounded-full bg-foreground">
+                <Image width={69} height={69} className="border rounded-full" alt="photo" src="/profile.jpg"/>
               </div>
               <div className={ chatStart ? "flex flex-col gap-4 px-1 overflow-y-scroll" : "grid gap-2 sm:grid-cols-2 md:grid-cols-4"}>
                 {!chatStart && <>
@@ -136,7 +145,7 @@ export default function Component() {
                       avatar={
                         role === "assistant"
                           ? "/profile.jpg"
-                          : "https://d2u8k2ocievbld.cloudfront.net/memojis/male/6.png"
+                          : "https://i.pinimg.com/736x/93/e8/d0/93e8d0313894ff752ef1c6970116bad6.jpg"
                       }
                       currentAttempt={index === 1 ? 2 : 1}
                       message={message}
@@ -147,8 +156,8 @@ export default function Component() {
                 </>}
               </div>
             </div>
-            <div className="mt-auto flex flex-col gap-2">
-              <PromptInputWithEnclosedActions
+            <div className="mt-auto flex max-w-full flex-col gap-2">
+            <PromptInputWithEnclosedActions
               loading={loading}
               setLoading={setLoading}
               setChatStart={setChatStart}
@@ -156,7 +165,7 @@ export default function Component() {
               setMessages={setMessages}
                 classNames={{
                   button:
-                    "bg-default-foreground opacity-100 w-[30px] h-[30px] self-center",
+                    "bg-default-foreground opacity-100 w-[30px] h-[30px] !min-w-[30px] self-center",
                   buttonIcon: "text-background",
                   input: "placeholder:text-default-500",
                   innerWrapper: "additional-class-for-inner-wrapper"
@@ -164,7 +173,7 @@ export default function Component() {
                 placeholder="Ask RishabhAI"
               />
               <p className="px-2 text-center text-small font-medium leading-5 text-default-500">
-                Have any small queries? You can ask Rishabh AI about me.
+                AcmeAI can make mistakes. Check important info.
               </p>
             </div>
           </div>

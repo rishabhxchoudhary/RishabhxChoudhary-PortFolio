@@ -51,7 +51,7 @@ export default function Component(props: ComponentProps) {
         ...prevItems,
         {
           role: "assistant",
-          message: reply=="undefined"? "Could not load message .Please try again." : reply,
+          message: reply=="undefined"? "Server Overloaded. Please wait for some time and try again." : reply,
         }
       ]);
     } catch (error) {
