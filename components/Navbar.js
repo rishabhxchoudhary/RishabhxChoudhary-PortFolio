@@ -51,7 +51,7 @@ const Navbar = () => {
 
         {/* Desktop Menu */}
         <ul className="hidden md:flex space-x-6">
-          {['#about', '#experience', '#projects', '#skills', '#achievements', '#contact'].map((section) => (
+          {['#about', '#experience', '#projects', '#skills', '#achievements','#ask', '#contact'].map((section) => (
             <li key={section}>
               <a href={section} className="text-text hover:text-accent transition-colors" onClick={handleLinkClick}>
                 {capitalizeFirstLetter(section.substring(1))}
@@ -83,7 +83,7 @@ const Navbar = () => {
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.3 }}
           >
-            {['#about', '#experience', '#projects', '#skills', '#achievements', '#contact'].map((section) => (
+            {['#about', '#experience', '#projects', '#skills', '#achievements','#ask','#contact'].map((section) => (
               <li key={section}>
                 <a href={section} className="block text-text-light hover:text-accent transition-colors" onClick={handleLinkClick}>
                   {section.substring(1)}

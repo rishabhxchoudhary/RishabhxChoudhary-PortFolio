@@ -41,7 +41,7 @@ const messages = [
 
 export default function Component() {
   return (
-    <div className="h-full w-full max-w-full">
+    <div id="ask" className="h-full w-full max-w-full">
       <SidebarContainer
         classNames={{
           header: "min-h-[40px] h-[40px] py-[12px] justify-center overflow-hidden",
