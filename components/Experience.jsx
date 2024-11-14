@@ -6,10 +6,30 @@ import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 
 const experiences = [
   {
-    title: "Google DSC CP Lead & Core",
-    organization: "Google DSC NSUT, The Tech Society of NSUT",
-    duration: "January 2023 - May 2024",
-    location: "New Delhi, India",
+    title: "Competitive Programming Lead",
+    organization: "Google DSC NSUT",
+    duration: "January 2023 - August 2023",
+    location: "New Delhi, Delhi, India",
+    responsibilities: [
+      "Organized and curated programming contests, including problem creation and solution verifications.",
+    ],
+    icon: <FaUniversity size={20} color="#FBBF24" />,
+  },
+  {
+    title: "Full Stack Web Development Intern",
+    organization: "InGelt",
+    duration: "February 2023 - March 2023",
+    location: "New Delhi, Delhi, India",
+    responsibilities: [
+      "Engaged in full-stack web development, focusing on both front-end and back-end solutions.",
+    ],
+    icon: <FaBriefcase size={20} color="#14B8A6" />,
+  },
+  {
+    title: "Core",
+    organization: "Google DSC NSUT",
+    duration: "August 2023 - Present",
+    location: "New Delhi, Delhi, India",
     responsibilities: [
       "Organized and curated a recruitment coding contest, including problem creation and writing editorials.",
       "Conducted over 40 interviews for recruiting freshers and sophomores.",
@@ -17,8 +37,19 @@ const experiences = [
     icon: <FaUniversity size={20} color="#FBBF24" />,
   },
   {
+    title: "YouTuber",
+    organization: "Codenzyme",
+    duration: "May 2022 - July 2024",
+    location: "India",
+    responsibilities: [
+      "Created and published educational content on algorithms and various programming topics, amassing over 12000 views on the first video.",
+      "Provided tutorials on using torrents via Google Colab, aiding NSUT students during network restrictions."
+    ],
+    icon: <FaBriefcase size={20} color="#14B8A6" />,
+  },
+  {
     title: "Software Developer Intern",
-    organization: "Blozum.AI",
+    organization: "Blozum",
     duration: "June 2024 - Present",
     location: "New Delhi, India",
     responsibilities: [
@@ -29,22 +60,19 @@ const experiences = [
     ],
     icon: <FaBriefcase size={20} color="#14B8A6" />,
   },
-
-  // Add more experiences as needed
 ];
 
-const ExperienceItem = ({ exp, index, isLast }) => {
+const ExperienceItem = ({ exp, index }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   // Determine if the item should be centered (for odd items)
-  const isCentered = isLast && experiences.length % 2 !== 0;
-
+  const isCentered = false;
   return (
     <motion.div
       className={`flex flex-col md:flex-row items-start ${
-        isCentered ? "md:flex-row" : index % 2 === 0 ? "md:flex-row-reverse" : "md:flex-row"
+        isCentered ? "md:flex-row" : index % 2 === 1 ? "md:flex-row-reverse" : "md:flex-row"
       }`}
-      initial={{ opacity: 0, x: index % 2 === 0 ? 100 : -100 }}
+      initial={{ opacity: 0, x: index % 2 === 1 ? 100 : -100 }}
       whileInView={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.8, delay: index * 0.2 }}
       viewport={{ once: true }}
@@ -66,7 +94,7 @@ const ExperienceItem = ({ exp, index, isLast }) => {
             if (e.key === "Enter") setIsOpen(!isOpen);
           }}
         >
-          {exp.icon}
+          {/* {exp.icon} */}
           {isOpen ? (
             <FaChevronUp
               className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white"
@@ -82,7 +110,9 @@ const ExperienceItem = ({ exp, index, isLast }) => {
       </div>
 
       {/* Content */}
-      <div className={`mt-4 md:mt-0 md:px-6 lg:px-12 w-full ${isCentered ? "md:w-1/2" : "md:w-1/2"}`}>
+      <div onClick={()=>{
+        setIsOpen(!isOpen);
+      }} className={`mt-4 cursor-pointer md:mt-0 md:px-6 lg:px-12 w-full ${isCentered ? "md:w-1/2" : "md:w-1/2"}`}>
         <div className="bg-background dark:bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-3xl transition-shadow duration-300">
           <h3 className="text-2xl font-bold text-text-light">{exp.title}</h3>
           <span className="text-gray-400">
@@ -145,7 +175,6 @@ const Experience = () => {
                 key={index}
                 exp={exp}
                 index={index}
-                isLast={index === experiences.length - 1}
               />
             ))}
           </div>
