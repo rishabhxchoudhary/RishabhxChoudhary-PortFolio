@@ -44,7 +44,7 @@ const projects = [
     technologies: ["Next.js", "TypeScript", "Webhooks", "Webscraping"],
     description:
       "Developed a Telegram Bot using Webhooks",
-    link: "https://task-manager-nu-one.vercel.app/",
+    link: "https://t.me/codenzyme_bot",
     image: "/images/telegram_bot.png", // Add your image path
   },
 ];
