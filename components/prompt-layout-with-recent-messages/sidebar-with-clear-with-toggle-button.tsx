@@ -36,7 +36,7 @@ export default function Component({
   classNames?: Record<string, string>;
 }) {
   return (
-    <div className="flex min-h-screen lg:min-h-144 max-h-screen py-4 max-w-6xl bg-black mx-auto">
+    <div className="flex min-h-dynamic max-h-screen py-4 max-w-6xl bg-black mx-auto">
       <div className="flex flex-col px-4 ">
         <header
           className={cn(
