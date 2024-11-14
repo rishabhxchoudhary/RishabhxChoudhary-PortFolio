@@ -24,7 +24,7 @@ const Home = () => {
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 1 }}
       >
-        <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-text-light mb-3 sm:mb-4 text-center">
+        <h1 className="text-4xl mt-10 sm:text-5xl md:text-6xl font-extrabold text-text-light mb-3 sm:mb-4 text-center">
           Rishabh Kumar Choudhary
         </h1>
         <p className="text-xl sm:text-2xl md:text-3xl text-text-dark mb-6 sm:mb-8 text-center">
