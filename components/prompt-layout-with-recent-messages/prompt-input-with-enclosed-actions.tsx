@@ -14,7 +14,7 @@ export default function Component(
   const [prompt, setPrompt] = React.useState<string>("");
 
   return (
-    <form className="flex w-full items-start gap-2">
+    <form className="flex items-start gap-2">
       <PromptInput
         {...props}
         classNames={{

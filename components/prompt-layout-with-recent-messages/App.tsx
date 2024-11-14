@@ -41,7 +41,7 @@ const messages = [
 
 export default function Component() {
   return (
-    <div id="ask" className="h-full w-full max-w-full">
+    <div id="ask" className="h-full max-w-6xl">
       <SidebarContainer
         classNames={{
           header: "min-h-[40px] h-[40px] py-[12px] justify-center overflow-hidden",
@@ -51,7 +51,7 @@ export default function Component() {
             <DropdownTrigger>
               <Button
                 disableAnimation
-                className="w-full min-w-[120px] items-center text-default-400 data-[hover=true]:bg-[unset]"
+                className="items-center text-default-400 data-[hover=true]:bg-[unset]"
                 endContent={
                   <Icon
                     className="text-default-400"
@@ -103,7 +103,7 @@ export default function Component() {
           </Dropdown>
         }
       >
-        <div className="relative flex h-full flex-col px-6">
+        <div className=" flex h-full flex-col px-6">
           <div className="flex h-full flex-col items-center justify-center gap-10">
             <div className="flex rounded-full bg-foreground"> 
             </div>
@@ -122,11 +122,11 @@ export default function Component() {
               ))}
             </div>
           </div>
-          <div className="mt-auto flex max-w-full flex-col gap-2">
+          <div className="mt-auto flex max- flex-col gap-2">
             <PromptInputWithEnclosedActions
               classNames={{
                 button:
-                  "bg-default-foreground opacity-100 w-[30px] h-[30px] !min-w-[30px] self-center",
+                  "bg-default-foreground opacity-100 w-[30px] h-[30px] self-center",
                 buttonIcon: "text-background",
                 input: "placeholder:text-default-500",
               }}
