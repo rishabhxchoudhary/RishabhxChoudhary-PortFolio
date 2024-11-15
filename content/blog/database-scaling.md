@@ -15,7 +15,7 @@ about: "Learn essential strategies for scaling your web application's database t
 - Scaling databases can be done in two main ways: **Vertical Scaling** and **Horizontal Scaling**. The approach you choose depends on the specific database technology you're using and the requirements of your application.
 
 
-<img src="/images/db_scaling/db_scaling.png">
+![Description of image](/images/db_scaling/db_scaling.png)
 <br>
 
 ___

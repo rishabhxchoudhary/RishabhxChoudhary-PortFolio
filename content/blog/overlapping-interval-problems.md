@@ -27,7 +27,7 @@ Sample Input :
 $arrival = [900, 940, 950, 1100, 1500, 1800]$ <br>
 $departure = [910, 1200, 1120, 1130, 1900, 2000]$
 
-<img src="/images/interval_problems/D1.png">
+![Description of image](/images/interval_problems/D1.png)
 
 From this digram it is clear that we want to find the maximum number of intervals overlapping at a time. That is our answer.
 

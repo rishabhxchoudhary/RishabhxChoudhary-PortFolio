@@ -17,8 +17,7 @@ about: "Discover the power of the Sparse Table, a highly efficient data structur
 
 - Let's try to construct a Sparse Table for the following Binary Tree.
 
-<img style="width: 500px;" src="/images/sparse_table_and_lca/bin_tree.png"/>
-
+![Description of image](/images/sparse_table_and_lca/bin_tree.png)
 
 *We can see that*
 - Node 1 is root hence it has no parent. Let default parent be 0.
@@ -31,7 +30,7 @@ about: "Discover the power of the Sparse Table, a highly efficient data structur
 
 - Hence the Sparce Table for this Binary Tree will look like : 
  
-<img style="width: 500px;" src="/images/sparse_table_and_lca/sparse_table.png"/>
+![Description of image](/images/sparse_table_and_lca/sparse_table.png)
 
 ## Coding Sparse Table
 
@@ -63,6 +62,8 @@ class Sparse_Table:
                     dfs1(child, curr)
         dfs1(1, 0)
 ```
+
+___
 
 ## Common Applications of Sparce Table
 
@@ -100,9 +101,13 @@ class RMQ:
             return self.lookup[R - (1 << j) + 1][j]
 ```
 
+___
+
+
 - **Range Sum Query (RSQ)**: Sparse tables can also be used to solve the RSQ problem, which involves finding the sum of elements in a given range of an array. They can answer queries for range sums in O(1) time after O(n log n) preprocessing.
 
 - **Lowest Common Ancestor (LCA)**: Sparse tables can be applied to efficiently find the lowest common ancestor of two nodes in a tree. By precomputing information about the tree, sparse tables can answer LCA queries in O(1) time after O(n log n) preprocessing.
+
 ```Python:
 class LCA:
     def __init__(self, graph: dict):
@@ -128,6 +133,9 @@ class LCA:
     def dist(self, u: int, v: int):
         return self.table.depth[u] + self.table.depth[v] - 2*self.table.depth[self.getLCA(u, v)]
 ```
+
+___
+
 
 - **Range Mode Query**: Sparse tables can be extended to find the mode (most frequent element) in a given range of an array efficiently. By storing additional information during preprocessing, sparse tables can answer mode queries in O(1) time after O(n log n) preprocessing.
 
@@ -159,6 +167,7 @@ class Range_GCD_Query:
         j = int(math.log2(R - L + 1))
         return math.gcd(self.lookup[L][j], self.lookup[R - (1 << j) + 1][j])
 ```
+___ 
 
 - **Range Kth Smallest/Largest Query**: Sparse tables can be employed to find the Kth smallest or largest element in a given range of an array. By storing additional information during preprocessing, sparse tables can answer Kth smallest/largest queries in O(1) time after O(n log n) preprocessing.
 
