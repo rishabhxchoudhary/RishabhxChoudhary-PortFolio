@@ -4,7 +4,7 @@ import Link from "next/link";
 const Header = () => {
   return (
     <header className="bg-background-dark shadow-md">
-      <nav className="container mx-auto flex justify-between items-center py-4">
+      <nav className="container mx-auto flex justify-between items-center py-4 px-6 lg:px-8">
         <Link
           href="/blog"
           className="text-2xl font-bold text-text-light flex items-center"
@@ -14,7 +14,7 @@ const Header = () => {
 
         <div className="flex items-center">
           <Link href="/">
-            <button type="submit" className="ml-2 px-2 py-1 bg-accent text-white rounded">
+            <button type="button" className="ml-4 px-4 py-2 bg-accent text-white rounded hover:bg-accent-dark transition duration-150">
               Home
             </button>
           </Link>

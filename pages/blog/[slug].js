@@ -89,7 +89,7 @@ const Post = ({ postData }) => {
       <article className="mx-auto max-w-3xl blog">
         <h1 className="text-text-light text-4xl font-bold my-4">{postData.title}</h1>
         <p className="text-text-dark text-sm mb-4">
-          {format(new Date(postData.date), 'MMMM dd, yyyy')}
+          Written on {format(new Date(postData.date), 'MMMM dd, yyyy')}
         </p>
         {postData.coverImage && (
           <div className="relative w-full h-96 mb-6">
