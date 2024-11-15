@@ -7,8 +7,9 @@ const ProfileImage = () => {
         src="/profile.jpg"
         alt="Rishabh Kumar Choudhary"
         className="rounded-full object-cover shadow-3xl"
-        layout="fill"
         priority
+        width={70}
+        height={70}
       />
     </div>
   );

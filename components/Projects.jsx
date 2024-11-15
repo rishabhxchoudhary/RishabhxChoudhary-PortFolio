@@ -100,9 +100,10 @@ const Projects = () => {
                   <Image
                     src={project.image}
                     alt={project.title}
-                    layout="fill"
-                    objectFit="cover"
+                    style={{ objectFit: 'cover' }}
                     className="rounded-md"
+                    width={500}
+                    height={600}
                   />
                 </div>
               )}
