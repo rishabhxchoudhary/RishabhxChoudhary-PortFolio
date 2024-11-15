@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
-import { FaBars, FaTimes, FaMoon, FaSun } from 'react-icons/fa';
+import { FaBars, FaTimes, FaMoon, FaSun, FaBlog } from 'react-icons/fa';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const Navbar = () => {
@@ -61,12 +61,14 @@ const Navbar = () => {
         </ul>
 
         <div className="flex items-center space-x-4">
-          <button
-            className="text-text-light focus:outline-none focus:ring-2 focus:ring-accent rounded"
-            aria-label="Toggle Dark Mode"
-          >
-            {darkMode ? <FaSun size={20} /> : <FaMoon size={20} />}
-          </button>
+          <Link href="/blog">
+            <button
+              className="text-text-light flex gap-2 focus:outline-none focus:ring-2 focus:ring-accent rounded"
+              aria-label="Toggle Dark Mode">
+              <FaBlog size={20} /> Blog
+            </button>
+          </Link>
+
           <button onClick={() => setIsOpen(!isOpen)} className="md:hidden text-text-light focus:outline-none focus:ring-2 focus:ring-accent rounded" aria-label="Toggle Menu">
             {isOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
           </button>

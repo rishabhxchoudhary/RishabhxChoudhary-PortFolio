@@ -18,7 +18,6 @@ export default function Home() {
         <title>Rishabh Kumar Choudhary | Portfolio</title>
         <meta name="description" content="Portfolio of Rishabh Kumar Choudhary - Software Developer & IoT Specialist" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        {/* Add more SEO tags as needed */}
       </Head>
       <Navbar />
       <main>
