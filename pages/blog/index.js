@@ -271,13 +271,14 @@ const Blog = ({ allPosts }) => {
                     <DropdownMenu
                       aria-label="Add Tag Dropdown"
                       onAction={(key) => handleTagAdd(key)}
+                      disabledKeys={["no_more"]}
                     >
                       {availableTags.length > 0 ? (
                         availableTags.map((tag) => (
                           <DropdownItem key={tag}>{tag}</DropdownItem>
                         ))
                       ) : (
-                        <DropdownItem disabled>No more tags</DropdownItem>
+                        <DropdownItem key={"no_more"} disabled>No more tags</DropdownItem>
                       )}
                     </DropdownMenu>
                   </Dropdown>
@@ -387,13 +388,14 @@ const Blog = ({ allPosts }) => {
               <DropdownMenu
                 aria-label="Add Tag Dropdown"
                 onAction={(key) => handleTagAdd(key)}
+                disabledKeys={["no_more"]}
               >
                 {availableTags.length > 0 ? (
                   availableTags.map((tag) => (
                     <DropdownItem key={tag}>{tag}</DropdownItem>
                   ))
                 ) : (
-                  <DropdownItem disabled>No more tags</DropdownItem>
+                  <DropdownItem key={"no_more"} disabled>No more tags</DropdownItem>
                 )}
               </DropdownMenu>
             </Dropdown>
