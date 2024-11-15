@@ -1,25 +1,15 @@
 // components/Header.js
-import Link from 'next/link';
-import { Button } from '@nextui-org/react';
+import Link from "next/link";
 
 const Header = () => (
   <header className="bg-background-dark shadow-md">
     <nav className="container mx-auto flex justify-between items-center py-4">
-      <Link href="/" className="text-text text-lg font-bold">
-        My Blog
+      <Link
+        href="/blog"
+        className="text-2xl font-bold text-text-light flex items-center"
+      >
+        Rishabh&apos;s Blog
       </Link>
-      <div className="flex space-x-4">
-        <Link href="/" passHref>
-          <Button auto flat color="primary">
-            Home
-          </Button>
-        </Link>
-        <Link href="/blog" passHref>
-          <Button auto flat color="secondary">
-            Blog
-          </Button>
-        </Link>
-      </div>
     </nav>
   </header>
 );
