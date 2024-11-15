@@ -50,7 +50,7 @@ const Home = () => {
             <span className="inline">LinkedIn</span>
           </a>
           <a
-            href="https://www.youtube.com/channel/yourchannel" // Replace with your YouTube channel URL
+            href="https://www.youtube.com/@rishabhxchoudhary" // Replace with your YouTube channel URL
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center justify-center space-x-2 bg-red-600  text-background px-4 py-2 rounded-full shadow-lg hover:bg-[#FF0000] transition"
