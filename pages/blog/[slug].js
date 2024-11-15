@@ -79,12 +79,23 @@ const Post = ({ postData }) => {
       <Head>
         <title>{postData.title}</title>
         <meta name="description" content={postData.excerpt} />
-        {/* Open Graph Tags for better sharing */}
+
+        {/* Essential Meta Tags */}
         <meta property="og:title" content={postData.title} />
         <meta property="og:description" content={postData.excerpt} />
         <meta property="og:image" content={postData.coverImage} />
         <meta property="og:url" content={currentUrl} />
+        <meta property="og:type" content="article" />
+
+        {/* Twitter Card Tags */}
         <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={postData.title} />
+        <meta name="twitter:description" content={postData.excerpt} />
+        <meta name="twitter:image" content={postData.coverImage} />
+
+        {/* Additional Meta Tags */}
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta charSet="utf-8" />
       </Head>
       <article className="mx-auto max-w-3xl blog">
         <h1 className="text-text-light text-4xl font-bold my-4">{postData.title}</h1>
@@ -106,11 +117,11 @@ const Post = ({ postData }) => {
           className="prose prose-lg prose-primary dark:prose-dark"
           dangerouslySetInnerHTML={{ __html: postData.contentHtml }}
         />
-        
+
         {/* Social Sharing Buttons */}
         <div className="text-text">Share this blog: </div>
         <SocialShare url={currentUrl} title={postData.title} />
-        
+
         {/* Back to Blog Button */}
         <div className="mt-8 flex justify-end">
           <Link href="/blog" passHref>
