@@ -28,7 +28,6 @@ const Navbar = () => {
     e.preventDefault(); // Prevent default anchor click behavior
     setIsOpen(false); // Close the mobile menu if open
     const href = e.currentTarget.getAttribute('href'); // Get the href attribute of the clicked element
-    console.log("href", href)
     const offsetTop = document.querySelector(href).offsetTop; // Calculate the top offset of the target element
 
     window.scrollTo({
