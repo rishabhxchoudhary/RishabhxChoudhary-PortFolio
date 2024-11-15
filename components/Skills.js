@@ -1,44 +1,15 @@
 import { motion } from "framer-motion";
 import { FaCode, FaDatabase, FaGlobe } from "react-icons/fa";
+// You can uncomment and use ReactTooltip if you decide to add tooltips later
 // import ReactTooltip from 'react-tooltip';
 
 const skills = {
-  Languages: [
-    { name: "Node.js", level: 90 },
-    { name: "Python", level: 95 },
-    { name: "C", level: 80 },
-    { name: "C++", level: 85 },
-    { name: "Solidity", level: 70 },
-    { name: "Rust", level: 60 },
-  ],
-  Databases: [
-    { name: "MongoDB", level: 90 },
-    { name: "Firebase", level: 85 },
-    { name: "PostgreSQL", level: 80 },
-    { name: "Redis", level: 75 },
-    { name: "MySQL", level: 70 },
-  ],
-  "Web Technologies": [
-    { name: "React.js", level: 95 },
-    { name: "Next.js", level: 90 },
-    { name: "Express", level: 85 },
-    { name: "jQuery", level: 80 },
-    { name: "Socket.IO", level: 75 },
-    { name: "GraphQL", level: 70 },
-  ],
-  "Python Frameworks": [
-    { name: "Selenium", level: 85 },
-    { name: "PyAutoGUI", level: 80 },
-    { name: "Pygame", level: 75 },
-    { name: "FastAPI", level: 70 },
-    { name: "Flask", level: 65 },
-    { name: "Django", level: 60 },
-  ],
-  "Web3 Frameworks": [
-    { name: "Hardhat", level: 80 },
-    { name: "Ethers.js", level: 75 },
-    { name: "OpenZeppelin", level: 70 },
-  ],
+  Languages: ["Node.js", "Python", "C++", "Solidity", "Rust"],
+  Databases: ["MongoDB", "Firebase", "MySQL", "Dynamo DB", "Chroma Vector Database"],
+  "Web Technologies": ["React.js", "Next.js", "Express", "jQuery", "Socket.IO", "GraphQL"],
+  "Python Frameworks": ["Selenium", "PyAutoGUI", "Pygame", "FastAPI", "Flask", "Django"],
+  "Web3 Frameworks": ["Hardhat", "Ethers.js", "OpenZeppelin"],
+  "APIs": ["Whatsapp Business API", "Telegram API", "Discord Bot API"],
 };
 
 const categoryIcons = {
@@ -51,8 +22,11 @@ const categoryIcons = {
 
 const Skills = () => {
   return (
-    <section id="skills" className="relative min-h-screen flex flex-col justify-center bg-background text-text py-20 overflow-hidden">
-      
+    <section
+      id="skills"
+      className="relative min-h-screen flex flex-col justify-center bg-background text-text py-20 overflow-hidden"
+    >
+      {/* Animated Background Elements */}
       <motion.div
         className="absolute inset-0 z-0 overflow-hidden"
         initial={{ opacity: 0 }}
@@ -63,8 +37,10 @@ const Skills = () => {
         <div className="absolute bottom-20 right-20 w-6 h-6 bg-primary rounded-full animate-ping"></div>
         <div className="absolute top-1/2 left-1/4 w-8 h-8 bg-secondary rounded-full opacity-50 animate-bounce"></div>
       </motion.div>
-      
-      <div className="container mx-auto px-4  max-w-6xl relative z-10">
+
+      {/* Content Container */}
+      <div className="container mx-auto px-4 max-w-6xl relative z-10">
+        {/* Section Title */}
         <motion.h2
           className="text-4xl font-semibold mb-12 text-text-light text-center"
           initial={{ opacity: 0, y: -50 }}
@@ -75,46 +51,52 @@ const Skills = () => {
           My Skills
         </motion.h2>
 
+        {/* Skills Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {Object.entries(skills).map(([category, items], index) => (
             <motion.div
               key={index}
-              className="bg-background dark:bg-gray-800 p-6 rounded-lg shadow-lg flex flex-col items-center transform transition-transform duration-300 hover:scale-105"
+              className="bg-background dark:bg-gray-800 p-6 rounded-lg shadow-lg flex flex-col items-center transition-transform duration-300 hover:scale-105"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: index * 0.2 }}
               viewport={{ once: true }}
             >
+              {/* Category Icon */}
               <div className="text-accent mb-4">
                 {categoryIcons[category] || <FaCode size={30} />}
               </div>
 
-              <h3 className="text-2xl font-medium mb-4 text-text-light text-center">{category}</h3>
+              {/* Category Title */}
+              <h3 className="text-2xl font-medium mb-4 text-text-light text-center">
+                {category}
+              </h3>
 
-              <ul className="w-full">
+              {/* Skills List */}
+              <ul className="w-full space-y-2">
                 {items.map((skill, idx) => (
                   <li
                     key={idx}
-                    className="mb-4"
-                    data-tip={`Proficiency: ${skill.level}%`}
-                    data-for={`skill-${index}-${idx}`}
+                    className="flex items-center justify-center px-2 py-1 rounded hover:bg-gray-700 transition-colors duration-200"
+                    // Uncomment the following lines if you decide to add tooltips
+                    // data-tip={`Learn more about ${skill}`}
+                    // data-for={`skill-${index}-${idx}`}
                   >
-                    <div className="flex justify-between mb-1">
-                      <span className="text-text-light">{skill.name}</span>
-                      <span className="text-text-dark">{skill.level}%</span>
-                    </div>
-                    <div className="w-full bg-gray-700 rounded-full h-2.5">
-                      <motion.div
-                        className="bg-accent h-2.5 rounded-full"
-                        initial={{ width: 0 }}
-                        whileInView={{ width: `${skill.level}%` }}
-                        transition={{ duration: 1 }}
-                      />
-                    </div>
-                    {/* <ReactTooltip id={`skill-${index}-${idx}`} place="top" effect="solid" /> */}
+                    <span className="text-text-light">{skill}</span>
                   </li>
                 ))}
               </ul>
+
+              {/* Uncomment if using ReactTooltip
+              {items.map((skill, idx) => (
+                <ReactTooltip
+                  key={`tooltip-${index}-${idx}`}
+                  id={`skill-${index}-${idx}`}
+                  place="top"
+                  effect="solid"
+                />
+              ))}
+              */}
             </motion.div>
           ))}
         </div>

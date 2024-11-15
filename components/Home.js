@@ -1,6 +1,6 @@
 // components/Home.jsx
 import { motion } from "framer-motion";
-import { FaLinkedin, FaGithub, FaEnvelope, FaDownload } from "react-icons/fa";
+import { FaLinkedin, FaGithub, FaEnvelope, FaDownload, FaYoutube } from "react-icons/fa";
 import useScrollPosition from '../hooks/useScrollPosition';
 
 const Home = () => {
@@ -30,7 +30,7 @@ const Home = () => {
         <p className="text-xl sm:text-2xl md:text-3xl text-text-dark mb-6 sm:mb-8 text-center">
           Software Developer &amp; IoT Specialist
         </p>
-        
+
         {/* Social & Contact Buttons */}
         <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-6 mb-6 sm:mb-8">
           <a
@@ -50,6 +50,15 @@ const Home = () => {
             <span className="inline">LinkedIn</span>
           </a>
           <a
+            href="https://www.youtube.com/channel/yourchannel" // Replace with your YouTube channel URL
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center justify-center space-x-2 bg-red-600  text-background px-4 py-2 rounded-full shadow-lg hover:bg-[#FF0000] transition"
+          >
+            <FaYoutube size={20} />
+            <span className="inline">YouTube</span>
+          </a>
+          <a
             href="https://github.com/rishabhxchoudhary"
             target="_blank"
             rel="noopener noreferrer"
@@ -67,7 +76,7 @@ const Home = () => {
             <span className="inline">Download Resume</span>
           </a>
         </div>
-        
+
         {/* Description */}
         <motion.p
           className="text-base sm:text-lg md:text-xl max-w-md sm:max-w-2xl text-center text-text-dark mb-6 sm:mb-8 px-2"
@@ -77,7 +86,7 @@ const Home = () => {
         >
           Passionate about developing innovative IoT solutions and automating workflows to enhance productivity.
         </motion.p>
-        
+
         {/* Call to Action Button */}
         <motion.button
           className="mt-4 px-5 sm:px-6 py-2 sm:py-3 bg-accent text-background rounded-full shadow-lg hover:bg-accent-light transition text-sm sm:text-base"

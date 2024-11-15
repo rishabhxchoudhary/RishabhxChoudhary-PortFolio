@@ -1,7 +1,7 @@
 // components/Contact.jsx
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { FaLinkedin, FaGithub, FaCode, FaEnvelope, FaYoutube } from 'react-icons/fa';
+// import { FaLinkedin, FaGithub, FaCode, FaEnvelope, FaYoutube } from 'react-icons/fa';
 import axios from 'axios';
 
 import { useForm } from 'react-hook-form';
@@ -25,7 +25,7 @@ const Contact = () => {
 
   return (
     <section id="contact" className="py-20 dark:bg-background bg-gray-800 text-text">
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-4 mb-20">
         <motion.h2
           className="text-4xl font-semibold mb-12 text-text-light text-center"
           initial={{ opacity: 0, y: -50 }}
@@ -139,7 +139,7 @@ const Contact = () => {
           )}
         </div>
 
-        <div className="mt-16">
+        {/* <div className="mt-16">
           <motion.h3
             className="text-2xl font-bold mb-6 text-text-light text-center flex items-center justify-center space-x-2"
             initial={{ opacity: 0, y: -20 }}
@@ -203,7 +203,7 @@ const Contact = () => {
               <FaYoutube />
             </a>
           </motion.div>
-        </div>
+        </div> */}
       </div>
     </section>
   );
