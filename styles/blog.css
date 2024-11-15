@@ -1,5 +1,5 @@
 /* Headings */
-h1 {
+.blog h1 {
     color: #F3F4F6; /* text.light */
     font-family: 'Inter', sans-serif;
     font-size: 2.25rem; /* Equivalent to text-4xl in Tailwind */
@@ -7,7 +7,7 @@ h1 {
     margin-bottom: 1rem;
   }
   
-  h2 {
+  .blog   h2 {
     color: #F3F4F6; /* text.light */
     font-family: 'Inter', sans-serif;
     font-size: 1.875rem; /* Equivalent to text-3xl */
@@ -15,7 +15,7 @@ h1 {
     margin-bottom: 0.75rem;
   }
   
-  h3 {
+  .blog h3 {
     color: #F3F4F6; /* text.light */
     font-family: 'Inter', sans-serif;
     font-size: 1.5rem; /* text-2xl */
@@ -23,7 +23,7 @@ h1 {
     margin-bottom: 0.5rem;
   }
   
-  h4, h5, h6 {
+  .blog h4, h5, h6 {
     color: #F3F4F6; /* text.light */
     font-family: 'Inter', sans-serif;
     font-weight: 600;
@@ -31,7 +31,7 @@ h1 {
   }
   
   /* Paragraphs */
-  p {
+  .blog p {
     color: #D1D5DB; /* text.DEFAULT */
     font-size: 1rem; /* text-base */
     line-height: 1.6;
@@ -51,7 +51,7 @@ h1 {
   }
   
   /* Blockquotes */
-  blockquote {
+  .blog blockquote {
     border-left: 4px solid #A78BFA; /* secondary.light */
     background-color: #1F2937; /* background.dark */
     color: #9CA3AF; /* text.dark */
@@ -61,21 +61,12 @@ h1 {
   }
   
   /* Code Blocks */
-  pre {
+  .blog pre {
     background-color: #1F2937; /* background.dark */
     color: #D1D5DB; /* text.DEFAULT */
     padding: 1rem;
     border-radius: 0.5rem;
     overflow-x: auto;
-    font-family: 'Fira Code', monospace;
-    font-size: 0.875rem; /* text-sm */
-  }
-  
-  code {
-    background-color: #1F2937; /* background.dark */
-    color: #3B82F6; /* primary.light */
-    padding: 0.2rem 0.4rem;
-    border-radius: 0.25rem;
     font-family: 'Fira Code', monospace;
     font-size: 0.875rem; /* text-sm */
   }
@@ -91,71 +82,71 @@ h1 {
 }
   
   /* Images */
-  img {
+  .blog img {
     border-radius: 0.5rem;
     max-width: 100%;
     height: auto;
   }
   
   /* Tables */
-  table {
+  .blog table {
     width: 100%;
     border-collapse: collapse;
     margin-bottom: 1rem;
   }
   
-  th, td {
+  .blog th, td {
     padding: 0.75rem;
     text-align: left;
     border-bottom: 1px solid #374151; /* Tailwind's gray-700 */
   }
   
-  th {
+  .blog th {
     background-color: #1F2937; /* background.dark */
     color: #F3F4F6; /* text.light */
   }
   
-  td {
+  .blog td {
     color: #D1D5DB; /* text.DEFAULT */
   }
   
   /* Horizontal Rule */
-  hr {
+  .blog hr {
     border: none;
     border-top: 1px solid #374151; /* Tailwind's gray-700 */
     margin: 2rem 0;
   }
   
   /* Tables */
-  table {
+  .blog table {
     border: 1px solid #374151; /* Tailwind's gray-700 */
   }
   
-  thead {
+  .blog thead {
     background-color: #1F2937; /* background.dark */
   }
   
-  tbody tr:nth-child(even) {
+  .blog tbody tr:nth-child(even) {
     background-color: #1F2937; /* background.dark */
   }
   
-  tbody tr:hover {
+  .blog tbody tr:hover {
     background-color: #374151; /* Tailwind's gray-700 */
   }
   
   /* Additional Elements */
   
   /* Strong and Emphasis */
-  strong {
+  .blog strong {
     color: #3B82F6; /* primary.light */
   }
   
-  em {
+  .blog em {
     color: #A78BFA; /* secondary.light */
     font-style: italic;
   }
   
   /* Links with Icons or Images */
-  a img {
+  .blog a img {
     border: none;
   }

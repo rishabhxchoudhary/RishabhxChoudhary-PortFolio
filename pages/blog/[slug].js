@@ -1,22 +1,24 @@
 // pages/blog/[slug].js
+import React, { useEffect } from "react"; // Ensure React is imported
 import Link from 'next/link';
 import Layout from '../../components/blog/Layout';
 import { getAllPostSlugs, getPostData } from '../../lib/posts';
 import Head from 'next/head';
 import { Button } from '@nextui-org/react';
 import Image from 'next/image';
-import { useEffect } from 'react';
 import { format } from 'date-fns';
 import hljs from 'highlight.js';
-import 'highlight.js/styles/github-dark.css'; 
+import 'highlight.js/styles/github-dark.css';
+import SocialShare from '../../components/blog/SocialShare'; // Import SocialShare component
 
 const Post = ({ postData }) => {
   useEffect(() => {
+    // Highlight.js for code blocks
     document.querySelectorAll('pre code').forEach((block) => {
       hljs.highlightBlock(block);
     });
 
-    // Your existing code block copy functionality
+    // Code block copy functionality
     const codeBlocks = document.querySelectorAll('pre > code');
     codeBlocks.forEach((codeBlock) => {
       if (codeBlock.parentElement.querySelector('.copy-button')) return;
@@ -24,7 +26,7 @@ const Post = ({ postData }) => {
       const copyButton = document.createElement('button');
       copyButton.innerText = 'Copy';
       copyButton.className =
-        'absolute top-2 right-2 bg-background-dark text-text-default px-2 py-1 rounded text-sm hover:bg-background-dark';
+        'absolute top-2 right-2 bg-background-dark text-text-default px-2 py-1 rounded text-sm hover:bg-primary-light';
 
       codeBlock.parentElement.style.position = 'relative';
 
@@ -69,28 +71,46 @@ const Post = ({ postData }) => {
     };
   }, []);
 
+  // Get the current page URL for sharing
+  const currentUrl = typeof window !== 'undefined' ? window.location.href : '';
+
   return (
     <Layout>
       <Head>
         <title>{postData.title}</title>
         <meta name="description" content={postData.excerpt} />
+        {/* Open Graph Tags for better sharing */}
+        <meta property="og:title" content={postData.title} />
+        <meta property="og:description" content={postData.excerpt} />
+        <meta property="og:image" content={postData.coverImage} />
+        <meta property="og:url" content={currentUrl} />
+        <meta name="twitter:card" content="summary_large_image" />
       </Head>
       <article className="mx-auto max-w-3xl blog">
-        <h1 className="text-text-light">{postData.title}</h1>
-        <p className="text-text-dark text-sm">{format(new Date(postData.date), 'MM/dd/yyyy')}</p>
+        <h1 className="text-text-light text-4xl font-bold my-4">{postData.title}</h1>
+        <p className="text-text-dark text-sm mb-4">
+          {format(new Date(postData.date), 'MMMM dd, yyyy')}
+        </p>
         {postData.coverImage && (
-          <Image
-            src={postData.coverImage}
-            alt={postData.title}
-            width={800}
-            height={400}
-            className="rounded-md my-4"
-          />
+          <div className="relative w-full h-96 mb-6">
+            <Image
+              src={postData.coverImage}
+              alt={postData.title}
+              layout="fill"
+              objectFit="cover"
+              className="rounded-md"
+            />
+          </div>
         )}
         <div
-          className="prose prose-lg prose-primary"
+          className="prose prose-lg prose-primary dark:prose-dark"
           dangerouslySetInnerHTML={{ __html: postData.contentHtml }}
         />
+        
+        {/* Social Sharing Buttons */}
+        <SocialShare url={currentUrl} title={postData.title} />
+        
+        {/* Back to Blog Button */}
         <div className="mt-8 flex justify-end">
           <Link href="/blog" passHref>
             <Button auto flat color="secondary">
@@ -99,7 +119,6 @@ const Post = ({ postData }) => {
           </Link>
         </div>
       </article>
-      
     </Layout>
   );
 };
