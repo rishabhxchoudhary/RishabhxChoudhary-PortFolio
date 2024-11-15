@@ -47,7 +47,7 @@ const Post = ({ postData }) => {
         <title>{postData.title}</title>
         <meta name="description" content={postData.excerpt} />
       </Head>
-      <article className="mx-auto max-w-3xl">
+      <article className="mx-auto max-w-3xl blog">
         <h1 className="text-text-light">{postData.title}</h1>
         <p className="text-text-dark text-sm">{format(new Date(postData.date), 'MM/dd/yyyy')}</p>
         {postData.coverImage && (
@@ -71,6 +71,7 @@ const Post = ({ postData }) => {
           </Link>
         </div>
       </article>
+      
     </Layout>
   );
 };
