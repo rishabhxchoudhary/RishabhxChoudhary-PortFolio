@@ -87,7 +87,7 @@ const Navbar = () => {
             {['#about', '#experience', '#projects', '#skills', '#achievements','#ask','#contact'].map((section) => (
               <li key={section}>
                 <a href={section} className="block text-text-light hover:text-accent transition-colors" onClick={handleLinkClick}>
-                  {section.substring(1)}
+                {capitalizeFirstLetter(section.substring(1))}
                 </a>
               </li>
             ))}

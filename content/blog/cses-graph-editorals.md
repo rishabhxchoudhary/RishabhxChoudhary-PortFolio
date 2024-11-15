@@ -2553,6 +2553,7 @@ signed main()
 
 ```
 
+___
 
 ## Knight's Tour
 
@@ -2857,13 +2858,192 @@ Solution:
 - This is problem of Maximum Matchings and can be solved using max flow.
 - Read more here: https://usaco.guide/CPH.pdf#page=197
 
-```
-
+```c++
+#include <bits/stdc++.h>
+using namespace std;
+ 
+#define int long long int
+#define double long double
+#define endl '\n'
+ 
+const int MOD = 1000000007;
+ 
+struct Edge {
+    int v, rev; // 'v' is the destination node, 'rev' is the index of reverse edge in the adjacency list
+    int capacity; // edge capacity
+    Edge(int v, int capacity, int rev) : v(v), capacity(capacity), rev(rev) {}
+};
+ 
+void addEdge(vector<vector<Edge>>& graph, int u, int v, int capacity) {
+    graph[u].emplace_back(v, capacity, graph[v].size()); // forward edge
+    graph[v].emplace_back(u, 0, graph[u].size() - 1); // reverse edge
+}
+ 
+bool bfs(vector<vector<Edge>>& graph, vector<int>& level, int source, int sink) {
+    int n = graph.size();
+    level.assign(n, -1);
+    level[source] = 0;
+    queue<int> q;
+    q.push(source);
+    while (!q.empty()) {
+        int u = q.front();
+        q.pop();
+        for (Edge& e : graph[u]) {
+            if (level[e.v] < 0 && e.capacity > 0) {
+                level[e.v] = level[u] + 1;
+                q.push(e.v);
+            }
+        }
+    }
+    return level[sink] >= 0;
+}
+ 
+int dfs(vector<vector<Edge>>& graph, vector<int>& level, vector<int>& iter, int u, int t, int min_capacity = 1000000000) {
+    if (u == t) return min_capacity;
+    for (int& i = iter[u]; i < graph[u].size(); i++) {
+        Edge& e = graph[u][i];
+        if (e.capacity > 0 && level[e.v] == level[u] + 1) {
+            int flow = dfs(graph, level, iter, e.v, t, min(min_capacity, e.capacity));
+            if (flow > 0) {
+                e.capacity -= flow;
+                graph[e.v][e.rev].capacity += flow;
+                return flow;
+            }
+        }
+    }
+    return 0;
+}
+ 
+int maxFlow(vector<vector<Edge>>& graph, int source, int sink) {
+    int max_flow = 0;
+    int n = graph.size();
+    vector<int> level(n), iter(n);
+    while (bfs(graph, level, source, sink)) {
+        fill(iter.begin(), iter.end(), 0);
+        int flow;
+        while ((flow = dfs(graph, level, iter, source, sink)) > 0) {
+            max_flow += flow;
+        }
+    }
+    return max_flow;
+}
+ 
+signed main()
+{
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+    cout.tie(0);
+ 
+    int n,m,k;
+    cin>>n>>m>>k;
+    vector<vector<Edge>> graph(2 * n + 2);
+ 
+    for (int i = 1; i <= n; i++) {
+        addEdge(graph,0,i,1);
+        addEdge(graph,i+n,2*n+1,1);
+    }
+    for (int i = 0; i < k; i++) {
+        int a,b;
+        cin>>a>>b;
+        addEdge(graph,a,b+n,1);
+    } 
+    cout<<maxFlow(graph,0,2*n+1)<<endl;
+ 
+    // Print the matched pairs.
+    for (int i = 1; i <= n; i++) {
+        for (const Edge& e : graph[i]) {
+            if (e.v != 0 && e.capacity == 0) {
+                int partner = e.v - n;
+                cout << i << " " << partner << endl;
+                break; // Only one matched partner per node 'i'.
+            }
+        }
+    }
+ 
+    return 0;
+}
 ```
 
 <br>
 
 ___
+
+# Distinct Routes
+
+Link: https://cses.fi/problemset/task/1711
+
+A game consists of n rooms and m teleporters. At the beginning of each day, you start in room 1 and you have to reach room n.
+You can use each teleporter at most once during the game. How many days can you play if you choose your routes optimally?
+
+```
+#include<bits/stdc++.h>
+using namespace std;
+ 
+typedef tuple<int,int,int,int> T;
+typedef vector<T> VT;
+const int mxN = 502;
+ 
+using ll = long long;
+VT adj[mxN];
+ll vis[mxN];
+ll n;
+ll dfs(ll s, ll f){
+    if (s==n) return f;
+    vis[s] = 1;
+    for (auto &[i,w,j,m]: adj[s]){
+        if (w>0 && !vis[i]){
+            ll b = dfs(i,1);
+            if (b>0){
+                w-=b;
+                get<1>(adj[i][j])+=b;
+                return b;
+            }
+        }
+    }
+    return 0;
+}
+void solve(ll _n, ll m){
+    n = _n;
+    while(m--){
+        ll x,y; cin >> x >> y;
+        ll j1 = adj[y].size();
+        ll j2 = adj[x].size();
+        adj[x].push_back({y,1,j1,m+1});
+        adj[y].push_back({x,0,j2,-m-1});
+    }
+    ll ans=0;
+    while(1){
+        memset(vis,0,sizeof vis);
+        ll f = dfs(1,1);
+        ans += f;
+        if (!f) break;
+    }
+    cout << ans << "\n";
+    bool vis[1005]={0};
+    for(ll i = 0; i < ans; i++){
+        vector<int> v={1};
+        ll x = 1;
+        while(x!=n){
+            for (auto [i,w,j,m]: adj[x]){
+                if (w==0 && m>0 && !vis[m]){
+                    v.push_back(i); x = i; vis[m]=1;
+                    break;
+                }
+            }
+        }
+        cout << v.size() << '\n';
+        for (auto i: v) cout << i << ' ';
+        cout << '\n';
+    }
+}
+signed main(){
+    ios_base::sync_with_stdio(false);cin.tie(0);cout.tie(0);
+    ll m;
+    cin >> n >> m;
+    solve(n, m);
+}
+
+```
 
 
 <footer>
