@@ -3,7 +3,7 @@ import Layout from '../../components/blog/Layout';
 import PostCard from '../../components/blog/PostCard';
 import { getSortedPostsData } from '../../lib/posts';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Chip,
   Dropdown,
@@ -11,13 +11,18 @@ import {
   DropdownMenu,
   DropdownTrigger,
   DropdownItem,
+  Input,
 } from '@nextui-org/react';
+import { ChevronDownIcon, FunnelIcon, XIcon } from '@radix-ui/react-icons';
+import { Transition } from '@headlessui/react';
 
 const Blog = ({ allPosts }) => {
   const router = useRouter();
   const { search, category, tags, sort } = router.query;
 
   const [filteredPosts, setFilteredPosts] = useState(allPosts);
+  const [searchTerm, setSearchTerm] = useState(search || '');
+  const [isFilterOpen, setIsFilterOpen] = useState(false); // State to toggle sidebar
 
   // Extract unique categories and tags
   const categories = [...new Set(allPosts.map((post) => post.category))];
@@ -27,8 +32,8 @@ const Blog = ({ allPosts }) => {
     let filtered = allPosts;
 
     // Search Filter
-    if (search) {
-      const searchQuery = search.toLowerCase();
+    if (searchTerm) {
+      const searchQuery = searchTerm.toLowerCase();
       filtered = filtered.filter(
         (post) =>
           post.title.toLowerCase().includes(searchQuery) ||
@@ -65,7 +70,7 @@ const Blog = ({ allPosts }) => {
     }
 
     setFilteredPosts(filtered);
-  }, [search, category, tags, sort, allPosts]);
+  }, [searchTerm, category, tags, sort, allPosts]);
 
   // Handlers for Category Selection
   const handleCategorySelect = (key) => {
@@ -123,52 +128,248 @@ const Blog = ({ allPosts }) => {
     (tag) => !(Array.isArray(tags) ? tags.includes(tag) : tags === tag)
   );
 
+  // Handle Search Submission
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    router.push({
+      pathname: '/blog',
+      query: {
+        ...router.query,
+        search: searchTerm || undefined,
+      },
+    });
+  };
+
   return (
     <Layout>
-      {/* Filter Controls */}
-      <div className="flex flex-col md:flex-row justify-between mb-6 space-y-4 md:space-y-0">
-        {/* Category Filter using Dropdown */}
-        <div>
-          <Dropdown>
-            <DropdownTrigger>
-              <Button auto flat>
-                {category || 'Select Category'}
-              </Button>
-            </DropdownTrigger>
-            <DropdownMenu
-              aria-label="Category Dropdown"
-              onAction={handleCategorySelect}
-            >
-              <DropdownItem key="all">All</DropdownItem>
-              {categories.map((cat) => (
-                <DropdownItem key={cat}>{cat}</DropdownItem>
-              ))}
-            </DropdownMenu>
-          </Dropdown>
+      <div className="flex flex-col md:flex-row">
+        {/* Toggle Filter Button for Mobile */}
+        <div className="md:hidden p-4 bg-background-dark flex justify-between items-center">
+          <h2 className="text-xl font-semibold text-text-light">Filters</h2>
+          <Button
+            auto
+            light
+            icon={<FunnelIcon />}
+            onClick={() => setIsFilterOpen(true)}
+          />
         </div>
 
-        {/* Tags Filter using Dropdown and Chips */}
-        <div className="flex flex-col">
-          {/* Display Selected Tags as Chips */}
-          <div className="flex items-center flex-wrap gap-2 mb-2">
-            {(Array.isArray(tags) ? tags : tags ? [tags] : []).map(
-              (tag, index) => (
-                <Chip
-                  key={index}
-                  onClose={() => handleTagRemove(tag)}
-                  variant="flat"
-                  color="primary"
-                >
-                  {tag}
-                </Chip>
-              )
-            )}
+        {/* Sidebar for Filters (Mobile) */}
+        <Transition show={isFilterOpen} as={React.Fragment}>
+          <div className="fixed inset-0 z-40 md:hidden">
+            <Transition.Child
+              as={React.Fragment}
+              enter="transition-opacity duration-300"
+              enterFrom="opacity-0"
+              enterTo="opacity-100"
+              leave="transition-opacity duration-300"
+              leaveFrom="opacity-100"
+              leaveTo="opacity-0"
+            >
+              <div
+                className="absolute inset-0 bg-black opacity-50"
+                onClick={() => setIsFilterOpen(false)}
+              ></div>
+            </Transition.Child>
+
+            <Transition.Child
+              as={React.Fragment}
+              enter="transition-transform duration-300"
+              enterFrom="-translate-x-full"
+              enterTo="translate-x-0"
+              leave="transition-transform duration-300"
+              leaveFrom="translate-x-0"
+              leaveTo="-translate-x-full"
+            >
+              <aside className="fixed inset-y-0 left-0 w-3/4 bg-background-dark text-text p-6 overflow-y-auto">
+                <div className="flex justify-between items-center mb-6">
+                  <h2 className="text-2xl font-semibold">Filters</h2>
+                  <Button
+                    auto
+                    light
+                    icon={<XIcon />}
+                    onClick={() => setIsFilterOpen(false)}
+                  />
+                </div>
+
+                {/* Search Bar */}
+                <form onSubmit={handleSearchSubmit} className="mb-6">
+                  <Input
+                    clearable
+                    underlined
+                    fullWidth
+                    placeholder="Search..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    aria-label="Search"
+                  />
+                </form>
+
+                {/* Category Filter */}
+                <div className="mb-6">
+                  <h3 className="text-lg font-medium mb-4">Category</h3>
+                  <Dropdown>
+                    <DropdownTrigger>
+                      <Button
+                        auto
+                        flat
+                        iconRight={<ChevronDownIcon />}
+                        className="w-full text-left"
+                      >
+                        {category || 'All Categories'}
+                      </Button>
+                    </DropdownTrigger>
+                    <DropdownMenu
+                      aria-label="Category Dropdown"
+                      onAction={handleCategorySelect}
+                    >
+                      <DropdownItem key="all">All</DropdownItem>
+                      {categories.map((cat) => (
+                        <DropdownItem key={cat}>{cat}</DropdownItem>
+                      ))}
+                    </DropdownMenu>
+                  </Dropdown>
+                </div>
+
+                {/* Tags Filter */}
+                <div className="mb-6">
+                  <h3 className="text-lg font-medium mb-4">Tags</h3>
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {(Array.isArray(tags) ? tags : tags ? [tags] : []).map(
+                      (tag, index) => (
+                        <Chip
+                          key={index}
+                          onClose={() => handleTagRemove(tag)}
+                          variant="flat"
+                          color="primary"
+                        >
+                          {tag}
+                        </Chip>
+                      )
+                    )}
+                  </div>
+                  <Dropdown>
+                    <DropdownTrigger>
+                      <Button
+                        auto
+                        flat
+                        disabled={availableTags.length === 0}
+                        className="w-full text-left"
+                      >
+                        Add Tag
+                      </Button>
+                    </DropdownTrigger>
+                    <DropdownMenu
+                      aria-label="Add Tag Dropdown"
+                      onAction={(key) => handleTagAdd(key)}
+                    >
+                      {availableTags.length > 0 ? (
+                        availableTags.map((tag) => (
+                          <DropdownItem key={tag}>{tag}</DropdownItem>
+                        ))
+                      ) : (
+                        <DropdownItem disabled>No more tags</DropdownItem>
+                      )}
+                    </DropdownMenu>
+                  </Dropdown>
+                </div>
+
+                {/* Sorting Filter */}
+                <div className="mb-6">
+                  <h3 className="text-lg font-medium mb-4">Sort By</h3>
+                  <Dropdown>
+                    <DropdownTrigger>
+                      <Button
+                        auto
+                        flat
+                        iconRight={<ChevronDownIcon />}
+                        className="w-full text-left"
+                      >
+                        {sort === 'oldest' ? 'Oldest First' : 'Newest First'}
+                      </Button>
+                    </DropdownTrigger>
+                    <DropdownMenu
+                      aria-label="Sort Dropdown"
+                      onAction={handleSortSelect}
+                    >
+                      <DropdownItem key="newest">Date (Newest First)</DropdownItem>
+                      <DropdownItem key="oldest">Date (Oldest First)</DropdownItem>
+                    </DropdownMenu>
+                  </Dropdown>
+                </div>
+              </aside>
+            </Transition.Child>
           </div>
-          {/* Dropdown to Add Tags */}
-          <div>
+        </Transition>
+
+        {/* Sidebar for Desktop */}
+        <aside className="hidden md:block md:w-1/4 p-6 bg-background-dark text-text">
+          <h2 className="text-2xl font-semibold mb-6">Filters</h2>
+
+          {/* Search Bar */}
+          <form onSubmit={handleSearchSubmit} className="mb-8">
+            <Input
+              clearable
+              underlined
+              fullWidth
+              placeholder="Search..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              aria-label="Search"
+            />
+          </form>
+
+          {/* Category Filter */}
+          <div className="mb-8">
+            <h3 className="text-lg font-medium mb-4">Category</h3>
             <Dropdown>
               <DropdownTrigger>
-                <Button auto flat>
+                <Button
+                  auto
+                  flat
+                  iconRight={<ChevronDownIcon />}
+                  className="w-full text-left"
+                >
+                  {category || 'All Categories'}
+                </Button>
+              </DropdownTrigger>
+              <DropdownMenu
+                aria-label="Category Dropdown"
+                onAction={handleCategorySelect}
+              >
+                <DropdownItem key="all">All</DropdownItem>
+                {categories.map((cat) => (
+                  <DropdownItem key={cat}>{cat}</DropdownItem>
+                ))}
+              </DropdownMenu>
+            </Dropdown>
+          </div>
+
+          {/* Tags Filter */}
+          <div className="mb-8">
+            <h3 className="text-lg font-medium mb-4">Tags</h3>
+            <div className="flex flex-wrap gap-2 mb-4">
+              {(Array.isArray(tags) ? tags : tags ? [tags] : []).map(
+                (tag, index) => (
+                  <Chip
+                    key={index}
+                    onClose={() => handleTagRemove(tag)}
+                    variant="flat"
+                    color="primary"
+                  >
+                    {tag}
+                  </Chip>
+                )
+              )}
+            </div>
+            <Dropdown>
+              <DropdownTrigger>
+                <Button
+                  auto
+                  flat
+                  disabled={availableTags.length === 0}
+                  className="w-full text-left"
+                >
                   Add Tag
                 </Button>
               </DropdownTrigger>
@@ -186,36 +387,42 @@ const Blog = ({ allPosts }) => {
               </DropdownMenu>
             </Dropdown>
           </div>
-        </div>
 
-        {/* Sorting using Dropdown */}
-        <div>
-          <Dropdown>
-            <DropdownTrigger>
-              <Button auto flat>
-                Sort: {sort === 'oldest' ? 'Oldest First' : 'Newest First'}
-              </Button>
-            </DropdownTrigger>
-            <DropdownMenu
-              aria-label="Sort Dropdown"
-              onAction={handleSortSelect}
-            >
-              <DropdownItem key="newest">Date (Newest First)</DropdownItem>
-              <DropdownItem key="oldest">Date (Oldest First)</DropdownItem>
-            </DropdownMenu>
-          </Dropdown>
-        </div>
-      </div>
+          {/* Sorting Filter */}
+          <div className="mb-8">
+            <h3 className="text-lg font-medium mb-4">Sort By</h3>
+            <Dropdown>
+              <DropdownTrigger>
+                <Button
+                  auto
+                  flat
+                  iconRight={<ChevronDownIcon />}
+                  className="w-full text-left"
+                >
+                  {sort === 'oldest' ? 'Oldest First' : 'Newest First'}
+                </Button>
+              </DropdownTrigger>
+              <DropdownMenu
+                aria-label="Sort Dropdown"
+                onAction={handleSortSelect}
+              >
+                <DropdownItem key="newest">Date (Newest First)</DropdownItem>
+                <DropdownItem key="oldest">Date (Oldest First)</DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+          </div>
+        </aside>
 
-      {/* Display Selected Tags as Chips */}
-      {/* (If you prefer to have the selected tags displayed separately, you can keep them here.
-          However, in this implementation, selected tags are already displayed above.) */}
-
-      {/* Display Filtered Posts */}
-      <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-        {filteredPosts.map((post) => (
-          <PostCard key={post.slug} post={post} />
-        ))}
+        {/* Main Content for Blog Posts */}
+        <main className="w-full md:w-3/4 p-6">
+          {filteredPosts.length > 0 ? (
+            filteredPosts.map((post) => (
+              <PostCard key={post.slug} post={post} />
+            ))
+          ) : (
+            <p className="text-center text-text-dark">No posts found.</p>
+          )}
+        </main>
       </div>
     </Layout>
   );

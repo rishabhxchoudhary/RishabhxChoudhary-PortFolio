@@ -1,14 +1,15 @@
+// components/blog/PostCard.js
 import React from "react";
 import {
   Card,
-  CardHeader,
   CardBody,
-  CardFooter,
   Button,
+  CardFooter,
   Chip
 } from "@nextui-org/react";
 import Link from "next/link";
 import Image from "next/image";
+import { ChevronRightIcon } from '@radix-ui/react-icons';
 
 const PostCard = ({ post }) => {
   const formatDate = (dateString) => {
@@ -17,28 +18,33 @@ const PostCard = ({ post }) => {
   };
 
   return (
-    <Card className="bg-background-dark text-text shadow-xl max-w-sm rounded-lg">
-      <CardHeader className="justify-between">
-        <div className="flex flex-col">
-          <h4 className="text-text-light font-semibold leading-none text-lg">
+    <Card className="bg-background-dark text-text shadow-lg w-full mb-6 rounded-lg overflow-hidden">
+      {/* Post Image */}
+      {post.coverImage && (
+        <div className="relative h-64 w-full">
+          <Image
+            src={post.coverImage}
+            alt={`Cover image for ${post.title}`}
+            layout="fill"
+            objectFit="cover"
+            className="w-full h-full object-cover"
+          />
+        </div>
+      )}
+      
+      {/* Post Content */}
+      <CardBody className="p-6">
+        <div className="mb-4">
+          <h2 className="text-2xl font-semibold text-text-light mb-2">
             {post.title}
-          </h4>
-          <p className="text-text-dark text-sm">
+          </h2>
+          <p className="text-sm text-text-dark">
             {formatDate(post.date)}
           </p>
         </div>
-      </CardHeader>
-      {post.coverImage && (
-        <Image
-          src={post.coverImage}
-          alt={post.title}
-          width={400}
-          height={200}
-          className="w-full h-auto object-cover rounded-t-lg"
-        />
-      )}
-      <CardBody>
-        <div className="mb-2 flex flex-wrap">
+        
+        {/* Categories and Tags */}
+        <div className="mb-4 flex flex-wrap gap-2">
           <Chip
             color="primary"
             bordered
@@ -57,13 +63,23 @@ const PostCard = ({ post }) => {
             </Chip>
           ))}
         </div>
-        <p className="text-text-default w-full tracking-wider leading-relaxed">
+        
+        {/* Post Description */}
+        <p className="text-text-default tracking-wide leading-relaxed">
           {post.about}
         </p>
       </CardBody>
-      <CardFooter className="flex justify-between items-center flex-wrap">
+      
+      {/* Read More Button */}
+      <CardFooter className="p-6">
         <Link href={`/blog/${post.slug}`} passHref>
-          <Button auto flat color="primary">
+          <Button
+            auto
+            flat
+            color="primary"
+            iconRight={<ChevronRightIcon />}
+            className="w-full text-center"
+          >
             Read More
           </Button>
         </Link>
