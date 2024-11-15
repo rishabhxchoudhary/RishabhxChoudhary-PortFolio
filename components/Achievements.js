@@ -56,11 +56,9 @@ const Achievements = () => {
         animate={{ opacity: 1 }}
         transition={{ duration: 1 }}
       >
-        {/* Example: Floating Dots */}
         <div className="absolute top-10 left-10 w-4 h-4 bg-accent rounded-full animate-pulse"></div>
         <div className="absolute bottom-20 right-20 w-6 h-6 bg-primary rounded-full animate-ping"></div>
-        <div className="absolute top-1/2 left-1/4 w-8 h-8 bg-secondary rounded-full opacity-50 animate-bounce"></div>
-        {/* Add more decorative elements as desired */}
+        {/* <div className="absolute top-1/2 left-1/4 w-8 h-8 bg-secondary rounded-full opacity-50 animate-bounce"></div> */}
       </motion.div>
 
       <div className="container mx-auto px-4 max-w-6xl relative z-10">
