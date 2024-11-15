@@ -1,4 +1,3 @@
-// components/PostCard.js
 import React from "react";
 import {
   Card,
@@ -12,7 +11,6 @@ import Link from "next/link";
 import Image from "next/image";
 
 const PostCard = ({ post }) => {
-  // Custom function to format date in DD-MM-YYYY format
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return `${date.getDate().toString().padStart(2, '0')}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getFullYear()}`;
@@ -29,21 +27,18 @@ const PostCard = ({ post }) => {
             {formatDate(post.date)}
           </p>
         </div>
-        {/* Optional: Add any header icons or actions here */}
       </CardHeader>
       {post.coverImage && (
-        <CardBody className="p-0">
-          <Image
-            src={post.coverImage}
-            alt={post.title}
-            width={400}
-            height={200}
-            className="w-full h-auto object-cover rounded-t-lg"
-          />
-        </CardBody>
+        <Image
+          src={post.coverImage}
+          alt={post.title}
+          width={400}
+          height={200}
+          className="w-full h-auto object-cover rounded-t-lg"
+        />
       )}
       <CardBody>
-        <div className="mb-2">
+        <div className="mb-2 flex flex-wrap">
           <Chip
             color="primary"
             bordered
@@ -62,9 +57,9 @@ const PostCard = ({ post }) => {
             </Chip>
           ))}
         </div>
-      </CardBody>
-      <CardBody>
-        <p className="text-text-default">{post.about}</p>
+        <p className="text-text-default w-full tracking-wider leading-relaxed">
+          {post.about}
+        </p>
       </CardBody>
       <CardFooter className="flex justify-between items-center flex-wrap">
         <Link href={`/blog/${post.slug}`} passHref>
