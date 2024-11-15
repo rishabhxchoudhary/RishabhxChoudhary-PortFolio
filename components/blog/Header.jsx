@@ -24,26 +24,11 @@ const Header = () => {
         </Link>
 
         <div className="flex items-center">
-          <form onSubmit={handleSearch} className="flex items-center">
-            <input
-              type="text"
-              placeholder="Search blog..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="px-2 py-1 rounded"
-            />
+          <Link href="/">
             <button type="submit" className="ml-2 px-2 py-1 bg-accent text-white rounded">
-              Search
-            </button>
-          </form>
-
-          {/* <Link href="/">
-            <button
-              className="text-text-light flex ml-2 px-2 py-1 gap-2 bg-accent focus:outline-none focus:ring-2 focus:ring-accent rounded"
-              aria-label="Home">
               Home
             </button>
-          </Link> */}
+          </Link>
         </div>
       </nav>
     </header>
