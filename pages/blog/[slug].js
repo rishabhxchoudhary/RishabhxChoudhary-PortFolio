@@ -108,6 +108,7 @@ const Post = ({ postData }) => {
         />
         
         {/* Social Sharing Buttons */}
+        <div className="text-text">Share this blog: </div>
         <SocialShare url={currentUrl} title={postData.title} />
         
         {/* Back to Blog Button */}
