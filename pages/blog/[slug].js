@@ -9,9 +9,6 @@ import { useEffect } from 'react';
 import { format } from 'date-fns';
 import hljs from 'highlight.js';
 import 'highlight.js/styles/github-dark.css'; 
-import remarkMath from 'remark-math';
-import rehypeKatex from 'rehype-katex';
-import ReactMarkdown from 'react-markdown';
 
 const Post = ({ postData }) => {
   useEffect(() => {
