@@ -29,11 +29,11 @@ const education = [
 
 const About = () => {
   return (
-    <section id="about" className="min-h-screen flex flex-col justify-center bg-background text-text py-20">
-      <div className="container mx-auto px-4 flex flex-col lg:flex-row items-center">
+    <section id="about" className="min-h-screen flex flex-col justify-center  bg-background text-text py-20">
+      <div className="container mx-auto px-4 flex flex-col justify-center lg:flex-row items-center">
         {/* Profile Image */}
         <motion.div
-          className="lg:w-1/3 flex justify-center mb-12 lg:mb-0"
+          className="lg:w-1/3 justify-center items-center mb-12 lg:mb-0"
           initial={{ opacity: 0, x: -100 }}
           whileInView={{ opacity: 1, x: 0 }}
           transition={{ duration: 1 }}
