@@ -9,6 +9,9 @@ import { useEffect } from 'react';
 import { format } from 'date-fns';
 import hljs from 'highlight.js';
 import 'highlight.js/styles/github-dark.css'; 
+import remarkMath from 'remark-math';
+import rehypeKatex from 'rehype-katex';
+import ReactMarkdown from 'react-markdown';
 
 const Post = ({ postData }) => {
   useEffect(() => {
@@ -39,6 +42,35 @@ const Post = ({ postData }) => {
       codeBlock.parentElement.appendChild(copyButton);
     });
   }, [postData.contentHtml]);
+
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.text = `
+      window.MathJax = {
+        tex: {
+          inlineMath: [['$', '$']],
+          displayMath: [['$$', '$$']],
+          processEscapes: true,
+          tags: 'ams'
+        },
+        svg: {
+          fontCache: 'global'
+        }
+      };
+    `;
+    document.head.appendChild(script);
+
+    const scriptSrc = document.createElement('script');
+    scriptSrc.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+    scriptSrc.async = true;
+    document.body.appendChild(scriptSrc);
+
+    return () => {
+      document.body.removeChild(scriptSrc);
+      document.head.removeChild(script);
+    };
+  }, []);
 
   return (
     <Layout>

@@ -1,6 +1,7 @@
 import "@/styles/globals.css";
 import "@/styles/blog.css";
 import type { AppProps } from "next/app";
+import 'katex/dist/katex.min.css';
 
 // import { Inter } from '@next/font/google';
 
