@@ -10,6 +10,14 @@ const Header = () => (
       >
         Rishabh&apos;s Blog
       </Link>
+
+      <Link href="/">
+          <button
+            className="text-text-light flex gap-2 focus:outline-none focus:ring-2 focus:ring-accent rounded"
+            aria-label="Toggle Dark Mode">
+            Home
+          </button>
+        </Link>
     </nav>
   </header>
 );

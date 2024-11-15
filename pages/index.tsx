@@ -22,7 +22,7 @@ export default function Home() {
       <Navbar />
       <main>
         <Home1 />
-        <DotsBackground numberOfDots={100} />
+        <DotsBackground numberOfDots={50} />
         <About />
         <Experience />
         <Projects />
