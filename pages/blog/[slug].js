@@ -12,7 +12,6 @@ import 'highlight.js/styles/github-dark.css';
 
 const Post = ({ postData }) => {
   useEffect(() => {
-    // Initialize highlighting
     document.querySelectorAll('pre code').forEach((block) => {
       hljs.highlightBlock(block);
     });
