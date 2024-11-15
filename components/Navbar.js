@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
-import { FaBars, FaTimes, FaMoon, FaSun, FaBlog } from 'react-icons/fa';
+import { FaBars, FaTimes, FaBlog } from 'react-icons/fa';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const Navbar = () => {
