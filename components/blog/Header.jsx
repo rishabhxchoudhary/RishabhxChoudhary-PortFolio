@@ -1,18 +1,7 @@
 // components/Header.js
 import Link from "next/link";
-import { useRouter } from 'next/router';
-import { useState } from 'react';
 
 const Header = () => {
-  const router = useRouter();
-  const [searchQuery, setSearchQuery] = useState('');
-
-  const handleSearch = (e) => {
-    e.preventDefault();
-    // Redirect to the blog page with the search query
-    router.push(`/blog?search=${encodeURIComponent(searchQuery)}`);
-  };
-
   return (
     <header className="bg-background-dark shadow-md">
       <nav className="container mx-auto flex justify-between items-center py-4">
