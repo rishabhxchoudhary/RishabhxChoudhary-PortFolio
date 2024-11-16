@@ -2,7 +2,7 @@
 import React, { useEffect } from "react"; // Ensure React is imported
 import Link from 'next/link';
 import Layout from '../../components/blog/Layout';
-import { getAllPostSlugs, getPostData } from '../../lib/posts';
+import { getAllPostSlugs, getPostData, getSortedPostsData } from '../../lib/posts';
 import Head from 'next/head';
 import { Button } from '@nextui-org/react';
 import Image from 'next/image';
@@ -11,8 +11,9 @@ import hljs from 'highlight.js';
 import 'highlight.js/styles/github-dark.css';
 import SocialShare from '../../components/blog/SocialShare'; // Import SocialShare component
 
-const Post = ({ postData }) => {
+const Post = ({ postData, similarPosts }) => {
   useEffect(() => {
+    console.log("similarPosts",similarPosts)
     // Highlight.js for code blocks
     document.querySelectorAll('pre code').forEach((block) => {
       hljs.highlightBlock(block);
@@ -40,7 +41,7 @@ const Post = ({ postData }) => {
       });
       codeBlock.parentElement.appendChild(copyButton);
     });
-  }, [postData.contentHtml]);
+  }, [postData.contentHtml,similarPosts]);
 
   useEffect(() => {
     const script = document.createElement('script');
@@ -144,10 +145,35 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }) {
+  const allPostsData = getSortedPostsData()
   const postData = await getPostData(params.slug);
+  console.log("allpostsdata", allPostsData);
+  console.log("postdata", postData);
+
+  function calculateSimilarityScore(post1, post2) {
+    let score = 0;
+    if (post1.category === post2.category) {
+      score += 10;
+    }
+    const sharedTags = post1.tags.filter(tag => post2.tags.includes(tag));
+    score += sharedTags.length * 3;  // Each tag match adds 3 points
+    return score;
+  }
+
+  function findSimilarPosts(postData, allPostsData, maxResults = 4) {
+    const scores = allPostsData.map(post => ({
+      post: post,
+      score: calculateSimilarityScore(postData, post)
+    }));
+    scores.sort((a, b) => b.score - a.score);
+    return scores.filter(item => item.post.slug !== postData.slug).slice(0, maxResults).map(item => item.post);
+  }
+
+  const similarPosts = findSimilarPosts(postData, allPostsData);
   return {
     props: {
       postData,
+      similarPosts
     },
   };
 }
