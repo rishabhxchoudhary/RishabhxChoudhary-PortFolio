@@ -1,51 +1,57 @@
 // pages/blog/[slug].js
 import React, { useEffect } from "react"; // Ensure React is imported
-import Link from 'next/link';
-import Layout from '../../components/blog/Layout';
-import { getAllPostSlugs, getPostData, getSortedPostsData } from '../../lib/posts';
-import Head from 'next/head';
-import { Button } from '@nextui-org/react';
-import Image from 'next/image';
-import { format } from 'date-fns';
-import hljs from 'highlight.js';
-import 'highlight.js/styles/github-dark.css';
-import SocialShare from '../../components/blog/SocialShare'; // Import SocialShare component
+import Link from "next/link";
+import Layout from "../../components/blog/Layout";
+import {
+  getAllPostSlugs,
+  getPostData,
+  getSortedPostsData,
+} from "../../lib/posts";
+import Head from "next/head";
+import { Button } from "@nextui-org/react";
+import Image from "next/image";
+import { format } from "date-fns";
+import hljs from "highlight.js";
+import "highlight.js/styles/github-dark.css";
+import SocialShare from "../../components/blog/SocialShare"; // Import SocialShare component
+import { Card, CardBody, CardFooter } from "@nextui-org/react";
+import SimilarPostsCard from "../../components/blog/SimilarPostCard";
 
 const Post = ({ postData, similarPosts }) => {
   useEffect(() => {
-    console.log("similarPosts",similarPosts)
+    console.log("similarPosts", similarPosts);
     // Highlight.js for code blocks
-    document.querySelectorAll('pre code').forEach((block) => {
+    document.querySelectorAll("pre code").forEach((block) => {
       hljs.highlightBlock(block);
     });
 
     // Code block copy functionality
-    const codeBlocks = document.querySelectorAll('pre > code');
+    const codeBlocks = document.querySelectorAll("pre > code");
     codeBlocks.forEach((codeBlock) => {
-      if (codeBlock.parentElement.querySelector('.copy-button')) return;
+      if (codeBlock.parentElement.querySelector(".copy-button")) return;
 
-      const copyButton = document.createElement('button');
-      copyButton.innerText = 'Copy';
+      const copyButton = document.createElement("button");
+      copyButton.innerText = "Copy";
       copyButton.className =
-        'absolute top-2 right-2 bg-background-dark text-text-default px-2 py-1 rounded text-sm hover:bg-primary-light';
+        "absolute top-2 right-2 bg-background-dark text-text-default px-2 py-1 rounded text-sm hover:bg-primary-light";
 
-      codeBlock.parentElement.style.position = 'relative';
+      codeBlock.parentElement.style.position = "relative";
 
-      copyButton.addEventListener('click', () => {
+      copyButton.addEventListener("click", () => {
         navigator.clipboard.writeText(codeBlock.innerText).then(() => {
-          copyButton.innerText = 'Copied!';
+          copyButton.innerText = "Copied!";
           setTimeout(() => {
-            copyButton.innerText = 'Copy';
+            copyButton.innerText = "Copy";
           }, 2000);
         });
       });
       codeBlock.parentElement.appendChild(copyButton);
     });
-  }, [postData.contentHtml,similarPosts]);
+  }, [postData.contentHtml, similarPosts]);
 
   useEffect(() => {
-    const script = document.createElement('script');
-    script.type = 'text/javascript';
+    const script = document.createElement("script");
+    script.type = "text/javascript";
     script.text = `
       window.MathJax = {
         tex: {
@@ -61,8 +67,9 @@ const Post = ({ postData, similarPosts }) => {
     `;
     document.head.appendChild(script);
 
-    const scriptSrc = document.createElement('script');
-    scriptSrc.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+    const scriptSrc = document.createElement("script");
+    scriptSrc.src =
+      "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js";
     scriptSrc.async = true;
     document.body.appendChild(scriptSrc);
 
@@ -73,7 +80,7 @@ const Post = ({ postData, similarPosts }) => {
   }, []);
 
   // Get the current page URL for sharing
-  const currentUrl = typeof window !== 'undefined' ? window.location.href : '';
+  const currentUrl = typeof window !== "undefined" ? window.location.href : "";
 
   return (
     <Layout>
@@ -99,9 +106,11 @@ const Post = ({ postData, similarPosts }) => {
         <meta charSet="utf-8" />
       </Head>
       <article className="mx-auto max-w-3xl blog">
-        <h1 className="text-text-light text-4xl font-bold my-4">{postData.title}</h1>
+        <h1 className="text-text-light text-4xl font-bold my-4">
+          {postData.title}
+        </h1>
         <p className="text-text-dark text-sm mb-4">
-          Written on {format(new Date(postData.date), 'MMMM dd, yyyy')}
+          Written on {format(new Date(postData.date), "MMMM dd, yyyy")}
         </p>
         {postData.coverImage && (
           <div className="relative w-full h-96 mb-6">
@@ -118,6 +127,15 @@ const Post = ({ postData, similarPosts }) => {
           className="prose prose-lg prose-primary dark:prose-dark"
           dangerouslySetInnerHTML={{ __html: postData.contentHtml }}
         />
+        {/* Similar blogs */}
+        <div className="">
+          <div className="text-text-light mb-4 text-3xl">Similar Blogs</div>
+          <div className="flex overflow-x-auto snap-x snap-mandatory scroll-smooth w-full">
+            {similarPosts.map((item, index) => (
+              <SimilarPostsCard key={index} post={item}/>
+            ))}
+          </div>
+        </div> 
 
         {/* Social Sharing Buttons */}
         <div className="text-text">Share this blog: </div>
@@ -145,7 +163,7 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }) {
-  const allPostsData = getSortedPostsData()
+  const allPostsData = getSortedPostsData();
   const postData = await getPostData(params.slug);
 
   function calculateSimilarityScore(post1, post2) {
@@ -153,25 +171,28 @@ export async function getStaticProps({ params }) {
     if (post1.category === post2.category) {
       score += 10;
     }
-    const sharedTags = post1.tags.filter(tag => post2.tags.includes(tag));
-    score += sharedTags.length * 3;  // Each tag match adds 3 points
+    const sharedTags = post1.tags.filter((tag) => post2.tags.includes(tag));
+    score += sharedTags.length * 3; // Each tag match adds 3 points
     return score;
   }
 
   function findSimilarPosts(postData, allPostsData, maxResults = 4) {
-    const scores = allPostsData.map(post => ({
+    const scores = allPostsData.map((post) => ({
       post: post,
-      score: calculateSimilarityScore(postData, post)
+      score: calculateSimilarityScore(postData, post),
     }));
     scores.sort((a, b) => b.score - a.score);
-    return scores.filter(item => item.post.slug !== postData.slug).slice(0, maxResults).map(item => item.post);
+    return scores
+      .filter((item) => item.post.slug !== postData.slug)
+      .slice(0, maxResults)
+      .map((item) => item.post);
   }
 
   const similarPosts = findSimilarPosts(postData, allPostsData);
   return {
     props: {
       postData,
-      similarPosts
+      similarPosts,
     },
   };
 }
