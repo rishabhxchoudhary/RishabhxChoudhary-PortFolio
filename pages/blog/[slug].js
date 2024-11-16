@@ -1,32 +1,40 @@
 // pages/blog/[slug].js
 import React, { useEffect } from "react"; // Ensure React is imported
-import Link from "next/link";
-import Layout from "../../components/blog/Layout";
-import {
-  getAllPostSlugs,
-  getPostData,
-  getSortedPostsData,
-} from "../../lib/posts";
-import Head from "next/head";
-import { Button } from "@nextui-org/react";
-import Image from "next/image";
-import { format } from "date-fns";
-import hljs from "highlight.js";
-import "highlight.js/styles/github-dark.css";
-import SocialShare from "../../components/blog/SocialShare"; // Import SocialShare component
-import { Card, CardBody, CardFooter } from "@nextui-org/react";
-import SimilarPostsCard from "../../components/blog/SimilarPostCard";
+import Link from 'next/link';
+import Layout from '../../components/blog/Layout';
+import { getAllPostSlugs, getPostData, getSortedPostsData } from '../../lib/posts';
+import Head from 'next/head';
+import { Button } from '@nextui-org/react';
+import Image from 'next/image';
+import { format } from 'date-fns';
+import hljs from 'highlight.js';
+import 'highlight.js/styles/github-dark.css';
+import SocialShare from '../../components/blog/SocialShare'; // Import SocialShare component
 
 const Post = ({ postData, similarPosts }) => {
+  console.log("similarPosts", similarPosts);
+  const [views, setViews] = useState(0);
+
+  useEffect(()=>{
+    async function getViews() {
+      const res = await axios.post("/api/register",{
+        slug: postData.slug
+      });
+      setViews(res.data);
+    };
+
+    getViews();
+  },[postData.slug])
+
   useEffect(() => {
-    console.log("similarPosts", similarPosts);
+    console.log("similarPosts",similarPosts)
     // Highlight.js for code blocks
-    document.querySelectorAll("pre code").forEach((block) => {
+    document.querySelectorAll('pre code').forEach((block) => {
       hljs.highlightBlock(block);
     });
 
     // Code block copy functionality
-    const codeBlocks = document.querySelectorAll("pre > code");
+    const codeBlocks = document.querySelectorAll('pre > code');
     codeBlocks.forEach((codeBlock) => {
       if (codeBlock.parentElement.querySelector(".copy-button")) return;
 
@@ -47,7 +55,7 @@ const Post = ({ postData, similarPosts }) => {
       });
       codeBlock.parentElement.appendChild(copyButton);
     });
-  }, [postData.contentHtml, similarPosts]);
+  }, [postData.contentHtml,similarPosts]);
 
   useEffect(() => {
     const script = document.createElement("script");
@@ -112,6 +120,7 @@ const Post = ({ postData, similarPosts }) => {
         <p className="text-text-dark text-sm mb-4">
           Written on {format(new Date(postData.date), "MMMM dd, yyyy")}
         </p>
+        <p className="text-text-dark text-sm mb-4">Views : {views == 0 ? "Loading..." : views}</p>
         {postData.coverImage && (
           <div className="relative w-full h-96 mb-6">
             <Image
