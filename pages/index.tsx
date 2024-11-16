@@ -19,8 +19,8 @@ export default function Home() {
         <meta name="description" content="Portfolio of Rishabh Kumar Choudhary - Software Developer & IoT Specialist" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
-      <Navbar />
       <main>
+      <Navbar />
         <Home1 />
         <DotsBackground numberOfDots={50} />
         <About />
