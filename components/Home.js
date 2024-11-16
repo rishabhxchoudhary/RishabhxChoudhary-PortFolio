@@ -1,21 +1,19 @@
 // components/Home.jsx
 import { motion } from "framer-motion";
 import { FaLinkedin, FaGithub, FaEnvelope, FaDownload, FaYoutube } from "react-icons/fa";
-import useScrollPosition from '../hooks/useScrollPosition';
+import { useTypewriter, Cursor } from 'react-simple-typewriter';
 
 const Home = () => {
-  const scrollY = useScrollPosition();
+  const [text] = useTypewriter({
+    words: ['Software Developer', 'IoT Specialist', 'Open Source Contributor'],
+    loop: 0, // 0 = infinite
+    typeSpeed: 70,
+    deleteSpeed: 50,
+    delaySpeed: 1000,
+  });
+
   return (
     <section id="home" className="min-h-screen flex flex-col justify-center items-center bg-background text-text p-4 sm:p-6 relative overflow-hidden">
-      {/* Animated Background Circles with Parallax */}
-      <motion.div
-        className="absolute top-0 left-0 w-32 sm:w-48 h-32 sm:h-48 bg-primary opacity-30 rounded-full filter blur-3xl"
-        style={{ transform: `translate(${scrollY * 0.1}px, ${scrollY * 0.2}px)` }}
-      />
-      <motion.div
-        className="absolute bottom-0 right-0 w-32 sm:w-48 h-32 sm:h-48 bg-secondary opacity-30 rounded-full filter blur-3xl"
-        style={{ transform: `translate(-${scrollY * 0.1}px, -${scrollY * 0.2}px)` }}
-      />
 
       {/* Main Content */}
       <motion.div
@@ -28,7 +26,8 @@ const Home = () => {
           Rishabh Kumar Choudhary
         </h1>
         <p className="text-xl sm:text-2xl md:text-3xl text-text-dark mb-6 sm:mb-8 text-center">
-          Software Developer &amp; IoT Specialist
+          <span>{text}</span>
+          <Cursor />
         </p>
 
         {/* Social & Contact Buttons */}
@@ -50,10 +49,10 @@ const Home = () => {
             <span className="inline">LinkedIn</span>
           </a>
           <a
-            href="https://www.youtube.com/@rishabhxchoudhary" // Replace with your YouTube channel URL
+            href="https://www.youtube.com/@rishabhxchoudhary"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-center space-x-2 bg-red-600  text-background px-4 py-2 rounded-full shadow-lg hover:bg-[#FF0000] transition"
+            className="flex items-center justify-center space-x-2 bg-red-600 text-background px-4 py-2 rounded-full shadow-lg hover:bg-[#FF0000] transition"
           >
             <FaYoutube size={20} />
             <span className="inline">YouTube</span>
@@ -68,8 +67,8 @@ const Home = () => {
             <span className="inline">GitHub</span>
           </a>
           <a
-            href="/resume.pdf" // Adjust the path if your resume is hosted online
-            download="RishabhKumarChoudhary_Resume.pdf" // This attribute will prompt the file to be downloaded with this filename
+            href="/resume.pdf"
+            download="RishabhKumarChoudhary_Resume.pdf"
             className="flex items-center justify-center space-x-2 bg-accent text-background px-4 py-2 rounded-full shadow-lg hover:bg-accent-light transition"
           >
             <FaDownload size={20} />
