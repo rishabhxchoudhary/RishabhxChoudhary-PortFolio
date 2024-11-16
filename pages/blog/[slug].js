@@ -138,19 +138,21 @@ const Post = ({ postData, similarPosts }) => {
           className="prose prose-lg prose-primary dark:prose-dark"
           dangerouslySetInnerHTML={{ __html: postData.contentHtml }}
         />
-        {/* Similar blogs */}
-        <div className="">
-          <div className="text-text-light mb-4 text-3xl">Similar Blogs</div>
-          <div className="flex overflow-x-auto snap-x snap-mandatory scroll-smooth w-full">
-            {similarPosts.map((item, index) => (
-              <SimilarPostsCard key={index} post={item}/>
-            ))}
-          </div>
-        </div> 
 
         {/* Social Sharing Buttons */}
-        <div className="text-text">Share this blog: </div>
+        <div className="text-text my-12"><h2 className="text-2xl font-semibold mb-6">Share this blog</h2> </div>
         <SocialShare url={currentUrl} title={postData.title} />
+
+        {similarPosts && similarPosts.length > 0 && (
+          <section className="mt-12">
+            <h2 className="text-2xl font-semibold mb-6">Related Posts</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {similarPosts.map((post) => (
+                <SimilarPostsCard key={post.slug} post={post} />
+              ))}
+            </div>
+          </section>
+        )}
 
         {/* Back to Blog Button */}
         <div className="mt-8 flex justify-end">
@@ -161,6 +163,7 @@ const Post = ({ postData, similarPosts }) => {
           </Link>
         </div>
       </article>
+
     </Layout>
   );
 };
@@ -187,7 +190,7 @@ export async function getStaticProps({ params }) {
     return score;
   }
 
-  function findSimilarPosts(postData, allPostsData, maxResults = 4) {
+  function findSimilarPosts(postData, allPostsData, maxResults = 10) {
     const scores = allPostsData.map((post) => ({
       post: post,
       score: calculateSimilarityScore(postData, post),
