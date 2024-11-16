@@ -147,8 +147,6 @@ export async function getStaticPaths() {
 export async function getStaticProps({ params }) {
   const allPostsData = getSortedPostsData()
   const postData = await getPostData(params.slug);
-  console.log("allpostsdata", allPostsData);
-  console.log("postdata", postData);
 
   function calculateSimilarityScore(post1, post2) {
     let score = 0;
