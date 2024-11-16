@@ -1,5 +1,5 @@
 // pages/blog/[slug].js
-import React, { useEffect } from "react"; // Ensure React is imported
+import React, { useEffect, useState } from "react"; // Ensure React is imported
 import Link from 'next/link';
 import Layout from '../../components/blog/Layout';
 import { getAllPostSlugs, getPostData, getSortedPostsData } from '../../lib/posts';
@@ -10,6 +10,8 @@ import { format } from 'date-fns';
 import hljs from 'highlight.js';
 import 'highlight.js/styles/github-dark.css';
 import SocialShare from '../../components/blog/SocialShare'; // Import SocialShare component
+import SimilarPostsCard from "../../components/blog/SimilarPostCard";
+import axios from "axios";
 
 const Post = ({ postData, similarPosts }) => {
   console.log("similarPosts", similarPosts);
