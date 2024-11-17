@@ -429,13 +429,15 @@ const Blog = ({ allPosts }) => {
 
         {/* Main Content for Blog Posts */}
         <main className="w-full md:w-3/4 p-6 scrollbar-custom">
-          {filteredPosts.length > 0 ? (
+          {filteredPosts ? filteredPosts.length > 0 ? (
             filteredPosts.map((post) => (
               <PostCard key={post.slug} post={post} />
             ))
           ) : (
             <p className="text-center text-text-dark">No posts found.</p>
-          )}
+          ) : <>
+          <p className="text-center text-text-dark">Loading Posts</p>
+          </>}
         </main>
       </div>
     </Layout>
