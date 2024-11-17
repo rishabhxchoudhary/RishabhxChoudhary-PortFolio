@@ -3,6 +3,7 @@ title: "Master all SQL Queries for interviews"
 date: "28 July 2024"
 category: "CP & Interviews"
 tags: ['Sql']
+coverImage: "/images/all_sql_queries/cover.webp"
 about: "In this comprehensive guide, you'll master essential SQL queries to ace your database-related interviews. Covering everything from basic commands like showing databases and creating tables to more advanced operations such as join queries and data manipulation, this blog provides detailed examples and observations to enhance your understanding. Whether you're a beginner looking to learn the ropes or an experienced developer aiming to refine your skills, this resource is designed to equip you with the SQL proficiency needed for interview success. Dive in and start mastering SQL today!"
 ---
 

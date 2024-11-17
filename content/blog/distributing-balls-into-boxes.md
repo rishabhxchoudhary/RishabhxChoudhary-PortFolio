@@ -4,6 +4,7 @@ date: "23 July 2023"
 category: "CP & Interviews"
 tags: ['Maths','PnC']
 about: "This document discusses various variants of the problem of dividing n balls into *m* boxes. Markdown styles and MathJax have been added to improve readability and to display mathematical equations correctly."
+coverImage: "/images/balls_and_boxes/cover.webp"
 ---
 
 # The problem of dividing balls into boxes

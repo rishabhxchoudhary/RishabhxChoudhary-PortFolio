@@ -2,11 +2,10 @@
 title: "Scaling WhatsApp Message Broadcasting: How We Successfully Sent 50,000 Messages Using the WhatsApp API"
 date: "17 November 2024"
 category: "Technology / Programming"
+coverImage: "/images/broadcasting_messages/cover.webp"
 tags: ['WhatsApp API', 'AWS Lambda', 'S3', 'SQS', 'Next.js', 'Scalability']
 about: "In this detailed blog, discover how we efficiently broadcasted 50,000 WhatsApp messages using the WhatsApp API. We delve into the challenges of handling large CSV uploads, optimizing API calls, and leveraging AWS services like Lambda, S3, and SQS to ensure scalability and reliability. Whether you're looking to scale your messaging solutions or enhance your understanding of serverless architectures, this guide provides actionable insights and practical code snippets to help you achieve your goals."
 ---
-
-![WhatsApp Message Broadcasting](/images/broadcasting_messages/cover.webp)
 
 ## Introduction
 

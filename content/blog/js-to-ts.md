@@ -4,6 +4,7 @@ date: "9 June 2023"
 category: "Web Development"
 tags: ['TypeScript']
 about: "Learn how to smoothly transition from JavaScript to TypeScript and unlock the benefits of static typing, improved code organization, and enhanced error detection during the development process."
+coverImage: "/images/js2ts/cover.webp"
 ---
 
 # Shifting From JavaScript to TypeScript: A Comprehensive Guide

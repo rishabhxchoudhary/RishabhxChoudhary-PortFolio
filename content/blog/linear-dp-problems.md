@@ -4,6 +4,7 @@ date: "22 July 2023"
 category: "CP & Interviews"
 tags: ['Dynamic Programming', 'Linear DP', 'Leetcode Problems']
 about: Enhance your dynamic programming skills with our comprehensive collection of Linear DP problems from Leetcode, categorized by difficulty level and accompanied by detailed editorials"
+coverImage: "/images/linear_dp/cover.webp"
 ---
 
 # Linear DP

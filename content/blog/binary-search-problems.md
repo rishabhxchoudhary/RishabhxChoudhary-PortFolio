@@ -2,6 +2,7 @@
 title: "Crucial Problems on Modified Binary Search for Technical Interviews"
 date: "28 May 2023"
 category: "CP & Interviews"
+coverImage: "/images/binary_search_problems/cover.webp"
 tags: ['Interviews','Binary Search']
 about: "Discover important problems related to Modified Binary Search that commonly arise in technical interviews. Binary Search is a vital algorithm utilized for efficient searching of a target element in a sorted array. This blog delves into key problem variations, effective strategies, and potential pitfalls, equipping aspiring tech interviewees with essential knowledge to confidently tackle Binary Search challenges."
 ---

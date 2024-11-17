@@ -4,6 +4,7 @@ date: "17 July 2023"
 category: "CP & Interviews"
 tags: ["CSES", "Graph"]
 about: "Explore efficient solutions and master essential algorithms for CSES Graph problems in the CSES Problem Set. I have tried to cover most of the problems here."
+coverImage: "/images/cses_graph/cover.webp"
 ---
 
 # Counting Rooms
