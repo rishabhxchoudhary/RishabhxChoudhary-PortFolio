@@ -14,7 +14,6 @@ import SimilarPostsCard from "../../components/blog/SimilarPostCard";
 import axios from "axios";
 
 const Post = ({ postData, similarPosts }) => {
-  console.log("similarPosts", similarPosts);
   const [views, setViews] = useState(0);
 
   useEffect(()=>{
@@ -29,7 +28,6 @@ const Post = ({ postData, similarPosts }) => {
   },[postData.slug])
 
   useEffect(() => {
-    console.log("similarPosts",similarPosts)
     // Highlight.js for code blocks
     document.querySelectorAll('pre code').forEach((block) => {
       hljs.highlightBlock(block);
