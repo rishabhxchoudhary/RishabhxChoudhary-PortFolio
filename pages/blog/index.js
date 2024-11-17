@@ -3,6 +3,7 @@ import React, { useEffect, useState, useMemo } from 'react'; // Import useMemo
 import Layout from '../../components/blog/Layout';
 import PostCard from '../../components/blog/PostCard';
 import { getSortedPostsData } from '../../lib/posts';
+import { parse } from 'date-fns';
 import { useRouter } from 'next/router';
 import {
   Chip,
@@ -21,6 +22,7 @@ import { FaFilter } from "react-icons/fa";
 const Blog = ({ allPosts }) => {
   const router = useRouter();
   const { search, category, tags, sort } = router.query;
+  console.log("sort", sort)
 
   const [filteredPosts, setFilteredPosts] = useState(allPosts);
   const [searchTerm, setSearchTerm] = useState(search || '');
@@ -58,18 +60,17 @@ const Blog = ({ allPosts }) => {
       );
     }
 
-    // Sorting
-    if (sort) {
-      if (sort === 'newest') {
+    const parseDateString = (dateString) => parse(dateString, 'd MMMM yyyy', new Date());
+
+      if (sort !== 'oldest') {
         filtered = filtered.sort(
-          (a, b) => new Date(b.date) - new Date(a.date)
+          (a, b) => parseDateString(b.date) - parseDateString(a.date)
         );
-      } else if (sort === 'oldest') {
+      } else {
         filtered = filtered.sort(
-          (a, b) => new Date(a.date) - new Date(b.date)
+          (a, b) => parseDateString(a.date) - parseDateString(b.date)
         );
       }
-    }
 
     setFilteredPosts(filtered);
   }, [searchTerm, category, tags, sort, allPosts]);
