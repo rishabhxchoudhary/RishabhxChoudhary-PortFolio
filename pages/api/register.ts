@@ -1,40 +1,58 @@
 import { createClient } from '@supabase/supabase-js'
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { SupabaseClient } from '@supabase/supabase-js'; 
 
-async function getViewCount(slug: string, supabase: SupabaseClient) {
+const supabase = createClient( "https://roqnxtjaksygbykkknwl.supabase.co", process.env.SUPABASE_KEY || '')
+
+async function getViewCount(slug: string) {
     try {
-      const { data, error } = await supabase.from('views').select('views').eq('slug', slug);
-      if (error) {
+      const { data, error } = await supabase
+        .from('views')
+        .select('views')
+        .eq('slug', slug)
+        .single();
+
+      if (error && error.message !== "Item not found") {
         throw error;
       }
-      if (!data || data.length === 0) {
-        return 0; // Assuming you want to return 0 views if there's no record
-      }
-      return data[0].views;
+
+      return data ? data.views : null;
     } catch (error) {
       console.error('Error fetching views:', error);
-      return null; // Handle the error as you see fit
+      return null; // In case of error return null to handle it later
     }
-  }
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  try {
-
-    const supabase = createClient( "https://roqnxtjaksygbykkknwl.supabase.co", process.env.SUPABASE_KEY || '')
-    const { slug } = req.body;
-    const views = await getViewCount(slug, supabase);
-    await supabase
-    .from('views')
-    .update({ views: views+1 })
-    .eq('slug', slug)
-    res.status(200).send(views+1);
-  } catch(err) {
-    console.log("Err", err);
-    res.status(400).send("Internal Server Error");
-  }
 }
 
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+    if (req.method !== 'POST') {
+        res.status(405).send('Method Not Allowed');
+        return;
+    }
+    
+    const { slug } = req.body;
 
+    try {
+        let currentViews = await getViewCount(slug);
+        console.log("currentViews", currentViews);
+        if (currentViews === null) {
+            currentViews = 0;
+        }
+
+        // Upsert the view count
+        const { data, error } = await supabase
+            .from('views')
+            .upsert({ slug: slug, views: currentViews + 1 }, { onConflict: 'slug' });
+
+        console.log("data", data);
+        console.log("error", error);
+
+        if (error) {
+            console.error('Error updating/inserting views:', error);
+            res.status(500).send('Failed to update view count');
+            return;
+        }
+        res.status(200).json({ views: currentViews + 1 });
+    } catch (err) {
+        console.error('Handler error:', err);
+        res.status(500).send('Internal Server Error');
+    }
+}

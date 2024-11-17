@@ -14,14 +14,14 @@ import SimilarPostsCard from "../../components/blog/SimilarPostCard";
 import axios from "axios";
 
 const Post = ({ postData, similarPosts }) => {
-  const [views, setViews] = useState(0);
+   const [views, setViews] = useState(0);
 
   useEffect(()=>{
     async function getViews() {
       const res = await axios.post("/api/register",{
         slug: postData.slug
       });
-      setViews(res.data);
+      setViews(res.data.views);
     };
 
     getViews();
