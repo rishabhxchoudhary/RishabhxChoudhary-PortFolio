@@ -17,6 +17,7 @@
     "@supabase/supabase-js": "^2.46.1",
     "@types/nodemailer": "^6.4.16",
     "axios": "^1.7.7",
+    "better-react-mathjax": "^2.0.4-beta1",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "framer-motion": "^11.11.15",
