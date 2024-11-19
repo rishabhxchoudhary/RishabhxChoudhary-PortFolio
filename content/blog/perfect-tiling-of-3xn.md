@@ -77,8 +77,8 @@ $$
 
 Substituting back:
 $$
-f(n) = f(n-1) + 2f(n-2) + 2(f(n-4) + g(n-5)) \\
-f(n) = f(n-1) + 2f(n-2) + 2f(n-4) + 2g(n-5)
+f(n) = f(n-1) + 2f(n-2) + 2(f(n-4) + g(n-5)) $$
+$$f(n) = f(n-1) + 2f(n-2) + 2f(n-4) + 2g(n-5)
 $$
 
 This process can continue indefinitely, leading us to an expression where $f(n)$ is expressed in terms of previous $f$ terms and $g$ terms with decreasing indices. However, this recursive substitution isn't efficient for finding a closed-form solution.
