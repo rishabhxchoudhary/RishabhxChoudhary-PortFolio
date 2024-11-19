@@ -1,7 +1,7 @@
 ---
 
 title: "Number of ways to tile $ 3 \times N $ rectangle with $ 2 \times 1 $ tiles."
-date: "28 May 2023"
+date: "20 November 2024"
 category: "Maths"
 tags: ['Recurrence','Combinatorics']
 about: ""
