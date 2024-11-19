@@ -1,13 +1,11 @@
 ---
-
-title: "Number of Ways to Tile a $3 \\times N$ Rectangle with $2 \\times 1$ Tiles"
-date: "28 May 2023"
-category: "Maths"
-tags: ['Recurrence','Combinatorics']
-about: ""
-
+title: "Counting Ways to Cover a $3 \\times N$ Rectangle with $2 \\times 1$ Tiles"
+date: "20 November 2024"
+category: "Mathematics"
+tags: ['Recurrence Relations', 'Combinatorics', 'Tiling Problems', 'Discrete Mathematics', 'Dynamic Programming']
+about: "Dive into the fascinating world of combinatorics as we explore the number of ways to tile a $3 \\times N$ rectangle using $2 \\times 1$ tiles. This blog breaks down the problem step-by-step, deriving the recurrence relations and providing clear explanations to make complex mathematical concepts accessible to everyone."
+coverImage: "/images/perfect_tiling_3xn/cover.webp"
 ---
-
 In this blog, we will **derive the recurrence relation for the number of ways to tile a $3 \times N$ rectangle with $2 \times 1$ tiles**. We’ll break down each step thoroughly to ensure that even someone new to the topic can follow along easily. Let’s dive in!
 
 ---
