@@ -1,6 +1,6 @@
 ---
 title: "Derangement Proof by Inclusion and Exclusion Principle"
-date: "28 May 2023"
+date: "21 November 2024"
 category: "Mathematics"
 tags: ['combinatorics', 'derangements', 'inclusion-exclusion']
 about: "A comprehensive guide to understanding derangements using the inclusion and exclusion principle."
