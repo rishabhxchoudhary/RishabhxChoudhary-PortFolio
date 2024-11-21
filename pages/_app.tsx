@@ -1,7 +1,6 @@
 import "@/styles/globals.css";
 import "@/styles/blog.css";
 import type { AppProps } from "next/app";
-import 'katex/dist/katex.min.css';
 import { MathJaxContext } from 'better-react-mathjax';
 
 // import { Inter } from '@next/font/google';
@@ -13,14 +12,10 @@ import { MathJaxContext } from 'better-react-mathjax';
 
 export default function App({ Component, pageProps }: AppProps) {
   const mathJaxConfig = {
-    loader: { load: ['input/tex', 'output/svg'] },
+    loader: { load: ['input/tex', 'output/chtml'] }, // Changed from 'output/svg' to 'output/chtml'
     tex: {
-      inlineMath: [
-        ['$', '$'],
-      ],
-      displayMath: [
-        ['$$', '$$'],
-      ],
+      inlineMath: [['$', '$']],
+      displayMath: [['$$', '$$']],
       processEscapes: true,
       tags: 'ams',
       packages: {
@@ -38,7 +33,7 @@ export default function App({ Component, pageProps }: AppProps) {
         ],
       },
     },
-    svg: {
+    chtml: { // Updated from 'svg' to 'chtml'
       fontCache: 'global',
     },
   };

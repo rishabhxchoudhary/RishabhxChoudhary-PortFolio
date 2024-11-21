@@ -32,18 +32,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     try {
         let currentViews = await getViewCount(slug);
-        console.log("currentViews", currentViews);
         if (currentViews === null) {
             currentViews = 0;
         }
 
         // Upsert the view count
-        const { data, error } = await supabase
+        const { error } = await supabase
             .from('views')
             .upsert({ slug: slug, views: currentViews + 1 }, { onConflict: 'slug' });
-
-        console.log("data", data);
-        console.log("error", error);
 
         if (error) {
             console.error('Error updating/inserting views:', error);
