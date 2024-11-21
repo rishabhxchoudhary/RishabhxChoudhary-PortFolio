@@ -76,7 +76,10 @@
     color: #D1D5DB;
     margin-bottom: 1rem;
     padding-left: 1.5rem;
+    list-style-type: disc;
+    margin-left: 20px;
 }
+
 .blog li {
     margin-bottom: 0.5rem;
 }
@@ -138,7 +141,7 @@
   
   /* Strong and Emphasis */
   .blog strong {
-    color: #3B82F6; /* primary.light */
+    color: #A78BFA; /* primary.light */
   }
   
   .blog em {
