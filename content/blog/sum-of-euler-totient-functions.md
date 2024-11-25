@@ -354,108 +354,89 @@ This efficient time complexity makes the algorithm practical for large-scale com
 
 *This part is incomplete*
 
-<!-- ```cpp
+```cpp
 #include <bits/stdc++.h>
 using namespace std;
 
-// Type definitions
-typedef long long ll;
-typedef unsigned long long ull;
+#define int long long int
+#define double long double
+#define endl '\n'
 
-// Function to convert __int128 to string for printing
-string int128_to_string(__int128 n) {
-    bool negative = false;
-    if (n < 0) {
-        negative = true;
-        n = -n;
+const int MOD = 998244353;
+const int INV2 = 499122177; // Modular inverse of 2 modulo 998244353
+const int K = 1000000;      // Threshold for precomputation
+
+
+vector<int> Phi_precomputed(K + 1, 0);
+
+void sieve_phi(vector<int> &phi) {
+    for(int i = 0; i <= K; ++i){
+        phi[i] = i;
     }
-    string s = "";
-    if (n == 0) return "0";
-    while (n > 0) {
-        char digit = '0' + (n % 10);
-        s += digit;
-        n /= 10;
-    }
-    if (negative) s += '-';
-    reverse(s.begin(), s.end());
-    return s;
-}
-
-// Maximum precompute limit
-const ll K = 1000000;
-
-// Precomputed Phi values up to K
-ll prePhi[K + 1];
-
-// Precomputed Phi sums up to K
-__int128 prePhiSum[K + 1];
-
-// Function to precompute phi(n) using Sieve of Eratosthenes
-void compute_phi() {
-    for (ll i = 0; i <= K; ++i) {
-        prePhi[i] = i;
-    }
-    for (ll p = 2; p <= K; ++p) {
-        if (prePhi[p] == p) { // p is prime
-            for (ll j = p; j <= K; j += p) {
-                prePhi[j] -= prePhi[j] / p;
+    for(int p = 2; p <= K; ++p){
+        if(phi[p] == p){ // p is prime
+            for(int multiple = p; multiple <= K; multiple += p){
+                phi[multiple] -= phi[multiple] / p;
             }
         }
     }
-    // Compute cumulative sums
-    prePhiSum[0] = 0;
-    for (ll i = 1; i <= K; ++i) {
-        prePhiSum[i] = prePhiSum[i - 1] + prePhi[i];
-    }
 }
 
-// Memoization map for Phi(n)
-unordered_map<ll, __int128> memo;
+unordered_map<int, int> cache;
 
-// Recursive function to compute Phi(n)
-__int128 Phi(ll n) {
-    if (n <= K) {
-        return prePhiSum[n];
+int compute_Phi(int n, const vector<int> &Phi_precomputed, unordered_map<int, int> &cache){
+    if(n <= K){
+        return Phi_precomputed[n];
     }
-    if (memo.find(n) != memo.end()) {
-        return memo[n];
+    
+    if(cache.find(n) != cache.end()){
+        return cache[n];
     }
-    // Compute Phi(n) using the recursive formula
-    __int128 res = (__int128)n * (n + 1) / 2;
-    ll l = 2;
-    while (l <= n) {
-        ll q = n / l;
-        ll r = n / q;
-        if (r > n) r = n;
-        // Avoid exceeding n
-        if (q == 1) {
-            r = n;
-        }
-        // Compute Phi(q) recursively
-        __int128 phi_q = Phi(q);
-        res -= (phi_q) * (r - l + 1);
-        l = r + 1;
+    
+    int res = ((n % MOD) * ((n + 1) % MOD)) % MOD;
+    res = (res * INV2) % MOD;
+    
+    int m = 2;
+    while(m <= n){
+        int m_val = n / m;
+        int upper = n / m_val;
+        int count = upper - m + 1;
+        
+        int phi_m = compute_Phi(m_val, Phi_precomputed, cache);
+        
+        res = (res - ((count % MOD) * phi_m % MOD) + MOD) % MOD;
+        
+        m = upper + 1;
     }
-    memo[n] = res;
+    cache[n] = res;
+    
     return res;
 }
 
-int main() {
+signed main(){
     ios::sync_with_stdio(false);
     cin.tie(0);
+    
+    int n;
+    cin >> n;
+    
+    vector<int> phi(K + 1, 0);
+    sieve_phi(phi);
+    
 
-    compute_phi();
-
-    ll n;
-    cin>>n;
-
-    __int128 result = Phi(n);
-
-    cout << int128_to_string(result) << "\n";
-
+    Phi_precomputed[0] = 0;
+    for(int i = 1; i <= K; ++i){
+        Phi_precomputed[i] = (Phi_precomputed[i - 1] + phi[i]) % MOD;
+    }
+    
+    int result = compute_Phi(n, Phi_precomputed, cache);
+    
+    cout << result;
+    
     return 0;
 }
-``` -->
+
+```
 
 ## Conclusion
 
