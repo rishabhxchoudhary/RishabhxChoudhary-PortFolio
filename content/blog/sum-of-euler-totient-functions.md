@@ -52,9 +52,9 @@ For a positive integer $n$, Euler's Totient Function $\varphi(n)$ is defined as 
    \varphi(n) = n \prod_{i=1}^r \left(1 - \frac{1}{p_i}\right).
    $$
 
-![Visualization of Euler's Totient Function](Description: A diagram showing numbers from 1 to 10 with numbers coprime to 10 highlighted, illustrating $\varphi(10) = 4$.)
+<!-- ![Visualization of Euler's Totient Function](Description: A diagram showing numbers from 1 to 10 with numbers coprime to 10 highlighted, illustrating $\varphi(10) = 4$.)
 
-*Description of the first image:* A number line from 1 to 10 with numbers 1, 3, 7, and 9 highlighted to represent the numbers coprime to 10.
+*Description of the first image:* A number line from 1 to 10 with numbers 1, 3, 7, and 9 highlighted to represent the numbers coprime to 10. -->
 
 ## The Challenge of Summing $\varphi(n)$
 
@@ -423,9 +423,9 @@ $$
 O\left( N^{2/3} (\log\log N)^{1/3} \right).
 $$
 
-![Flowchart of the Efficient Algorithm](Description: A flowchart showing the steps of the algorithm: precomputing small $\Phi(n)$, recursively computing larger $\Phi(n)$, grouping terms, and calculating the final sum.)
+<!-- ![Flowchart of the Efficient Algorithm](Description: A flowchart showing the steps of the algorithm: precomputing small $\Phi(n)$, recursively computing larger $\Phi(n)$, grouping terms, and calculating the final sum.)
 
-*Description of the second image:* A flowchart illustrating the algorithm's process, from initializing the sieve for small $n$, to recursive computation for larger $n$, including grouping of terms to optimize the summation.
+*Description of the second image:* A flowchart illustrating the algorithm's process, from initializing the sieve for small $n$, to recursive computation for larger $n$, including grouping of terms to optimize the summation. -->
 
 ## Conclusion
 
