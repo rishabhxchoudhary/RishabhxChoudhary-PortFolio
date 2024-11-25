@@ -11,7 +11,10 @@ In this section, we introduce an algorithm to compute the sum of Euler's totient
 $$
 \Phi(N) := \sum_{i=1}^{N} \varphi(i),
 $$
-in $O\left(N^{2/3} (\log\log{N})^{1/3}\right)$ time. (In practice, we set $k := \left(\frac{N}{\log\log{N}}\right)^{2/3}$ and enumerate $(\Phi(i))_{1 \leq i \leq k}$ and $(\Phi(\left\lfloor N/i \right\rfloor))_{1 \leq i \leq k}$.)
+in $O\left(N^{2/3} (\log\log{N})^{1/3}\right)$ time. (In practice, we set $k := \left(\frac{N}{\log\log{N}}\right)^{2/3}$ 
+and enumerate $(\Phi(i))_{1 \leq i \leq k}$ and 
+
+$(\Phi(\left \lfloor N/i \right\rfloor))_{1 \leq i \leq k} $.)
 
 This algorithm appears to be well-known from Project Euler. I would like to extend my gratitude to Mr. Kanarai for teaching me the analysis of its computational complexity.
 
