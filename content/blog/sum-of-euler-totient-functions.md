@@ -352,8 +352,6 @@ This efficient time complexity makes the algorithm practical for large-scale com
 
 ## Implementation in C++
 
-*This part is incomplete*
-
 ```cpp
 #include <bits/stdc++.h>
 using namespace std;
