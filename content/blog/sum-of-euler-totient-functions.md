@@ -4,9 +4,9 @@ title: "Computing the Sum of Euler's Totient Function Efficiently"
 
 date: "26 November 2024"
 
-category: "Mathematics, Number Theory, Algorithms"
+category: "Mathematics"
 
-tags: ['Euler Totient Function', 'Number Theory', 'Algorithms', 'Mathematical Summation', 'Computational Mathematics']
+tags: ['Euler Totient Function', 'Number Theory']
 
 about: "An in-depth exploration of an efficient algorithm to compute the sum of Euler's Totient Function up to a large integer N, with detailed step-by-step derivations."
 
