@@ -2,7 +2,7 @@
 
 title: "Computing the Sum of Euler's Totient Function Efficiently"
 
-date: "25 November 2024"
+date: "26 November 2024"
 
 category: "Mathematics, Number Theory, Algorithms"
 
