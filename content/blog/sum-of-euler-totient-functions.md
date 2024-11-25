@@ -1,15 +1,9 @@
 ---
-
 title: "Computing the Sum of Euler's Totient Function Efficiently"
-
 date: "26 November 2024"
-
 category: "Mathematics"
-
 tags: ['Euler Totient Function', 'Number Theory']
-
 about: "An in-depth exploration of an efficient algorithm to compute the sum of Euler's Totient Function up to a large integer N, with detailed step-by-step derivations."
-
 ---
 
 ## Introduction
@@ -53,7 +47,6 @@ For a positive integer $n$, Euler's Totient Function $\varphi(n)$ is defined as 
    $$
 
 <!-- ![Visualization of Euler's Totient Function](Description: A diagram showing numbers from 1 to 10 with numbers coprime to 10 highlighted, illustrating $\varphi(10) = 4$.)
-
 *Description of the first image:* A number line from 1 to 10 with numbers 1, 3, 7, and 9 highlighted to represent the numbers coprime to 10. -->
 
 ## The Challenge of Summing $\varphi(n)$
@@ -64,301 +57,232 @@ Our goal is to find an algorithm that reduces the time complexity to $O\left(N^{
 
 ## Deriving the Efficient Algorithm
 
-To compute $\Phi(N)$ efficiently, we will derive a recursive formula that expresses $\Phi(N)$ in terms of smaller values of $\Phi(n)$. This involves several mathematical steps, which we will detail thoroughly.
+To compute $\Phi(N)$ efficiently, we will leverage **Dirichlet Convolution** and **Möbius Inversion**, fundamental tools in number theory that allow us to relate multiplicative functions and invert summatory relations. This approach will lead us to a recursive formula that expresses $\Phi(N)$ in terms of smaller values of $\Phi(n)$. We will detail each mathematical step thoroughly.
 
 ### Step 1: Establishing a Key Identity
 
-We start by proving that for any positive integer $m$,
+We start by recalling a fundamental identity involving Euler's Totient Function:
+
 $$
-m = \sum_{d \mid m} \varphi(d),
-$$
-where the sum is over all positive divisors $d$ of $m$.
-
-**Proof:**
-
-Consider the set of positive integers from $1$ to $m$. Each integer $k$ in this range divides $m$ if $k \mid m$. For each divisor $d$ of $m$, the number of integers less than or equal to $m$ that are multiples of $d$ is $\frac{m}{d}$.
-
-However, we are interested in counting the integers up to $m$ that are **exactly** divisible by $d$ and have no smaller common divisors with $m$. This is where $\varphi(d)$ comes into play.
-
-Let's consider the set of numbers less than or equal to $m$ that are multiples of $d$ and are coprime to $\frac{m}{d}$. The number of such integers is $\varphi\left(\frac{m}{d}\right)$.
-
-By iterating over all divisors $d$ of $m$, we cover all integers from $1$ to $m$ exactly once. Therefore,
-$$
-m = \sum_{d \mid m} \varphi(d).
+\varphi(n) = \sum_{d \mid n} \mu(d) \cdot \frac{n}{d},
 $$
 
-**Example:**
+where $\mu(d)$ is the Möbius function, and the sum is over all positive divisors $d$ of $n$.
 
-For $m = 6$,
-- Divisors of $6$ are $1, 2, 3, 6$.
-- $\varphi(1) = 1$, $\varphi(2) = 1$, $\varphi(3) = 2$, $\varphi(6) = 2$.
-- Sum: $1 + 1 + 2 + 2 = 6$.
+**Dirichlet Convolution Context:**
+
+In the language of Dirichlet convolution, this identity can be written as:
+
+$$
+\varphi = \mu * \text{id},
+$$
+
+where $\text{id}(n) = n$ is the identity function, and $*$ denotes Dirichlet convolution.
 
 ### Step 2: Summing the Identity Over All Integers Up to $N$
 
-We now sum the identity over $m$ from $1$ to $N$:
+Our goal is to compute:
+
 $$
-\sum_{m=1}^{N} m = \sum_{m=1}^{N} \sum_{d \mid m} \varphi(d).
+\Phi(N) = \sum_{n=1}^{N} \varphi(n).
 $$
 
-**Left-Hand Side Simplification:**
+Substituting the key identity into this sum:
 
-The sum of the first $N$ positive integers is known:
 $$
-\sum_{m=1}^{N} m = \frac{N(N + 1)}{2}.
+\Phi(N) = \sum_{n=1}^{N} \sum_{d \mid n} \mu(d) \cdot \frac{n}{d}.
 $$
 
-**Right-Hand Side Transformation:**
+### Step 3: Interchanging the Order of Summation
 
-We can interchange the order of summation on the right-hand side:
+To simplify the double sum, we interchange the order of summation:
+
 $$
-\sum_{m=1}^{N} \sum_{d \mid m} \varphi(d) = \sum_{d=1}^{N} \varphi(d) \cdot \left\lfloor \frac{N}{d} \right\rfloor,
+\Phi(N) = \sum_{d=1}^{N} \mu(d) \cdot \sum_{\substack{n=1 \\ d \mid n}}^{N} \frac{n}{d}.
 $$
-where $\left\lfloor \frac{N}{d} \right\rfloor$ counts how many times $d$ divides numbers up to $N$.
 
 **Explanation:**
 
-- For each divisor $d$, $\varphi(d)$ appears in the sum for every multiple of $d$ up to $N$.
-- The number of multiples of $d$ up to $N$ is $\left\lfloor \frac{N}{d} \right\rfloor$.
+- For each divisor $d$, we sum over all multiples of $d$ up to $N$.
+- Let $k = \frac{n}{d}$, where $k$ runs from $1$ to $\left\lfloor \frac{N}{d} \right\rfloor$.
 
-Therefore, the equation becomes:
+Thus, the inner sum becomes:
+
 $$
-\frac{N(N + 1)}{2} = \sum_{d=1}^{N} \varphi(d) \cdot \left\lfloor \frac{N}{d} \right\rfloor.
-$$
-
-### Step 3: Expressing $\Phi(N)$ in Terms of Itself
-
-Recall that $\Phi(N) = \sum_{d=1}^{N} \varphi(d)$.
-
-Our goal is to solve for $\Phi(N)$.
-
-We can split the sum on the right-hand side into two parts:
-
-1. When $d = 1$:
-   $$
-   \varphi(1) \cdot \left\lfloor \frac{N}{1} \right\rfloor = 1 \cdot N = N.
-   $$
-
-2. When $d \geq 2$:
-   $$
-   \sum_{d=2}^{N} \varphi(d) \cdot \left\lfloor \frac{N}{d} \right\rfloor.
-   $$
-
-Therefore, the equation becomes:
-$$
-\frac{N(N + 1)}{2} = N + \sum_{d=2}^{N} \varphi(d) \cdot \left\lfloor \frac{N}{d} \right\rfloor.
+\sum_{\substack{n=1 \\ d \mid n}}^{N} \frac{n}{d} = \sum_{k=1}^{\left\lfloor \frac{N}{d} \right\rfloor} k = \frac{\left\lfloor \frac{N}{d} \right\rfloor \cdot \left(\left\lfloor \frac{N}{d} \right\rfloor + 1\right)}{2}.
 $$
 
-Subtracting $N$ from both sides:
+Therefore,
+
 $$
-\frac{N(N + 1)}{2} - N = \sum_{d=2}^{N} \varphi(d) \cdot \left\lfloor \frac{N}{d} \right\rfloor.
+\Phi(N) = \sum_{d=1}^{N} \mu(d) \cdot \frac{\left\lfloor \frac{N}{d} \right\rfloor \cdot \left(\left\lfloor \frac{N}{d} \right\rfloor + 1\right)}{2}.
 $$
 
-Simplify the left-hand side:
-$$
-\frac{N(N + 1) - 2N}{2} = \frac{N(N - 1)}{2}.
-$$
+### Step 4: Simplifying the Summation
 
-So we have:
+We can factor out constants and rewrite the summation:
+
 $$
-\frac{N(N - 1)}{2} = \sum_{d=2}^{N} \varphi(d) \cdot \left\lfloor \frac{N}{d} \right\rfloor.
+\Phi(N) = \frac{1}{2} \sum_{d=1}^{N} \mu(d) \cdot \left\lfloor \frac{N}{d} \right\rfloor \cdot \left(\left\lfloor \frac{N}{d} \right\rfloor + 1\right).
 $$
 
-### Step 4: Relating $\Phi(N)$ to Smaller Values
+This formula allows us to compute $\Phi(N)$ directly. However, computing this sum naively would still require $O(N)$ operations, which is not efficient enough for large $N$. To optimize, we need to find a recursive relation that reduces the number of computations.
 
-We notice that $\Phi(N) = \varphi(1) + \sum_{d=2}^{N} \varphi(d)$.
+### Step 5: Establishing a Recursive Formula Using Möbius Inversion
 
-Since $\varphi(1) = 1$, we have:
+To derive a recursive formula for $\Phi(N)$, we start by considering the sum of Euler's Totient Function over its divisors.
+
+**Fundamental Identity:**
+
 $$
-\Phi(N) = 1 + \sum_{d=2}^{N} \varphi(d).
-$$
-
-Our aim is to express $\Phi(N)$ in terms of $\Phi\left( \left\lfloor \frac{N}{d} \right\rfloor \right)$.
-
-Consider the sum:
-$$
-\sum_{d=2}^{N} \varphi(d) \cdot \left\lfloor \frac{N}{d} \right\rfloor = \sum_{k=1}^{N-1} \left( \sum_{\substack{d=2 \\ \left\lfloor \frac{N}{d} \right\rfloor = k}}^{N} \varphi(d) \right).
+\sum_{d \mid n} \varphi(d) = n.
 $$
 
-But grouping terms by $\left\lfloor \frac{N}{d} \right\rfloor$ is complicated.
+**Summing Over All $n$ Up to $N$:**
 
-Alternatively, consider that for each integer $k$ from $1$ to $N-1$, the number of times $\varphi(d)$ is counted in the sum is equal to the number of times $d$ divides numbers up to $N$.
-
-To simplify, we can think recursively.
-
-### Step 5: Establishing the Recursive Formula
-
-From the previous steps, we have:
 $$
-\frac{N(N - 1)}{2} = \sum_{d=2}^{N} \varphi(d) \cdot \left\lfloor \frac{N}{d} \right\rfloor.
+\sum_{n=1}^{N} \sum_{d \mid n} \varphi(d) = \sum_{n=1}^{N} n = \frac{N(N + 1)}{2}.
 $$
 
-But we can express the sum on the right-hand side as:
-$$
-\sum_{d=2}^{N} \varphi(d) \cdot \left\lfloor \frac{N}{d} \right\rfloor = \sum_{i=1}^{\left\lfloor \frac{N}{2} \right\rfloor} \left( \sum_{d=2}^{N} \varphi(d) \cdot \mathbf{1}_{\left\lfloor \frac{N}{d} \right\rfloor = i} \right).
-$$
+**Interchanging the Order of Summation:**
 
-However, this approach can become messy.
-
-Alternatively, we can consider the relationship between $\Phi(N)$ and $\Phi\left( \left\lfloor \frac{N}{i} \right\rfloor \right)$.
-
-Let’s consider the sum:
-$$
-S = \sum_{i=1}^{N-1} \Phi\left( \left\lfloor \frac{N}{i} \right\rfloor \right).
-$$
-
-Our goal is to express $\Phi(N)$ in terms of $\Phi\left( \left\lfloor \frac{N}{i} \right\rfloor \right)$.
-
-But perhaps a better way is to revisit our equation:
-$$
-\frac{N(N + 1)}{2} = \sum_{n=1}^{N} \sum_{d \mid n} \varphi(d).
-$$
-
-We can swap the order of summation to get:
-$$
-\sum_{n=1}^{N} \sum_{d \mid n} \varphi(d) = \sum_{d=1}^{N} \varphi(d) \cdot \left\lfloor \frac{N}{d} \right\rfloor.
-$$
-
-So our equation becomes:
-$$
-\frac{N(N + 1)}{2} = \sum_{d=1}^{N} \varphi(d) \cdot \left\lfloor \frac{N}{d} \right\rfloor.
-$$
-
-But note that $\Phi(N) = \sum_{d=1}^{N} \varphi(d)$.
-
-Let’s rearrange the equation:
-$$
-\sum_{d=1}^{N} \varphi(d) \cdot \left\lfloor \frac{N}{d} \right\rfloor = \sum_{d=1}^{N} \varphi(d) \cdot \left( \frac{N}{d} - \left\lbrace \frac{N}{d} \right\rbrace \right) = N \Phi(N) - \sum_{d=1}^{N} \varphi(d) \cdot \left\lbrace \frac{N}{d} \right\rbrace,
-$$
-
-where $\lbrace x \rbrace = x - \lfloor x \rfloor$ is the fractional part of $x$.
-
-This seems to complicate things further.
-
-Perhaps a better approach is to consider that:
-$$
-\sum_{d=1}^{N} \varphi(d) \cdot \left\lfloor \frac{N}{d} \right\rfloor = \sum_{k=1}^{N} \left( \sum_{d=1}^{\left\lfloor \frac{N}{k} \right\rfloor} \varphi(d) \right).
-$$
-
-Wait, maybe we're getting off track.
-
-Actually, a well-known identity (from the theory of Dirichlet convolutions) is:
-$$
-\sum_{n=1}^{N} \varphi(n) = \frac{1}{2} \left( N(N + 1) - \sum_{i=2}^{N} \mu(i) \cdot \left\lfloor \frac{N}{i} \right\rfloor \left( \left\lfloor \frac{N}{i} \right\rfloor + 1 \right) \right),
-$$
-where $\mu(i)$ is the Möbius function.
-
-But perhaps that's beyond the scope.
-
-Alternatively, we can accept the identity that:
-$$
-\Phi(N) = \frac{N(N + 1)}{2} - \sum_{k=2}^{N} \Phi\left( \left\lfloor \frac{N}{k} \right\rfloor \right).
-$$
-
-**Detailed Derivation:**
-
-We start from:
-$$
-\frac{N(N + 1)}{2} = \sum_{n=1}^{N} \sum_{d \mid n} \varphi(d).
-$$
-
-Switching the order of summation:
-$$
-\sum_{n=1}^{N} \sum_{d \mid n} \varphi(d) = \sum_{d=1}^{N} \varphi(d) \cdot \left\lfloor \frac{N}{d} \right\rfloor.
-$$
-
-Therefore:
-$$
-\frac{N(N + 1)}{2} = \sum_{d=1}^{N} \varphi(d) \cdot \left\lfloor \frac{N}{d} \right\rfloor.
-$$
-
-Separating the term when $d = N$:
-- When $d = N$, $\varphi(N) \cdot \left\lfloor \frac{N}{N} \right\rfloor = \varphi(N) \cdot 1 = \varphi(N)$.
-
-Then:
-$$
-\frac{N(N + 1)}{2} = \varphi(N) + \sum_{d=1}^{N-1} \varphi(d) \cdot \left\lfloor \frac{N}{d} \right\rfloor.
-$$
-
-But we can write the sum from $d=1$ to $N-1$ as:
-$$
-\sum_{d=1}^{N-1} \varphi(d) \cdot \left\lfloor \frac{N}{d} \right\rfloor = \sum_{d=1}^{N-1} \varphi(d) \left( \frac{N}{d} - \{ \frac{N}{d} \} \right) = N \sum_{d=1}^{N-1} \frac{\varphi(d)}{d} - \sum_{d=1}^{N-1} \varphi(d) \{ \frac{N}{d} \}.
-$$
-
-
-But this seems to be making it more complex.
-
-Perhaps we need a different approach.
-
-Let’s consider that for $N \geq 1$:
-$$
-\frac{N(N + 1)}{2} = \sum_{n=1}^{N} n = \sum_{n=1}^{N} \sum_{d \mid n} \varphi(d) = \sum_{d=1}^{N} \varphi(d) \cdot \left\lfloor \frac{N}{d} \right\rfloor.
-$$
-
-Therefore, we have:
 $$
 \sum_{d=1}^{N} \varphi(d) \cdot \left\lfloor \frac{N}{d} \right\rfloor = \frac{N(N + 1)}{2}.
 $$
 
-But we can write $\Phi(N) = \sum_{d=1}^{N} \varphi(d)$.
+**Expressing $\Phi(N)$:**
 
-Then, the sum can be expressed as:
-$$
-\sum_{d=1}^{N} \varphi(d) \cdot \left\lfloor \frac{N}{d} \right\rfloor = \sum_{d=1}^{N} \varphi(d) \cdot \left( \left\lfloor \frac{N}{d} \right\rfloor \right) = \sum_{k=1}^{N} \varphi(k) \cdot \left\lfloor \frac{N}{k} \right\rfloor.
-$$
+Recall that:
 
-Wait, this suggests that perhaps we can write:
 $$
-\Phi(N) = \frac{N(N + 1)}{2} - \sum_{k=1}^{N} \varphi(k) \cdot \left( \left\lfloor \frac{N}{k} \right\rfloor - 1 \right).
+\Phi(N) = \sum_{d=1}^{N} \varphi(d).
 $$
 
-But this might not help.
+Our goal is to express $\Phi(N)$ in terms of $\Phi\left(\left\lfloor \frac{N}{d} \right\rfloor\right)$ for smaller values of $N$.
 
-Alternatively, perhaps it's better to accept that:
-$$
-\Phi(N) = \frac{N(N + 1)}{2} - \sum_{i=2}^{N} \Phi\left( \left\lfloor \frac{N}{i} \right\rfloor \right).
-$$
+**Rearranging the Summation:**
 
-**Detailed Proof of the Recursive Formula:**
+We can write:
 
-Let’s consider the function $S(N)$ defined as:
 $$
-S(N) = \sum_{n=1}^{N} n = \frac{N(N + 1)}{2}.
+\sum_{d=1}^{N} \varphi(d) \cdot \left\lfloor \frac{N}{d} \right\rfloor = \sum_{d=1}^{N} \varphi(d) \cdot \left( \frac{N}{d} - \lbrace \frac{N}{d} \rbrace \right) = N \sum_{d=1}^{N} \frac{\varphi(d)}{d} - \sum_{d=1}^{N} \varphi(d) \lbrace \frac{N}{d} \rbrace,
 $$
 
-We know that:
+
+where $\lbrace x \rbrace$ denotes the fractional part of $x$.
+
+However, dealing with the fractional parts complicates the expression. Instead, we can approach the problem by recognizing that many terms $\left\lfloor \frac{N}{d} \right\rfloor$ repeat for different values of $d$. This observation allows us to group terms and reduce computational complexity.
+
+**Key Insight:**
+
+For a given integer $k$, the number of times $\left\lfloor \frac{N}{d} \right\rfloor = k$ occurs corresponds to the number of divisors $d$ such that $k = \left\lfloor \frac{N}{d} \right\rfloor$. This grouping significantly reduces the number of unique terms in the summation.
+
+### Step 6: Applying Dirichlet Convolution and Möbius Inversion
+
+To derive a recursive relation, we leverage the properties of Dirichlet convolution and Möbius inversion.
+
+**Recall the Fundamental Identity:**
+
 $$
-S(N) = \sum_{n=1}^{N} \sum_{d \mid n} \varphi(d) = \sum_{d=1}^{N} \varphi(d) \cdot \left\lfloor \frac{N}{d} \right\rfloor.
+\sum_{d \mid n} \varphi(d) = n.
 $$
 
-Rewriting:
+In Dirichlet convolution terms, this is:
+
 $$
-\sum_{d=1}^{N} \varphi(d) \cdot \left\lfloor \frac{N}{d} \right\rfloor = \Phi(N) + \sum_{d=2}^{N} \varphi(d) \left( \left\lfloor \frac{N}{d} \right\rfloor - 1 \right).
+\varphi * 1 = \text{id},
 $$
 
-But again, perhaps this is getting us off track.
+where $\text{id}(n) = n$.
 
-In the interest of clarity, let's accept the recursive formula as given.
+**Applying Möbius Inversion:**
 
-### Final Recursive Formula
+Möbius inversion allows us to invert such convolution relations. Specifically, if:
 
-After considering the previous identities, the recursive formula for $\Phi(N)$ can be established as:
 $$
-\Phi(N) = \frac{N(N + 1)}{2} - \sum_{i=2}^{N} \Phi\left( \left\lfloor \frac{N}{i} \right\rfloor \right).
+f * g = h,
+$$
+
+then:
+
+$$
+f = h * \mu,
+$$
+
+provided that $g * \mu = \epsilon$, where $\epsilon(n)$ is the identity element for Dirichlet convolution ($\epsilon(1) = 1$, and $\epsilon(n) = 0$ for $n > 1$).
+
+Applying Möbius inversion to our identity:
+
+$$
+\varphi = \text{id} * \mu.
+$$
+
+**Summing Both Sides:**
+
+Summing $\varphi(n)$ up to $N$ gives:
+
+$$
+\Phi(N) = \sum_{n=1}^{N} \varphi(n) = \sum_{n=1}^{N} \sum_{d \mid n} \mu(d) \cdot \frac{n}{d}.
+$$
+
+Interchanging the order of summation:
+
+$$
+\Phi(N) = \sum_{d=1}^{N} \mu(d) \cdot \sum_{k=1}^{\left\lfloor \frac{N}{d} \right\rfloor} k = \sum_{d=1}^{N} \mu(d) \cdot \frac{\left\lfloor \frac{N}{d} \right\rfloor \cdot \left(\left\lfloor \frac{N}{d} \right\rfloor + 1\right)}{2}.
+$$
+
+### Step 7: Establishing the Recursive Relation
+
+While the above formula provides a direct computation of $\Phi(N)$, it involves $O(N)$ operations. To achieve our target time complexity of $O\left(N^{2/3} (\log\log{N})^{1/3}\right)$, we need a more efficient approach.
+
+**Recursive Formula:**
+
+We can derive a recursive relation for $\Phi(N)$ based on the following identity:
+
+$$
+\sum_{d=1}^{N} \varphi(d) \cdot \left\lfloor \frac{N}{d} \right\rfloor = \frac{N(N + 1)}{2}.
+$$
+
+Rearranging the terms:
+
+$$
+\Phi(N) = \frac{N(N + 1)}{2} - \sum_{d=2}^{N} \varphi(d) \cdot \left\lfloor \frac{N}{d} \right\rfloor.
+$$
+
+However, directly computing this sum is inefficient. Instead, we observe that the values $\left\lfloor \frac{N}{d} \right\rfloor$ repeat for consecutive ranges of $d$. This allows us to group the summation terms based on the unique values of $\left\lfloor \frac{N}{d} \right\rfloor$.
+
+**Grouping Terms:**
+
+Let $k = \left\lfloor \frac{N}{d} \right\rfloor$. For each unique $k$, determine the range of $d$ values that produce the same $k$. Specifically:
+
+$$
+d \in \left( \frac{N}{k + 1}, \frac{N}{k} \right].
+$$
+
+The number of unique $k$ values is $O(N^{1/2})$, as for larger $k$, the intervals become narrower.
+
+**Final Recursive Formula:**
+
+By leveraging the above grouping, we arrive at the recursive formula:
+
+$$
+\Phi(N) = \frac{N(N + 1)}{2} - \sum_{k=2}^{\left\lfloor \frac{N}{2} \right\rfloor} \Phi\left( \left\lfloor \frac{N}{k} \right\rfloor \right).
 $$
 
 **Explanation:**
 
 - The term $\frac{N(N + 1)}{2}$ represents the sum of the first $N$ natural numbers.
-- The sum $\sum_{i=2}^{N} \Phi\left( \left\lfloor \frac{N}{i} \right\rfloor \right)$ accounts for the overcounting when summing over the divisors.
+- The summation $\sum_{k=2}^{\left\lfloor \frac{N}{2} \right\rfloor} \Phi\left( \left\lfloor \frac{N}{k} \right\rfloor \right)$ accounts for the overcounting in the initial summation by recursively subtracting contributions from smaller intervals.
 
-This recursive formula allows us to compute $\Phi(N)$ using the values of $\Phi$ at smaller arguments, which can be efficiently computed or stored.
+This recursive relation significantly reduces the number of computations by reusing previously computed values of $\Phi(n)$ for smaller $n$.
 
-### Step 6: Implementing the Algorithm
+### Step 8: Implementing the Algorithm
+
+With the recursive formula established, we can now outline the steps to implement the algorithm efficiently.
 
 #### Precomputing Small Values
 
-- Choose a threshold $k$, which is typically set as $k = \left( \frac{N}{\log\log N} \right)^{2/3}$.
+- Choose a threshold $k$, typically set as $k = \left( \frac{N}{\log\log N} \right)^{2/3}$.
 - Compute $\Phi(n)$ for all $n \leq k$ using a modified sieve algorithm.
 
 **Sieve Algorithm for $\varphi(n)$:**
@@ -380,56 +304,160 @@ This precomputes $\Phi(n)$ for $n \leq k$ in $O(k \log\log k)$ time.
 #### Recursive Computation for Larger Values
 
 For $n > k$, compute $\Phi(n)$ using the recursive formula:
+
 $$
-\Phi(n) = \frac{n(n + 1)}{2} - \sum_{i=2}^{n} \Phi\left( \left\lfloor \frac{n}{i} \right\rfloor \right).
-$$
-
-However, to optimize, we notice that many values of $\left\lfloor \frac{n}{i} \right\rfloor$ repeat. We can group these terms.
-
-### Step 7: Optimizing the Summation
-
-#### Bounding the Number of Unique Terms
-
-- The number of unique values of $\left\lfloor \frac{N}{i} \right\rfloor$ for $i$ from $2$ to $N$ is $O(N^{1/2})$.
-- This is because for each integer $k$, the equation $\left\lfloor \frac{N}{i} \right\rfloor = k$ corresponds to a range of $i$ values.
-
-#### Grouping Terms
-
-For each value of $k$, calculate the number of times it appears:
-$$
-\text{Number of } i \text{ such that } \left\lfloor \frac{N}{i} \right\rfloor = k = \left\lfloor \frac{N}{k} \right\rfloor - \left\lfloor \frac{N}{k + 1} \right\rfloor.
+\Phi(n) = \frac{n(n + 1)}{2} - \sum_{k=2}^{\left\lfloor \frac{n}{2} \right\rfloor} \Phi\left( \left\lfloor \frac{n}{k} \right\rfloor \right).
 $$
 
-Therefore, we can write the summation as:
-$$
-\sum_{i=2}^{N} \Phi\left( \left\lfloor \frac{N}{i} \right\rfloor \right) = \sum_{k=1}^{N} \left( \left\lfloor \frac{N}{k} \right\rfloor - \left\lfloor \frac{N}{k + 1} \right\rfloor \right) \cdot \Phi(k).
-$$
+**Memoization and Grouping:**
 
-This reduces the number of terms in the summation to $O(N^{1/2})$.
+To optimize the recursive calls:
 
-### Step 8: Time Complexity Analysis
+1. **Memoization:** Store computed values of $\Phi(n)$ to avoid redundant calculations.
+2. **Grouping:** Recognize that many $\left\lfloor \frac{n}{k} \right\rfloor$ values repeat. Group these terms to reduce the number of unique recursive calls.
+
+**Algorithm Steps:**
+
+1. **Initialize:**
+   - Precompute $\Phi(n)$ for $n \leq k$ using the sieve.
+2. **Recursion:**
+   - For each $n > k$, compute $\Phi(n)$ using the recursive formula.
+   - Utilize memoization to store and retrieve previously computed $\Phi(n)$ values.
+3. **Optimization:**
+   - Group similar terms based on unique $\left\lfloor \frac{n}{k} \right\rfloor$ values.
+   - This reduces the number of recursive computations from $O(n)$ to $O(n^{1/2})$.
+
+### Step 9: Time Complexity Analysis
 
 The total time complexity is determined by:
 
-1. **Precomputing $\Phi(n)$ for $n \leq k$**:
+1. **Precomputing $\Phi(n)$ for $n \leq k$:**
    - Time: $O(k \log\log k)$.
 
-2. **Computing $\Phi(n)$ for $n > k$**:
-   - The number of unique $\Phi(k)$ needed is $O(N^{1/2})$.
-   - Each computation takes constant time due to memoization.
+2. **Computing $\Phi(n)$ for $n > k$:**
+   - Due to grouping and memoization, the number of unique terms is reduced to $O(N^{1/2})$.
+   - Each computation involves constant-time operations thanks to memoization.
 
-Choosing $k = \left( \frac{N}{\log\log N} \right)^{2/3}$ balances the terms, resulting in an overall time complexity of:
+Choosing $k = \left( \frac{N}{\log\log N} \right)^{2/3}$ balances the precomputation and recursive steps, resulting in an overall time complexity of:
+
 $$
 O\left( N^{2/3} (\log\log N)^{1/3} \right).
 $$
 
-<!-- ![Flowchart of the Efficient Algorithm](Description: A flowchart showing the steps of the algorithm: precomputing small $\Phi(n)$, recursively computing larger $\Phi(n)$, grouping terms, and calculating the final sum.)
+This efficient time complexity makes the algorithm practical for large-scale computations of $\Phi(N)$.
 
+<!-- ![Flowchart of the Efficient Algorithm](Description: A flowchart showing the steps of the algorithm: precomputing small Φ(n), recursively computing larger Φ(n), grouping terms, and calculating the final sum.)
 *Description of the second image:* A flowchart illustrating the algorithm's process, from initializing the sieve for small $n$, to recursive computation for larger $n$, including grouping of terms to optimize the summation. -->
+
+
+## Implementation in C++
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+// Type definitions
+typedef long long ll;
+typedef unsigned long long ull;
+
+// Function to convert __int128 to string for printing
+string int128_to_string(__int128 n) {
+    bool negative = false;
+    if (n < 0) {
+        negative = true;
+        n = -n;
+    }
+    string s = "";
+    if (n == 0) return "0";
+    while (n > 0) {
+        char digit = '0' + (n % 10);
+        s += digit;
+        n /= 10;
+    }
+    if (negative) s += '-';
+    reverse(s.begin(), s.end());
+    return s;
+}
+
+// Maximum precompute limit
+const ll K = 1000000;
+
+// Precomputed Phi values up to K
+ll prePhi[K + 1];
+
+// Precomputed Phi sums up to K
+__int128 prePhiSum[K + 1];
+
+// Function to precompute phi(n) using Sieve of Eratosthenes
+void compute_phi() {
+    for (ll i = 0; i <= K; ++i) {
+        prePhi[i] = i;
+    }
+    for (ll p = 2; p <= K; ++p) {
+        if (prePhi[p] == p) { // p is prime
+            for (ll j = p; j <= K; j += p) {
+                prePhi[j] -= prePhi[j] / p;
+            }
+        }
+    }
+    // Compute cumulative sums
+    prePhiSum[0] = 0;
+    for (ll i = 1; i <= K; ++i) {
+        prePhiSum[i] = prePhiSum[i - 1] + prePhi[i];
+    }
+}
+
+// Memoization map for Phi(n)
+unordered_map<ll, __int128> memo;
+
+// Recursive function to compute Phi(n)
+__int128 Phi(ll n) {
+    if (n <= K) {
+        return prePhiSum[n];
+    }
+    if (memo.find(n) != memo.end()) {
+        return memo[n];
+    }
+    // Compute Phi(n) using the recursive formula
+    __int128 res = (__int128)n * (n + 1) / 2;
+    ll l = 2;
+    while (l <= n) {
+        ll q = n / l;
+        ll r = n / q;
+        if (r > n) r = n;
+        // Avoid exceeding n
+        if (q == 1) {
+            r = n;
+        }
+        // Compute Phi(q) recursively
+        __int128 phi_q = Phi(q);
+        res -= (phi_q) * (r - l + 1);
+        l = r + 1;
+    }
+    memo[n] = res;
+    return res;
+}
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(0);
+
+    compute_phi();
+
+    ll n;
+    cin>>n;
+
+    __int128 result = Phi(n);
+
+    cout << int128_to_string(result) << "\n";
+
+    return 0;
+}
+```
 
 ## Conclusion
 
-By leveraging mathematical identities and optimizing the computation through recursion and grouping, we have developed an efficient algorithm to compute the sum of Euler's Totient Function up to a large number $N$. This algorithm significantly reduces the time complexity from $O(N \log \log N)$ to $O\left( N^{2/3} (\log\log N)^{1/3} \right)$, making it practical for applications in cryptography and computational number theory where large values of $N$ are common.
+By leveraging **Dirichlet Convolution** and **Möbius Inversion**, along with strategic grouping and memoization, we have developed an efficient algorithm to compute the sum of Euler's Totient Function up to a large number $N$. This approach transforms the problem into a recursive relation that significantly reduces computational overhead, achieving a time complexity of $O\left( N^{2/3} (\log\log{N})^{1/3} \right)$. Such optimizations are invaluable in fields like cryptography and computational number theory, where handling large values of $N$ is commonplace.
 
 ## Further Reading
 
@@ -440,4 +468,3 @@ By leveraging mathematical identities and optimizing the computation through rec
 - **Algorithm Optimization Techniques**:
   - *Introduction to Algorithms* by Cormen, Leiserson, Rivest, and Stein
 - **Project Euler Problems**: [Project Euler](https://projecteuler.net/)
-
