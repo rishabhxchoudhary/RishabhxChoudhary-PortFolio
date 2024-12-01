@@ -57,43 +57,6 @@ const Post = ({ postData, similarPosts }) => {
     });
   }, [postData.contentHtml,similarPosts]);
 
-  // useEffect(() => {
-  //   const script = document.createElement("script");
-  //   script.type = "text/javascript";
-  //   script.text = `
-  //     window.MathJax = {
-  //       tex: {
-  //         inlineMath: [
-  //           ["$", "$"],         
-  //           ["\\\\(", "\\\\)"]  
-  //         ],
-  //         displayMath: [
-  //           ["$$", "$$"],       
-  //           ["\\\\[", "\\\\]"] 
-  //         ],
-  //         processEscapes: true,
-  //         tags: 'ams'
-  //       },
-  //       svg: {
-  //         fontCache: 'global'
-  //       }
-  //     };
-  //   `;
-  //   document.head.appendChild(script);
-
-  //   const scriptSrc = document.createElement("script");
-  //   scriptSrc.src =
-  //     "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js";
-  //   scriptSrc.async = true;
-  //   document.body.appendChild(scriptSrc);
-
-  //   return () => {
-  //     document.body.removeChild(scriptSrc);
-  //     document.head.removeChild(script);
-  //   };
-  // }, []);
-
-  // Get the current page URL for sharing
   const currentUrl = typeof window !== "undefined" ? window.location.href : "";
 
   return (
