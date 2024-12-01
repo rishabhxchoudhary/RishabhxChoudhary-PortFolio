@@ -15,46 +15,14 @@ When dealing with **static range sum queries**—where the array does not underg
 
 **Implementation:**
 ```cpp
-/*
-*    Author: rishabhxchoudhary
-*    Created: Sunday, 01.12.2024 11:08 AM (GMT+5:30)
-*/
-#include <bits/stdc++.h>
-using namespace std;
- 
-#define int long long int
-#define double long double
-#define endl '\n'
- 
-const int MOD = 1000000007;
- 
-signed main()
-{
-    ios_base::sync_with_stdio(0);
-    cin.tie(0);cout.tie(0);
- 
-    int n,q;
-    cin>>n>>q;
-    
-    vector<int>a(n);
-    vector<int>pre(n+1, 0);
-    for (int i = 0; i < n; i++) {
-        cin>>a[i];
-    }
-    pre[1] = a[0];
-    for (int i = 1; i <= n; i++) {
-        pre[i] = pre[i-1] + a[i-1];
-    }
-    
-    while(q--) {
-        int l, r;
-        cin>>l>>r;
-        cout<<pre[r] - pre[l-1]<<endl;
-    }
-    
- 
-    return 0;
-}
+# Preprocessing
+prefix = [0] * (n + 1)
+for i in range(n):
+    prefix[i + 1] = prefix[i] + array[i]
+
+# Query Sum from L to R
+def range_sum(L, R):
+    return prefix[R + 1] - prefix[L]
 ```
 
 **Complexity:**
@@ -67,7 +35,7 @@ signed main()
 - Simple to implement.
 
 **Cons:**
-- Requires O(n) additional space.
+- Requires $O(n)$ additional space.
 
 ### 2. **Segment Trees**
 
@@ -77,26 +45,6 @@ signed main()
 **Implementation:**
 - Build the segment tree by recursively dividing the array into halves.
 - To query, traverse the tree to sum relevant segments.
-
-**Complexity:**
-- **Preprocessing Time:** O(n)
-- **Space:** O(n)
-- **Query Time:** O(log n)
-
-**Pros:**
-- Efficient for both range queries and point updates (though updates aren't needed here).
-- Flexible for other range operations beyond sums.
-
-**Cons:**
-- More complex to implement compared to prefix sums.
-- Slightly slower query time for static sum queries compared to prefix sums.
-
-### 3. **Binary Indexed Trees (Fenwick Trees)**
-
-**Description:**
-- A data structure that provides efficient methods for cumulative frequency tables. Like segment trees, they are more advantageous when updates are involved but can be used for static queries.
-
-**Implementation:**
 
 ```cpp
 /*
@@ -194,9 +142,31 @@ signed main()
 ```
 
 **Complexity:**
-- **Preprocessing Time:** O(n log n)
-- **Space:** O(n)
-- **Query Time:** O(log n)
+- **Preprocessing Time:** $O(n)$
+- **Space:** $O(n)$
+- **Query Time:** $O(log n)$
+
+**Pros:**
+- Efficient for both range queries and point updates (though updates aren't needed here).
+- Flexible for other range operations beyond sums.
+
+**Cons:**
+- More complex to implement compared to prefix sums.
+- Slightly slower query time for static sum queries compared to prefix sums.
+
+### 3. **Binary Indexed Trees (Fenwick Trees)**
+
+**Description:**
+- A data structure that provides efficient methods for cumulative frequency tables. Like segment trees, they are more advantageous when updates are involved but can be used for static queries.
+
+**Implementation:**
+- Initialize the tree with the original array.
+- Use bit manipulation to compute prefix sums.
+
+**Complexity:**
+- **Preprocessing Time:** $O(n log n)$
+- **Space:** $O(n)$
+- **Query Time:** $O(log n)$
 
 **Pros:**
 - Less space overhead compared to segment trees.
@@ -215,9 +185,9 @@ signed main()
 - Sort queries in a specific order (e.g., using a block size) to reduce the total number of operations required to process all queries.
 
 **Complexity:**
-- **Preprocessing Time:** O(n) for sorting + O(n * sqrt(n)) for processing
-- **Space:** O(n)
-- **Query Time:** O(1) per query after sorting
+- **Preprocessing Time:** $O(n)$ for sorting + O(n * sqrt(n)) for processing
+- **Space:** $O(n)$
+- **Query Time:** $O(1)$ per query after sorting
 
 **Pros:**
 - Efficient for a large number of queries.
@@ -238,9 +208,9 @@ signed main()
 - For a query, sum the necessary full blocks and the remaining elements at the ends.
 
 **Complexity:**
-- **Preprocessing Time:** O(n)
-- **Space:** O(√n)
-- **Query Time:** O(√n)
+- **Preprocessing Time:** $O(n)$
+- **Space:** $O(√n)$
+- **Query Time:** $O(√n)$
 
 **Pros:**
 - Simple to implement.
@@ -250,18 +220,9 @@ signed main()
 - Slower query times compared to prefix sums and other methods for sum queries.
 - Not as commonly used for range sums where prefix sums suffice.
 
-### 6. **Difference Array with Prefix Sums**
-
-**Description:**
-- Although not a standard approach for static range sums, maintaining a difference array can be useful in certain scenarios. However, for pure range sums without updates, prefix sums are generally more efficient.
-
-**Pros and Cons:**
-- Typically more useful for scenarios involving range updates, which aren't applicable here.
-- Adds unnecessary complexity for static queries.
-
 ### **Conclusion**
 
-For **static range sum queries**, the **Prefix Sum** method is generally the most efficient and straightforward approach, offering O(1) query time with minimal preprocessing and implementation complexity. Other methods like **Segment Trees** and **Binary Indexed Trees** are more suitable when updates are involved or when handling more complex query types. **Mo's Algorithm** and **Block Decomposition** are useful in specific contexts, such as when dealing with a massive number of queries or when optimizing for cache performance, but they introduce additional complexity that isn't necessary for simple static range sum queries.
+For **static range sum queries**, the **Prefix Sum** method is generally the most efficient and straightforward approach, offering $O(1)$ query time with minimal preprocessing and implementation complexity. Other methods like **Segment Trees** and **Binary Indexed Trees** are more suitable when updates are involved or when handling more complex query types. **Mo's Algorithm** and **Block Decomposition** are useful in specific contexts, such as when dealing with a massive number of queries or when optimizing for cache performance, but they introduce additional complexity that isn't necessary for simple static range sum queries.
 
 ---
 
@@ -269,10 +230,10 @@ For **static range sum queries**, the **Prefix Sum** method is generally the mos
 
 | Method               | Preprocessing Time | Query Time | Space  | Notes                                  |
 |----------------------|--------------------|------------|--------|----------------------------------------|
-| Prefix Sum           | O(n)               | O(1)       | O(n)   | Best for static sum queries            |
-| Segment Tree         | O(n)               | O(log n)   | O(n)   | Useful for dynamic queries as well     |
-| Binary Indexed Tree  | O(n log n)         | O(log n)   | O(n)   | Alternative to segment trees           |
-| Mo's Algorithm       | O(n √n)            | O(1)       | O(n)   | Offline, best for many queries         |
-| Block Decomposition  | O(n)               | O(√n)      | O(√n)  | Simple but slower than prefix sums     |
+| Prefix Sum           | $O(n)$               | $O(1)$       | $O(n)$   | Best for static sum queries            |
+| Segment Tree         | $O(n)$               | $O(log n)$   | $O(n)$   | Useful for dynamic queries as well     |
+| Binary Indexed Tree  | $O(n log n)$         | $O(log n)$   | $O(n)$   | Alternative to segment trees           |
+| Mo's Algorithm       | O(n √n)            | $O(1)$       | $O(n)$   | Offline, best for many queries         |
+| Block Decomposition  | $O(n)$               | $O(√n)$      | $O(√n)$  | Simple but slower than prefix sums     |
 
 Choose the method that best fits the specific requirements and constraints of your application.
