@@ -207,6 +207,63 @@ signed main()
 - Precompute the sum of each block.
 - For a query, sum the necessary full blocks and the remaining elements at the ends.
 
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+#define int long long int
+#define double long double
+#define endl '\n'
+
+const int MOD = 1000000007;
+
+
+signed main()
+{
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);cout.tie(0);
+
+    int n,q;
+    cin>>n>>q;
+    vector<int>a(n);
+    for (int i = 0; i < n; i++) {
+        cin>>a[i];
+    }
+    
+    int SQRT = sqrt(n);
+    vector<int>store((n+SQRT-1)/SQRT);
+    for (int id = 0; id < (n+SQRT-1)/SQRT ; id++) {
+        int l = id * SQRT;
+        int r = l + SQRT-1;
+        for (int i = l; i <= min(r,n-1); i++) {
+            store[id] += a[i];
+        }
+    }   
+    
+    while (q--) {
+        int l,r; cin>>l>>r;
+        l--;r--;
+        int l_id = l/SQRT;
+        int r_id = r/SQRT;
+        int ans = 0;
+        for (int i = l; i <= min(r,(l_id+1)*SQRT-1); i++) {
+            ans += a[i];
+        }
+        for (int id = l_id+1; id <= r_id-1; id++) {
+            ans += store[id];
+        }
+        if (l_id!=r_id) {
+            for (int i = r_id*SQRT; i <= r; i++) {
+                ans += a[i];
+            }
+        }
+        cout<<ans<<endl;
+    }
+
+    return 0;
+}
+```
+
 **Complexity:**
 - **Preprocessing Time:** $O(n)$
 - **Space:** $O(√n)$
