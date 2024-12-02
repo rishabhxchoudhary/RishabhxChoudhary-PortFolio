@@ -47,10 +47,6 @@ def range_sum(L, R):
 - To query, traverse the tree to sum relevant segments.
 
 ```cpp
-/*
-*    Author: rishabhxchoudhary
-*    Created: Sunday, 01.12.2024 11:08 AM (GMT+5:30)
-*/
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -216,7 +212,6 @@ using namespace std;
 #define endl '\n'
 
 const int MOD = 1000000007;
-
 
 signed main()
 {
