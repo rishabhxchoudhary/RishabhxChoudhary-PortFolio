@@ -180,6 +180,92 @@ signed main()
 **Implementation:**
 - Sort queries in a specific order (e.g., using a block size) to reduce the total number of operations required to process all queries.
 
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+ 
+#define int long long int
+#define double long double
+#define endl '\n'
+ 
+const int MOD = 1000000007;
+ 
+struct Queries {
+    int left, right, idx;
+};
+ 
+int block_size;
+ 
+bool compare(const Queries &a, const Queries &b) {
+    int block_a = a.left/block_size;
+    int block_b = b.left/block_size;
+    
+    if (block_a!=block_b) {
+        return block_a < block_b;
+    }
+    return (block_a & 1) ? (a.right > b.right) : (a.right < b.right);
+}
+ 
+signed main()
+{
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);cout.tie(0);
+ 
+    int n,q;
+    cin>>n>>q;
+    vector<int>a(n);
+    for (int i = 0; i < n; i++) {
+        cin>>a[i];
+    }
+    
+    vector<Queries> queries(q);
+    for (int i = 0; i < q; i++) {
+        cin>>queries[i].left>>queries[i].right;
+        queries[i].left--;
+        queries[i].right--;
+        queries[i].idx = i;
+    }
+    
+    block_size = sqrt(n);
+    
+    sort(queries.begin(), queries.end(), compare);
+    
+    vector<int>answer(q);
+    
+    int current_sum = a[0];
+    int current_left = 0;
+    int current_right = 0;
+    
+    for(Queries &q : queries) {
+        int L = q.left;
+        int R = q.right;
+        while(current_left > L) {
+            current_left -= 1;
+            current_sum += a[current_left];
+        }
+        while(current_left < L) {
+            current_sum -= a[current_left];
+            current_left += 1;
+        }
+        while(current_right > R) {
+            current_sum -= a[current_right];
+            current_right -= 1;
+        }
+        while (current_right < R) {
+            current_right ++;
+            current_sum += a[current_right];
+        }
+        answer[q.idx] = current_sum;
+    }
+    
+    for(int ans: answer){
+        cout<<ans<<endl;
+    }
+ 
+    return 0;
+}
+```
+
 **Complexity:**
 - **Preprocessing Time:** $O(n)$ for sorting + O(n * sqrt(n)) for processing
 - **Space:** $O(n)$
