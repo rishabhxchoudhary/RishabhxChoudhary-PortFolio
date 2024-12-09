@@ -3,7 +3,7 @@ title: "Unleashing the Power of Sparse Tables for O(1) Range Minimum Queries"
 date: "9 December 2024"
 category: "Range Queries"
 tags: ['Range Minimum Query','Sparse Table']
-about: ""
+about: "This blog is dedicated to simplifying complex mathematical and computational concepts into understandable, actionable insights. Whether you’re exploring data structures like Sparse Tables or delving into intricate algorithmic techniques, our goal is to guide you through the theory, walk you through clear examples, and equip you with the tools to apply these ideas in your own coding projects. By breaking down problems step-by-step and providing real-world context, we strive to turn challenging topics into approachable lessons for learners at every level."
 ---
 
 ## Introduction
