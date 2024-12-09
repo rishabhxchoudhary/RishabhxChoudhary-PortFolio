@@ -65,7 +65,7 @@ const PostCard = ({ post }) => {
           <Button
             auto
             flat
-            color="primary"
+            color="secondary"
             iconRight={<ChevronRightIcon />}
             className="w-full text-center"
           >
