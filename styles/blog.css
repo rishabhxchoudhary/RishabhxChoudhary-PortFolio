@@ -2,7 +2,7 @@
 .blog h1 {
     color: #F3F4F6; /* text.light */
     font-family: 'Inter', sans-serif;
-    font-size: 2.25rem; /* Equivalent to text-4xl in Tailwind */
+    font-size: 26px; /* Equivalent to text-4xl in Tailwind */
     font-weight: 700; /* Bold */
     margin-bottom: 1rem;
   }
@@ -10,7 +10,7 @@
   .blog   h2 {
     color: #F3F4F6; /* text.light */
     font-family: 'Inter', sans-serif;
-    font-size: 1.875rem; /* Equivalent to text-3xl */
+    font-size: 24px; /* Equivalent to text-3xl */
     font-weight: 700;
     margin-bottom: 0.75rem;
   }
@@ -18,43 +18,43 @@
   .blog h3 {
     color: #F3F4F6; /* text.light */
     font-family: 'Inter', sans-serif;
-    font-size: 1.5rem; /* text-2xl */
+    font-size: 22px; /* text-2xl */
     font-weight: 700;
     margin-bottom: 0.5rem;
   }
   
   .blog h4, h5, h6 {
-    color: #F3F4F6; /* text.light */
+    color: #F3F4F6;
     font-family: 'Inter', sans-serif;
-    font-weight: 600;
+    font-size: 20px;
     margin-bottom: 0.5rem;
   }
   
   /* Paragraphs */
   .blog p {
     color: #D1D5DB; /* text.DEFAULT */
-    font-size: 1rem; /* text-base */
+    font-size: 14px; /* text-base */
     line-height: 1.6;
     margin-bottom: 1rem;
   }
   
   /* Links */
   a {
-    color: #3B82F6; /* primary.light */
+    /* color: #3B82F6; primary.light */
     text-decoration: none;
     transition: color 0.3s ease;
   
     &:hover {
-      color: #1E3A8A; /* primary.DEFAULT */
+      color: #FFF; /* primary.DEFAULT */
       text-decoration: underline;
     }
   }
   
   /* Blockquotes */
   .blog blockquote {
-    border-left: 4px solid #A78BFA; /* secondary.light */
-    background-color: #1F2937; /* background.dark */
-    color: #9CA3AF; /* text.dark */
+    border-left: 4px solid #14B8A6; /* secondary.light */
+    background-color: #303340; /* background.dark */
+    color: #F9F9FA; /* text.dark */
     padding: 0.5rem 1rem;
     margin: 1.5rem 0;
     font-style: italic;
@@ -62,8 +62,8 @@
   
   /* Code Blocks */
   .blog pre {
-    background-color: #1F2937; /* background.dark */
-    color: #D1D5DB; /* text.DEFAULT */
+    background-color: #303340; /* background.dark */
+    color: #F9F9FA; /* text.DEFAULT */
     padding: 1rem;
     border-radius: 0.5rem;
     overflow-x: auto;
@@ -73,7 +73,7 @@
   
   /* Lists */
   .blog ul, .blog ol {
-    color: #D1D5DB;
+    color: #F9F9FA;
     margin-bottom: 1rem;
     padding-left: 1.5rem;
     list-style-type: disc;
@@ -141,11 +141,11 @@
   
   /* Strong and Emphasis */
   .blog strong {
-    color: #A78BFA; /* primary.light */
+    color: #FFF; /* primary.light */
   }
   
   .blog em {
-    color: #A78BFA; /* secondary.light */
+    color: #14B8A6; /* secondary.light */
     font-style: italic;
   }
   
@@ -153,3 +153,6 @@
   .blog a img {
     border: none;
   }
+
+
+  

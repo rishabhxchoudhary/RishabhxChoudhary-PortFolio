@@ -44,7 +44,8 @@ html::-webkit-scrollbar, body::-webkit-scrollbar {
 
 body, html {
   --tw-bg-opacity: 1;
-  background-color: rgb(17 24 39 / var(--tw-bg-opacity)) /* #111827 */;
+  /* background-color: rgb(17 24 39 / var(--tw-bg-opacity)) #111827; */
+  /* background-color: #272935; */
   /* @apply bg-background-default text-text-default; */
 }
 

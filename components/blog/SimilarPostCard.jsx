@@ -40,7 +40,7 @@ const SimilarPostsCard = ({ post }) => {
         
         <div className="mb-4 flex flex-wrap gap-2">
           <Chip
-            color="primary"
+            color="secondary"
             bordered
             className="m-1"
           >

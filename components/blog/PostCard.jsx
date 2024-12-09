@@ -43,7 +43,7 @@ const PostCard = ({ post }) => {
 
         {/* Categories and Tags */}
         <div className="mb-4 flex flex-wrap gap-2">
-          <Chip color="primary" bordered className="m-1">
+          <Chip color="secondary" bordered className="m-1">
             {post.category}
           </Chip>
           {post.tags.map((tag, index) => (

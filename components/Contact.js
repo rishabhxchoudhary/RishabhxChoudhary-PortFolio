@@ -24,7 +24,7 @@ const Contact = () => {
   };
 
   return (
-    <section id="contact" className="py-20 dark:bg-background bg-gray-800 text-text">
+    <section id="contact" className="py-20 dark:bg-background bg-background-dark text-text">
       <div className="container mx-auto px-4 mb-20">
         <motion.h2
           className="text-4xl font-semibold mb-12 text-text-light text-center"

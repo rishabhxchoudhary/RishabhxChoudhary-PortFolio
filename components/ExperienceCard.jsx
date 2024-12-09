@@ -26,7 +26,7 @@ const ExperienceCard = () => {
       {experiences.map((exp, index) => (
         <motion.div
           key={index}
-          className="bg-background dark:bg-gray-800 p-6 rounded-lg shadow-lg flex"
+          className="bg-background dark:bg-background-dark p-6 rounded-lg shadow-lg flex"
           initial={{ opacity: 0, x: -50 }}
           whileInView={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5, delay: index * 0.2 }}

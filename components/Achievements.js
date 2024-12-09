@@ -133,7 +133,7 @@ const Achievements = () => {
                 href={cert.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-background dark:bg-gray-800 p-4 rounded-lg shadow-lg flex flex-col items-center hover:shadow-3xl transition-shadow duration-300 max-w-xs mx-auto"
+                className="bg-background dark:bg-background-dark p-4 rounded-lg shadow-lg flex flex-col items-center hover:shadow-3xl transition-shadow duration-300 max-w-xs mx-auto"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >

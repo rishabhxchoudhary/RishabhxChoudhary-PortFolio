@@ -14,7 +14,7 @@ const Header = () => {
 
         <div className="flex items-center">
           <Link href="/">
-            <button type="button" className="ml-4 px-4 py-2 bg-accent text-white rounded hover:bg-accent-dark transition duration-150">
+            <button type="button" className="ml-4 px-4 py-2 bg-secondary text-white rounded transition duration-150">
               Home
             </button>
           </Link>

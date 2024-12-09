@@ -428,7 +428,7 @@ const Blog = ({ allPosts }) => {
         </aside>
 
         {/* Main Content for Blog Posts */}
-        <main className="w-full md:w-3/4 p-6 scrollbar-custom">
+        <main className="w-full md:w-3/4 p-6 pt-0 scrollbar-custom">
           {filteredPosts ? filteredPosts.length > 0 ? (
             filteredPosts.map((post) => (
               <PostCard key={post.slug} post={post} />

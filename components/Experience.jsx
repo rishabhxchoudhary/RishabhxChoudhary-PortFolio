@@ -112,8 +112,8 @@ const ExperienceItem = ({ exp, index }) => {
       {/* Content */}
       <div onClick={()=>{
         setIsOpen(!isOpen);
-      }} className={`mt-4 cursor-pointer md:mt-0 md:px-6 lg:px-12 w-full ${isCentered ? "md:w-1/2" : "md:w-1/2"}`}>
-        <div className="bg-background dark:bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-3xl transition-shadow duration-300">
+      }} className={`z-10 mt-4 cursor-pointer md:mt-0 md:px-6 lg:px-12 w-full ${isCentered ? "md:w-1/2" : "md:w-1/2"}`}>
+        <div className="bg-background-dark p-6 rounded-lg shadow-lg hover:shadow-3xl transition-shadow duration-300">
           <h3 className="text-2xl font-bold text-text-light">{exp.title}</h3>
           <span className="text-gray-400">
             {exp.organization} | {exp.duration} | {exp.location}

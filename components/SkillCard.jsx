@@ -16,7 +16,7 @@ const SkillCard = () => {
       {skills.map((skill, index) => (
         <motion.div
           key={index}
-          className="bg-background dark:bg-gray-800 p-6 rounded-lg shadow-lg flex flex-col items-center"
+          className="bg-background dark:bg-background-dark p-6 rounded-lg shadow-lg flex flex-col items-center"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: index * 0.2 }}

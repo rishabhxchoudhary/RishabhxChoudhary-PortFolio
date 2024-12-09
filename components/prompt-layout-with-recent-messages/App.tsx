@@ -48,7 +48,7 @@ export default function Component() {
   return (
     <section
       id="ask"
-      className="py-20 w-full dark:bg-background bg-gray-800 text-text"
+      className="py-20 w-full dark:bg-background bg-background-dark text-text"
     >
       <div className="">
         <SidebarContainer
