@@ -2,7 +2,7 @@
 title: "Securely Deploying a Private EC2 Server with a Bastion Host and Lambda in AWS"
 date: "9 Feb 2025"
 category: "Cloud"
-# coverImage: "/images/private_ec2_deployment/cover.webp"
+coverImage: "/images/aws-ec2-with-private-subnet/aws-ec2-with-private-subnet.png"
 tags: ['AWS VPC', 'Bastion Host', 'Lambda', 'Private Subnet', 'NAT Gateway', 'Node.js', 'Security']
 about: "In this comprehensive blog, discover how to build a production-like AWS environment with a private EC2 server that’s isolated from the public internet, accessible only through a bastion host. We’ll walk through configuring a VPC with public and private subnets, setting up a NAT Gateway for outbound traffic, and deploying a Lambda function that securely communicates with your private server. Whether you're aiming to lock down your infrastructure or explore serverless architectures in tandem with EC2, this step-by-step guide provides the hands-on insights and examples you need."
 ---
