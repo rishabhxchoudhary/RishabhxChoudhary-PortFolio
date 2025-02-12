@@ -286,6 +286,25 @@ EOF
 node index.js > /home/ec2-user/app.log 2>&1 &
 ```
 
+if you want to use SSM, attach an SSM role to this ec2, and you can use this user data for ubuntu here:
+```
+#!/bin/bash
+# Update the package list
+sudo apt update -y
+
+# Download the Session Manager plugin deb package
+curl "https://s3.amazonaws.com/session-manager-downloads/plugin/latest/ubuntu_64bit/session-manager-plugin.deb" -o "session-manager-plugin.deb"
+
+# Install the package
+sudo dpkg -i session-manager-plugin.deb
+
+# Clean up the installer file
+rm -f session-manager-plugin.deb
+
+# Verify installation
+session-manager-plugin --version
+```
+
 8. **Launch** the instance. It will start in the private subnet with no public IP.
 
 ---
