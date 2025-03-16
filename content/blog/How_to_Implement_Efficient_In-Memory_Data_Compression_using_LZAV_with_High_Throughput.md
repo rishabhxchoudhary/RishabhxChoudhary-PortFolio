@@ -5,7 +5,6 @@ category: "Programming"
 tags: ['Data Compression', 'Performance Benchmarking']
 about: "This blog will guide you through implementing the LZAV algorithm, a high-performance data compression library, demonstrating its superior speed and compression ratio compared to popular alternatives like LZ4, Snappy, and Zstd. We will provide a step-by-step algorithmic explanation, performance benchmarks, and fully executable code samples to help you integrate LZAV into your projects effectively."
 ---
-```
 
 # How to Implement Efficient In-Memory Data Compression using LZAV with High Throughput
 
