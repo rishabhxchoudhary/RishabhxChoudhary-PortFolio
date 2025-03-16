@@ -1,4 +1,3 @@
-```yaml
 ---
 title: "How to Achieve High-Performance Data Compression using LZAV with Impressive Speedup"
 date: "16 March 2025"
