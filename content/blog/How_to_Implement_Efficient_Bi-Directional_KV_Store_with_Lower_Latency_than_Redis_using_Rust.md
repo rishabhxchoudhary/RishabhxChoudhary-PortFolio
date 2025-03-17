@@ -1,4 +1,3 @@
-
 ---
 title: "How to Implement Efficient Bi-Directional KV Store with Lower Latency than Redis using Rust"
 date: "17 March 2025"
