@@ -6,7 +6,6 @@ category: "Computer Science"
 tags: ['bi-directional KV store', 'Redis alternative', 'Rust performance']
 about: "This blog will guide you through implementing a bi-directional key-value store using Rust, demonstrating how it achieves lower latency compared to Redis. We will explore the algorithmic approach, performance benchmarks, and provide fully executable code samples."
 ---
-```
 
 # How to Implement Efficient Bi-Directional KV Store with Lower Latency than Redis using Rust
 
