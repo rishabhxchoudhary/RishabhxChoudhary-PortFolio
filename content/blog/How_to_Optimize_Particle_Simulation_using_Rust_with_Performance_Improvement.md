@@ -5,7 +5,6 @@ category: "Programming"
 tags: ['Rust', 'Particle Simulation']
 about: "This blog will guide you through optimizing particle simulations using Rust, leveraging its performance advantages over traditional languages like C."
 ---
-```
 
 # How to Optimize Particle Simulation using Rust with Performance Improvement
 
