@@ -1,4 +1,3 @@
-
 ---
 title: "How to Optimize Image Processing in C with Parallel Algorithms for Real-Time Performance"
 date: "17 March 2025"
@@ -6,7 +5,6 @@ category: "Computer Science"
 tags: ['Image Processing', 'Parallel Algorithms', 'C Programming']
 about: "This blog will explore how to optimize image processing tasks in C using parallel algorithms. We will compare the performance of sequential and parallel implementations, analyze their complexity, and provide fully executable code samples. By the end, readers will understand how to leverage multi-core processors to achieve significant speedup in image processing tasks."
 ---
-```
 
 # How to Optimize Image Processing in C with Parallel Algorithms for Real-Time Performance
 
