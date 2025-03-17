@@ -5,7 +5,6 @@ category: "Programming"
 tags: ['Laplacian Mesh Smoothing', 'Python', 'performance improvement']
 about: "This blog will guide you through implementing Laplacian Mesh Smoothing in Python, providing a step-by-step algorithmic explanation, performance benchmarks, and comparisons with other smoothing techniques. You'll learn how to achieve significant performance improvements and produce high-quality smoothed meshes efficiently."
 ---
-```
 
 # How to Implement Efficient Laplacian Mesh Smoothing using Python with Performance Improvement
 
