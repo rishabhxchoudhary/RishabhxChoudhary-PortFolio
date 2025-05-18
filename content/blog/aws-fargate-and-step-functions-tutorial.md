@@ -6,7 +6,11 @@ tags: ["AWS", "Fargate", "Step Functions", "Serverless", "TypeScript", "Docker",
 # coverImage: "/images/fargate-stepfunctions-math/cover.webp" # Optional: Add a relevant cover image path
 about: "Learn how to build a robust, serverless application on AWS to perform calculations like $f(x) = x^2 + x$. This step-by-step tutorial guides you through using TypeScript, Docker, AWS Fargate for container execution, S3 for storage, and AWS Step Functions for workflow orchestration, including automated retries for resilience. Perfect for beginners and those looking to combine these powerful AWS services."
 ---
-# AWS Fargate and Step Functions Tutotial Workflow
+
+# Serverless Superpowers: Calculating $f(x) = x^2 + x$ with AWS Fargate and Step Functions
+<!-- Changed H1 to be more engaging and match the YAML title -->
+<!-- Removed "Tutotial Workflow" as the title is more encompassing -->
+
 ## Introduction
 
 Imagine you have a special math problem you need to solve, say, calculating the value of a function $f(x) = x^2 + x$. Simple enough for a pocket calculator, right? But what if you needed to do this calculation thousands of times, ensure it always works, and get a notification if it fails? What if you wanted this calculation to happen automatically in the cloud without worrying about managing servers?
@@ -20,7 +24,7 @@ This journey will take us through some core AWS services, and by the end, you'll
 We're using a specific set of tools, and each brings its own superpower to our project:
 
 *   **TypeScript:** It's JavaScript with "superpowers" (static typing!). This helps us catch errors early and write more maintainable code for our calculator.
-*   **AWS S3 (Simple Storage Service):** Think of S3 as infinitely scalable cloud storage. It's our "digital mailbox" where we'll drop off the input number `x` and pick up the calculated result.
+*   **AWS S3 (Simple Storage Service):** Think of S3 as infinitely scalable cloud storage. It's our "digital mailbox" where we'll drop off the input number $x$ and pick up the calculated result.
 *   **Docker:** This is like a magical shipping container for our code. We package our TypeScript application and all its needs (like Node.js) into a Docker image. This "container" can then run consistently anywhere – on our laptop or in AWS Fargate.
 *   **AWS ECR (Elastic Container Registry):** Once we have our Docker "shipping container," ECR is the secure port where we store it in the cloud, ready for Fargate to use.
 *   **AWS Fargate:** This is where the magic of "serverless containers" happens. We give Fargate our Docker image, and it runs our calculator without us ever needing to pick a server, patch an operating system, or worry about scaling. It just runs!
@@ -196,39 +200,33 @@ calculateAndStore()
         console.error("Function execution failed. Exiting with code 1.", err);
         process.exit(1); // Failure
     });
-
 ```
+<!-- Ensured proper backticks for code block and language specifier -->
 
 A few key things about this code:
+*   It reads S3 bucket and key names from environment variables (`process.env.VAR_NAME`). This is how our Fargate task will know where to find its input and where to put its output.
+*   It uses the AWS SDK v3 for JavaScript to interact with S3.
+*   **Crucially for retries:** If anything goes wrong (e.g., file not found, input `x` is not a number), it throws an error. `calculateAndStore()` is wrapped in a `.then().catch()` that calls `process.exit(1)` on error. This non-zero exit code tells Fargate (and thus Step Functions) that this attempt failed. A `process.exit(0)` signals success.
+<!-- Made env variable a code span. Made function call a code span. Made x a mathjax span -->
+<!-- Used bullet points for better readability -->
 
-It reads S3 bucket and key names from environment variables (process.env.VAR_NAME). This is how our Fargate task will know where to find its input and where to put its output.
-
-It uses the AWS SDK v3 for JavaScript to interact with S3.
-
-Crucially for retries: If anything goes wrong (e.g., file not found, input x is not a number), it throws an error. calculateAndStore() is wrapped in a .then().catch() that calls process.exit(1) on error. This non-zero exit code tells Fargate (and thus Step Functions) that this attempt failed. A process.exit(0) signals success.
-
-Compile the Code
-
+### Compile the Code
+<!-- Made this a H3 -->
 Now, compile your TypeScript into JavaScript:
-
+```bash
 npm run build
-IGNORE_WHEN_COPYING_START
-content_copy
-download
-Use code with caution.
-Bash
-IGNORE_WHEN_COPYING_END
+```
+<!-- Removed IGNORE_WHEN_COPYING_START/END and other non-markdown elements -->
+This will create a `dist` folder containing `index.js`.
 
-This will create a dist folder containing index.js.
-
-Part 2: Packaging Our Calculator (Docker & ECR)
-
+## Part 2: Packaging Our Calculator (Docker & ECR)
+<!-- Changed heading to H2 -->
 Our TypeScript code needs an environment to run in (Node.js) and needs to be packaged up so Fargate can use it. That's where Docker comes in.
 
-The Dockerfile
-
-Create a file named Dockerfile (no extension) in your project root:
-```
+### The Dockerfile
+<!-- Made this a H3 -->
+Create a file named `Dockerfile` (no extension) in your project root:
+```dockerfile
 # Use an official Node.js runtime as a parent image
 # Using a slim version to keep the image size small
 FROM node:18-slim
@@ -259,485 +257,367 @@ ENV AWS_REGION="your-aws-region" # e.g., us-east-1
 # Command to run the application when the container starts
 CMD [ "node", "dist/index.js" ]
 ```
+<!-- Ensured proper backticks for code block and language specifier -->
 
-This Dockerfile tells Docker:
+This `Dockerfile` tells Docker:
+<!-- Changed from "This Dockerfile tells Docker:" to a list for clarity -->
+1.  Start with a basic Node.js 18 environment.
+2.  Set up a working directory inside the container.
+3.  Copy `package.json` and install only production dependencies (we don't need TypeScript inside the running container, just the compiled JavaScript).
+4.  Copy our compiled `dist` folder into the container.
+5.  Define some environment variables (these will be overridden later).
+6.  Specify the command to run when the container starts: `node dist/index.js`.
 
-Start with a basic Node.js 18 environment.
-
-Set up a working directory inside the container.
-
-Copy package.json and install only production dependencies (we don't need TypeScript inside the running container, just the compiled JavaScript).
-
-Copy our compiled dist folder into the container.
-
-Define some environment variables (these will be overridden later).
-
-Specify the command to run when the container starts: node dist/index.js.
-
-Build and Push to ECR (Elastic Container Registry)
-
+### Build and Push to ECR (Elastic Container Registry)
+<!-- Made this a H3 -->
 ECR is AWS's private Docker image registry.
 
-Create an ECR Repository:
+1.  **Create an ECR Repository:**
+    *   Go to the AWS ECR console.
+    *   Click "Create repository."
+    *   Choose "Private."
+    *   Repository name: `fargate-math-calculator`.
+    *   Click "Create repository."
+    *   Once created, select your repository and click "View push commands." These are super helpful!
+    <!-- Changed to ordered list for steps, and bullet points for sub-steps -->
 
-Go to the AWS ECR console.
+2.  **Follow ECR Push Commands:**
+    Open your terminal in the `fargate-math-function` project directory. The commands will look similar to this (replace `123456789012` with your AWS Account ID and `your-aws-region` with the region you're working in, e.g., `us-east-1`):
 
-Click "Create repository."
-
-Choose "Private."
-
-Repository name: fargate-math-calculator.
-
-Click "Create repository."
-
-Once created, select your repository and click "View push commands." These are super helpful!
-
-Follow ECR Push Commands:
-Open your terminal in the fargate-math-function project directory. The commands will look similar to this (replace 123456789012 with your AWS Account ID and your-aws-region with the region you're working in, e.g., us-east-1):
-
-Authenticate Docker to your ECR registry:
-
-aws ecr get-login-password --region your-aws-region | docker login --username AWS --password-stdin 123456789012.dkr.ecr.your-aws-region.amazonaws.com
-IGNORE_WHEN_COPYING_START
-content_copy
-download
-Use code with caution.
-Bash
-IGNORE_WHEN_COPYING_END
-
-Build your Docker image:
-
-docker build -t fargate-math-calculator .
-IGNORE_WHEN_COPYING_START
-content_copy
-download
-Use code with caution.
-Bash
-IGNORE_WHEN_COPYING_END
-
-Tag your image for ECR:
-
-docker tag fargate-math-calculator:latest 123456789012.dkr.ecr.your-aws-region.amazonaws.com/fargate-math-calculator:latest
-IGNORE_WHEN_COPYING_START
-content_copy
-download
-Use code with caution.
-Bash
-IGNORE_WHEN_COPYING_END
-
-Push the image to ECR:
-
-docker push 123456789012.dkr.ecr.your-aws-region.amazonaws.com/fargate-math-calculator:latest
-IGNORE_WHEN_COPYING_START
-content_copy
-download
-Use code with caution.
-Bash
-IGNORE_WHEN_COPYING_END
+    *   **Authenticate Docker to your ECR registry:**
+        ```bash
+        aws ecr get-login-password --region your-aws-region | docker login --username AWS --password-stdin 123456789012.dkr.ecr.your-aws-region.amazonaws.com
+        ```
+    *   **Build your Docker image:**
+        ```bash
+        docker build -t fargate-math-calculator .
+        ```
+    *   **Tag your image for ECR:**
+        ```bash
+        docker tag fargate-math-calculator:latest 123456789012.dkr.ecr.your-aws-region.amazonaws.com/fargate-math-calculator:latest
+        ```
+    *   **Push the image to ECR:**
+        ```bash
+        docker push 123456789012.dkr.ecr.your-aws-region.amazonaws.com/fargate-math-calculator:latest
+        ```
+        <!-- Removed IGNORE_WHEN_COPYING_START/END from each code block -->
+        <!-- Added bolding to the sub-steps for emphasis -->
 
 Now your calculator is packaged and stored safely in AWS!
 
-Part 3: Setting the Stage in AWS - The Infrastructure
-
+## Part 3: Setting the Stage in AWS - The Infrastructure
+<!-- Changed to H2 -->
 With our code ready, we need to set up the AWS environment.
 
-1. S3 Buckets (Our Mailboxes)
-
+### 1. S3 Buckets (Our Mailboxes)
+<!-- H3 for sub-section -->
 Create two S3 buckets in your chosen AWS region. Bucket names must be globally unique.
+*   An **input bucket** (e.g., `my-fargate-math-input-yourname-date`).
+*   An **output bucket** (e.g., `my-fargate-math-output-yourname-date`).
 
-An input bucket (e.g., my-fargate-math-input-yourname-date).
-
-An output bucket (e.g., my-fargate-math-output-yourname-date).
-
-2. IAM Roles (The Security Guards)
-
+### 2. IAM Roles (The Security Guards)
+<!-- H3 for sub-section -->
 Our services need permissions to interact. We'll create three IAM roles:
 
-A. FargateMathTaskRole (for the code inside the Fargate container):
+*   **A. `FargateMathTaskRole` (for the code inside the Fargate container):**
+    *   Go to IAM console -> Roles -> Create role.
+    *   Trusted entity: "AWS service," Use case: "Elastic Container Service Task."
+    *   Permissions:
+        *   `AmazonS3FullAccess` (For a production app, you'd restrict this to *only* your input/output buckets).
+        *   `CloudWatchLogsFullAccess` (or a more restrictive policy allowing log creation and writing to a specific log group).
+    *   Name it `FargateMathTaskRole`.
+    <!-- Added backticks for role name -->
 
-Go to IAM console -> Roles -> Create role.
+*   **B. `MyECSTaskExecutionRole` (for Fargate service itself):**
+    This role allows ECS/Fargate to pull images from ECR and write logs. AWS often has a default `ecsTaskExecutionRole`. If it exists and has the `AmazonECSTaskExecutionRolePolicy` attached, you can use it. Otherwise, create it:
+    *   Trusted entity: "AWS service," Use case: "Elastic Container Service Task."
+    *   Permissions: Attach the AWS managed policy `AmazonECSTaskExecutionRolePolicy`.
+    *   Name it `MyECSTaskExecutionRole` (or note the name of your existing `ecsTaskExecutionRole`).
+    <!-- Added backticks for role names and policy name -->
 
-Trusted entity: "AWS service," Use case: "Elastic Container Service Task."
-
-Permissions:
-
-AmazonS3FullAccess (For a production app, you'd restrict this to only your input/output buckets).
-
-CloudWatchLogsFullAccess (or a more restrictive policy allowing log creation and writing to a specific log group).
-
-Name it FargateMathTaskRole.
-
-B. MyECSTaskExecutionRole (for Fargate service itself):
-This role allows ECS/Fargate to pull images from ECR and write logs. AWS often has a default ecsTaskExecutionRole. If it exists and has the AmazonECSTaskExecutionRolePolicy attached, you can use it. Otherwise, create it:
-
-Trusted entity: "AWS service," Use case: "Elastic Container Service Task."
-
-Permissions: Attach the AWS managed policy AmazonECSTaskExecutionRolePolicy.
-
-Name it MyECSTaskExecutionRole (or note the name of your existing ecsTaskExecutionRole).
-
-C. StepFunctionsFargateMathRole (for the Step Function state machine):
-This role allows Step Functions to start Fargate tasks and pass the other roles to it.
-
-Trusted entity: "AWS service," Use case: "Step Functions."
-
-Permissions: Create a new inline policy or a customer-managed policy. Click "Create policy," choose JSON, and paste this (replace YOUR_AWS_ACCOUNT_ID and YOUR_AWS_REGION):
-
-```json
-{
-    "Version": "2012-10-17",
-    "Statement": [
+*   **C. `StepFunctionsFargateMathRole` (for the Step Function state machine):**
+    This role allows Step Functions to start Fargate tasks and pass the other roles to it.
+    *   Trusted entity: "AWS service," Use case: "Step Functions."
+    *   Permissions: Create a new inline policy or a customer-managed policy. Click "Create policy," choose JSON, and paste this (replace `YOUR_AWS_ACCOUNT_ID` and `YOUR_AWS_REGION`):
+        ```json
         {
-            "Effect": "Allow",
-            "Action": "ecs:RunTask",
-            "Resource": [
-                "arn:aws:ecs:YOUR_AWS_REGION:YOUR_AWS_ACCOUNT_ID:task-definition/fargate-math-task:*",
-                "arn:aws:ecs:YOUR_AWS_REGION:YOUR_AWS_ACCOUNT_ID:cluster/*" // To specify cluster on RunTask
+            "Version": "2012-10-17",
+            "Statement": [
+                {
+                    "Effect": "Allow",
+                    "Action": "ecs:RunTask",
+                    "Resource": [
+                        "arn:aws:ecs:YOUR_AWS_REGION:YOUR_AWS_ACCOUNT_ID:task-definition/fargate-math-task:*",
+                        "arn:aws:ecs:YOUR_AWS_REGION:YOUR_AWS_ACCOUNT_ID:cluster/*" // To specify cluster on RunTask
+                    ]
+                },
+                {
+                    "Effect": "Allow",
+                    "Action": "iam:PassRole",
+                    "Resource": [
+                        "arn:aws:iam::YOUR_AWS_ACCOUNT_ID:role/FargateMathTaskRole",
+                        "arn:aws:iam::YOUR_AWS_ACCOUNT_ID:role/MyECSTaskExecutionRole" 
+                        // Ensure these role names match what you created/are using
+                    ]
+                },
+                {
+                    "Effect": "Allow",
+                    "Action": [
+                        "ecs:StopTask",
+                        "ecs:DescribeTasks"
+                    ],
+                    "Resource": "*" // For .sync integration, it needs to describe any task it started.
+                },
+                {
+                    "Effect": "Allow",
+                    "Action": [
+                       "events:PutTargets",
+                       "events:PutRule",
+                       "events:DescribeRule"
+                    ],
+                    "Resource": ["arn:aws:events:YOUR_AWS_REGION:YOUR_AWS_ACCOUNT_ID:rule/StepFunctionsGetEventsForECSTaskRule"]
+                 }
             ]
-        },
-        {
-            "Effect": "Allow",
-            "Action": "iam:PassRole",
-            "Resource": [
-                "arn:aws:iam::YOUR_AWS_ACCOUNT_ID:role/FargateMathTaskRole",
-                "arn:aws:iam::YOUR_AWS_ACCOUNT_ID:role/MyECSTaskExecutionRole" 
-                // Ensure these role names match what you created/are using
-            ]
-        },
-        {
-            "Effect": "Allow",
-            "Action": [
-                "ecs:StopTask",
-                "ecs:DescribeTasks"
-            ],
-            "Resource": "*" // For .sync integration, it needs to describe any task it started.
-        },
-        {
-            "Effect": "Allow",
-            "Action": [
-               "events:PutTargets",
-               "events:PutRule",
-               "events:DescribeRule"
-            ],
-            "Resource": ["arn:aws:events:YOUR_AWS_REGION:YOUR_AWS_ACCOUNT_ID:rule/StepFunctionsGetEventsForECSTaskRule"]
-         }
-    ]
-}
-```
+        }
+        ```
+        <!-- Ensured proper backticks for code block and language specifier -->
+        Name this policy something like `StepFunctionsFargateMathPolicy` and attach it to the role.
+        Also, attach `CloudWatchLogsFullAccess` to this role so the Step Function itself can log its execution.
+    *   Name the role `StepFunctionsFargateMathRole`.
+    <!-- Added backticks for policy and role names -->
 
-Name this policy something like StepFunctionsFargateMathPolicy and attach it to the role.
-Also, attach CloudWatchLogsFullAccess to this role so the Step Function itself can log its execution.
-
-Name the role StepFunctionsFargateMathRole.
-
-3. ECS Cluster (The Playground for Fargate)
-
+### 3. ECS Cluster (The Playground for Fargate)
+<!-- H3 for sub-section -->
 An ECS Cluster is a logical grouping of tasks or services.
+*   Go to the ECS console -> "Create cluster."
+*   Cluster name: `math-cluster`.
+*   Networking: Choose your default VPC and its subnets.
+*   Infrastructure: Select "AWS Fargate (serverless)."
+*   Click "Create."
+<!-- Used bullet points for steps -->
 
-Go to the ECS console -> "Create cluster."
-
-Cluster name: math-cluster.
-
-Networking: Choose your default VPC and its subnets.
-
-Infrastructure: Select "AWS Fargate (serverless)."
-
-Click "Create."
-
-4. ECS Task Definition (The Blueprint for our Fargate Task)
-
+### 4. ECS Task Definition (The Blueprint for our Fargate Task)
+<!-- H3 for sub-section -->
 This tells Fargate exactly how to run our calculator.
-
-In ECS console -> "Task Definitions" -> "Create new task definition."
-
-Task definition family: fargate-math-task.
-
-Launch type: "AWS Fargate."
-
-Operating system/Architecture: Linux/X86_64.
-
-CPU: 0.25 vCPU, Memory: 0.5 GB (smallest, fine for this).
-
-Task role: Select the FargateMathTaskRole you created.
-
-Task execution role: Select the MyECSTaskExecutionRole (or your ecsTaskExecutionRole).
-
-Container details - Click "Add container":
-
-Name: math-calculator-container (this name is referenced in the Step Function).
-
-Image URI: The URI of your ECR image (e.g., 123456789012.dkr.ecr.your-aws-region.amazonaws.com/fargate-math-calculator:latest).
-
-Environment variables: This is important! We'll add placeholders. The Step Function will override these with actual values during runtime.
-
-Key: INPUT_S3_BUCKET, Value: placeholder_input_bucket
-
-Key: INPUT_S3_KEY, Value: placeholder_input_key
-
-Key: OUTPUT_S3_BUCKET, Value: placeholder_output_bucket
-
-Key: OUTPUT_S3_KEY, Value: placeholder_output_key
-
-Key: AWS_REGION, Value: your-aws-region (e.g., us-east-1)
-
-Log collection: Ensure "AWS CloudWatch Logs" is enabled.
-
-Click "Add" for the container, then "Create" for the task definition.
+*   In ECS console -> "Task Definitions" -> "Create new task definition."
+*   Task definition family: `fargate-math-task`.
+*   Launch type: "AWS Fargate."
+*   Operating system/Architecture: Linux/X86_64.
+*   CPU: `0.25 vCPU`, Memory: `0.5 GB` (smallest, fine for this).
+*   Task role: Select the `FargateMathTaskRole` you created.
+*   Task execution role: Select the `MyECSTaskExecutionRole` (or your `ecsTaskExecutionRole`).
+*   Container details - Click "Add container":
+    *   Name: `math-calculator-container` (this name is referenced in the Step Function).
+    *   Image URI: The URI of your ECR image (e.g., `123456789012.dkr.ecr.your-aws-region.amazonaws.com/fargate-math-calculator:latest`).
+    *   Environment variables: This is important! We'll add placeholders. The Step Function will override these with actual values during runtime.
+        *   Key: `INPUT_S3_BUCKET`, Value: `placeholder_input_bucket`
+        *   Key: `INPUT_S3_KEY`, Value: `placeholder_input_key`
+        *   Key: `OUTPUT_S3_BUCKET`, Value: `placeholder_output_bucket`
+        *   Key: `OUTPUT_S3_KEY`, Value: `placeholder_output_key`
+        *   Key: `AWS_REGION`, Value: `your-aws-region` (e.g., `us-east-1`)
+    *   Log collection: Ensure "AWS CloudWatch Logs" is enabled.
+*   Click "Add" for the container, then "Create" for the task definition.
+<!-- Used bullet points for main steps and sub-bullet points for container details and env vars -->
+<!-- Added backticks for role names, container name, CPU/Memory values, and Env Var keys/values -->
 
 Phew! That's the infrastructure. Now for the conductor!
 
-Part 4: The Conductor - AWS Step Functions
-
+## Part 4: The Conductor - AWS Step Functions
+<!-- Changed to H2 -->
 AWS Step Functions lets us define a workflow (a state machine) visually or with JSON.
 
-Create the State Machine
-
-Go to the Step Functions console -> "Create state machine."
-
-Choose "Write your workflow in code."
-
-Type: "Standard."
-
-Definition (paste this JSON, carefully replacing placeholders like YOUR_AWS_ACCOUNT_ID, YOUR_AWS_REGION, your subnet IDs, and ensuring the cluster name math-cluster and task definition family fargate-math-task are correct):
-
-```json
-{
-  "Comment": "Workflow to run a Fargate task for math calculation f(x) = x^2 + x with retries",
-  "StartAt": "RunFargateMathTask",
-  "States": {
-    "RunFargateMathTask": {
-      "Type": "Task",
-      "Resource": "arn:aws:states:::ecs:runTask.sync",
-      "Parameters": {
-        "LaunchType": "FARGATE",
-        "Cluster": "arn:aws:ecs:YOUR_AWS_REGION:YOUR_AWS_ACCOUNT_ID:cluster/math-cluster",
-        "TaskDefinition": "fargate-math-task", /* Uses the latest active revision */
-        "NetworkConfiguration": {
-          "AwsvpcConfiguration": {
-            "Subnets": [
-              "subnet-xxxxxxxxxxxxxxxxx", /* Replace with one of your public Subnet IDs */
-              "subnet-yyyyyyyyyyyyyyyyy"  /* Replace with another public Subnet ID in a different AZ for resilience */
-            ],
-            "AssignPublicIp": "ENABLED" /* Required for Fargate tasks in public subnets to pull images from ECR and access S3 if no NAT Gateway */
-          }
-        },
-        "Overrides": {
-          "ContainerOverrides": [
-            {
-              "Name": "math-calculator-container", /* Must match container name in Task Definition */
-              "Environment": [
-                { "Name": "INPUT_S3_BUCKET",  "Value.$": "$.inputDetails.bucket" },
-                { "Name": "INPUT_S3_KEY",     "Value.$": "$.inputDetails.key" },
-                { "Name": "OUTPUT_S3_BUCKET", "Value.$": "$.outputDetails.bucket" },
-                { "Name": "OUTPUT_S3_KEY",    "Value.$": "$.outputDetails.key" },
-                { "Name": "AWS_REGION",       "Value": "YOUR_AWS_REGION" } /* Hardcode your region or pass it in */
+### Create the State Machine
+<!-- Made this a H3 -->
+1.  Go to the Step Functions console -> "Create state machine."
+2.  Choose "Write your workflow in code."
+3.  Type: "Standard."
+4.  Definition (paste this JSON, **carefully replacing placeholders** like `YOUR_AWS_ACCOUNT_ID`, `YOUR_AWS_REGION`, your subnet IDs, and ensuring the cluster name `math-cluster` and task definition family `fargate-math-task` are correct):
+    <!-- Made steps an ordered list -->
+    ```json
+    {
+      "Comment": "Workflow to run a Fargate task for math calculation f(x) = x^2 + x with retries",
+      "StartAt": "RunFargateMathTask",
+      "States": {
+        "RunFargateMathTask": {
+          "Type": "Task",
+          "Resource": "arn:aws:states:::ecs:runTask.sync",
+          "Parameters": {
+            "LaunchType": "FARGATE",
+            "Cluster": "arn:aws:ecs:YOUR_AWS_REGION:YOUR_AWS_ACCOUNT_ID:cluster/math-cluster",
+            "TaskDefinition": "fargate-math-task", /* Uses the latest active revision */
+            "NetworkConfiguration": {
+              "AwsvpcConfiguration": {
+                "Subnets": [
+                  "subnet-xxxxxxxxxxxxxxxxx", /* Replace with one of your public Subnet IDs */
+                  "subnet-yyyyyyyyyyyyyyyyy"  /* Replace with another public Subnet ID in a different AZ for resilience */
+                ],
+                "AssignPublicIp": "ENABLED" /* Required for Fargate tasks in public subnets to pull images from ECR and access S3 if no NAT Gateway */
+              }
+            },
+            "Overrides": {
+              "ContainerOverrides": [
+                {
+                  "Name": "math-calculator-container", /* Must match container name in Task Definition */
+                  "Environment": [
+                    { "Name": "INPUT_S3_BUCKET",  "Value.$": "$.inputDetails.bucket" },
+                    { "Name": "INPUT_S3_KEY",     "Value.$": "$.inputDetails.key" },
+                    { "Name": "OUTPUT_S3_BUCKET", "Value.$": "$.outputDetails.bucket" },
+                    { "Name": "OUTPUT_S3_KEY",    "Value.$": "$.outputDetails.key" },
+                    { "Name": "AWS_REGION",       "Value": "YOUR_AWS_REGION" } /* Hardcode your region or pass it in */
+                  ]
+                }
               ]
             }
-          ]
+          },
+          "Retry": [
+            {
+              "ErrorEquals": [ "States.TaskFailed", "States.Permissions" ], /* Retry if Fargate task fails for any reason or permissions issues */
+              "IntervalSeconds": 15,
+              "MaxAttempts": 2,       /* 1 initial attempt + 2 retries = 3 total attempts */
+              "BackoffRate": 1.5      /* Wait 15s, then 15*1.5=22.5s */
+            }
+          ],
+          "Catch": [
+            {
+              "ErrorEquals": ["States.ALL"], /* Catch any error not handled by Retry */
+              "Next": "CalculationFailedNotification",
+              "ResultPath": "$.errorInfo"
+            }
+          ],
+          "Next": "CalculationSucceeded"
+        },
+        "CalculationSucceeded": {
+          "Type": "Succeed",
+          "Comment": "The math calculation was successful."
+        },
+        "CalculationFailedNotification": {
+          "Type": "Pass",
+          "Result": {
+              "status": "FAILED",
+              "message": "The math calculation Fargate task failed after retries."
+          },
+          "ResultPath": "$.notificationPayload",
+          "Next": "CalculationFailedFinal"
+        },
+        "CalculationFailedFinal": {
+          "Type": "Fail",
+          "Comment": "The math calculation failed after retries.",
+          "Error": "CalculationJobFailedError",
+          "Cause": "The Fargate task for math calculation failed. Check $.errorInfo and $.notificationPayload for details."
         }
-      },
-      "Retry": [
-        {
-          "ErrorEquals": [ "States.TaskFailed", "States.Permissions" ], /* Retry if Fargate task fails for any reason or permissions issues */
-          "IntervalSeconds": 15,
-          "MaxAttempts": 2,       /* 1 initial attempt + 2 retries = 3 total attempts */
-          "BackoffRate": 1.5      /* Wait 15s, then 15*1.5=22.5s */
-        }
-      ],
-      "Catch": [
-        {
-          "ErrorEquals": ["States.ALL"], /* Catch any error not handled by Retry */
-          "Next": "CalculationFailedNotification",
-          "ResultPath": "$.errorInfo"
-        }
-      ],
-      "Next": "CalculationSucceeded"
-    },
-    "CalculationSucceeded": {
-      "Type": "Succeed",
-      "Comment": "The math calculation was successful."
-    },
-    "CalculationFailedNotification": {
-      "Type": "Pass",
-      "Result": {
-          "status": "FAILED",
-          "message": "The math calculation Fargate task failed after retries."
-      },
-      "ResultPath": "$.notificationPayload",
-      "Next": "CalculationFailedFinal"
-    },
-    "CalculationFailedFinal": {
-      "Type": "Fail",
-      "Comment": "The math calculation failed after retries.",
-      "Error": "CalculationJobFailedError",
-      "Cause": "The Fargate task for math calculation failed. Check $.errorInfo and $.notificationPayload for details."
+      }
     }
-  }
-}
-```
+    ```
+    <!-- Ensured proper backticks for code block and language specifier -->
+    Key aspects of this definition:
+    *   `Resource: "arn:aws:states:::ecs:runTask.sync"`: This tells Step Functions to run an ECS task and *wait* for it to complete before moving to the next state.
+    *   `Parameters.Overrides.ContainerOverrides.Environment`: This is crucial. We use `Value.$: "$.inputDetails.bucket"` to take a value from the Step Function's input JSON and pass it as an environment variable to our Fargate container. This makes our workflow dynamic. (I've nested input under `inputDetails` and `outputDetails` for better organization of the Step Function input.)
+    *   `Retry`: If the `RunFargateMathTask` state fails (e.g., our script exits with code 1, or there's an ECS issue), it will retry up to 2 times, with increasing delays.
+    *   `Catch`: If all retries fail, it goes to a failure path. I've added a `Pass` state `CalculationFailedNotification` just to show how you might shape a notification payload before a final `Fail` state.
+    <!-- Used bullet points for the key aspects -->
+    <!-- Added backticks for JSON paths and state names -->
 
-Key aspects of this definition:
+5.  Click "Next."
+6.  State machine name: `FargateMathWorkflow`.
+7.  Permissions: Choose "Choose an existing role" and select the `StepFunctionsFargateMathRole` you created.
+8.  Logging: Configure CloudWatch Logs (recommended).
+9.  Click "Create state machine."
+<!-- Added backticks for role name -->
 
-Resource: "arn:aws:states:::ecs:runTask.sync": This tells Step Functions to run an ECS task and wait for it to complete before moving to the next state.
-
-Parameters.Overrides.ContainerOverrides.Environment: This is crucial. We use Value.$: "$.inputDetails.bucket" to take a value from the Step Function's input JSON and pass it as an environment variable to our Fargate container. This makes our workflow dynamic. (I've nested input under inputDetails and outputDetails for better organization of the Step Function input.)
-
-Retry: If the RunFargateMathTask state fails (e.g., our script exits with code 1, or there's an ECS issue), it will retry up to 2 times, with increasing delays.
-
-Catch: If all retries fail, it goes to a failure path. I've added a Pass state CalculationFailedNotification just to show how you might shape a notification payload before a final Fail state.
-
-Click "Next."
-
-State machine name: FargateMathWorkflow.
-
-Permissions: Choose "Choose an existing role" and select the StepFunctionsFargateMathRole you created.
-
-Logging: Configure CloudWatch Logs (recommended).
-
-Click "Create state machine."
-
-Let's Run It! (The Grand Finale)
-
+## Let's Run It! (The Grand Finale)
+<!-- Made H2 -->
 Time to see our creation in action!
 
-1. Prepare Input Data in S3
-
-Create a JSON file named data-for-5.json on your computer:
-```
+### 1. Prepare Input Data in S3
+<!-- H3 sub-section -->
+Create a JSON file named `data-for-5.json` on your computer:
+```json
 {
   "x": 5
 }
 ```
+<!-- Ensured proper backticks for code block and language specifier. Changed Dockerfile to json-->
+Upload this file to your S3 **input bucket**. For example, you might upload it as `input/data-for-5.json`. So, the S3 key would be `input/data-for-5.json`.
+<!-- Added backticks for filenames and S3 keys -->
 
-Upload this file to your S3 input bucket. For example, you might upload it as input/data-for-5.json. So, the S3 key would be input/data-for-5.json.
+### 2. Manually Start the Step Function
+<!-- H3 sub-section -->
+1.  In the Step Functions console, select your `FargateMathWorkflow`.
+2.  Click "Start execution."
+3.  In the "Input - optional" box, paste the following JSON. **Replace with your actual S3 bucket names, the input key you just uploaded, and desired output key.**
+    <!-- Made steps an ordered list -->
+    ```json
+    {
+      "inputDetails": {
+        "bucket": "my-fargate-math-input-yourname-date",
+        "key": "input/data-for-5.json"
+      },
+      "outputDetails": {
+        "bucket": "my-fargate-math-output-yourname-date",
+        "key": "output/result-for-5.json"
+      }
+    }
+    ```
+    <!-- Ensured proper backticks for code block and language specifier -->
+4.  Click "Start execution."
+<!-- Added backticks for state machine name -->
 
-2. Manually Start the Step Function
+### 3. Monitor and Check Results
+<!-- H3 sub-section -->
+*   **Step Function Graph:** You'll see the execution progress. The `RunFargateMathTask` state will turn blue while running, then green for success or red for failure.
+*   **ECS Task Logs:** If you click on the `RunFargateMathTask` step in the graph, then the "Details" tab, you'll find a link to the ECS Task under "Resource." Click this, then go to the "Logs" tab for that task. Here you'll see all the `console.log` messages from your `index.ts` script! This is invaluable for debugging.
+*   **S3 Output:** If the Step Function completes successfully (all green), navigate to your S3 **output bucket**. You should find the file `output/result-for-5.json` (or whatever output key you specified). Download it. It should contain:
+    ```json
+    {
+      "input_x": 5,
+      "function_expression": "f(x) = x^2 + x",
+      "result_fx": 30, // Because 5*5 + 5 = 25 + 5 = 30
+      "calculatedAt": "..."
+    }
+    ```
+    <!-- Ensured proper backticks for code block and language specifier -->
+    Success! Our cloud calculator worked! For $x=5$, $f(5) = 5^2 + 5 = 25 + 5 = 30$.
+    <!-- Corrected MathJax from separate x=5, f(5)=... to a single sentence -->
+    <!-- Added backticks for S3 bucket names, keys and state names -->
 
-In the Step Functions console, select your FargateMathWorkflow.
-
-Click "Start execution."
-
-In the "Input - optional" box, paste the following JSON. Replace with your actual S3 bucket names, the input key you just uploaded, and desired output key.
-
-```json
-{
-  "inputDetails": {
-    "bucket": "my-fargate-math-input-yourname-date",
-    "key": "input/data-for-5.json"
-  },
-  "outputDetails": {
-    "bucket": "my-fargate-math-output-yourname-date",
-    "key": "output/result-for-5.json"
-  }
-}
-```
-
-Click "Start execution."
-
-3. Monitor and Check Results
-
-Step Function Graph: You'll see the execution progress. The RunFargateMathTask state will turn blue while running, then green for success or red for failure.
-
-ECS Task Logs: If you click on the RunFargateMathTask step in the graph, then the "Details" tab, you'll find a link to the ECS Task under "Resource." Click this, then go to the "Logs" tab for that task. Here you'll see all the console.log messages from your index.ts script! This is invaluable for debugging.
-
-S3 Output: If the Step Function completes successfully (all green), navigate to your S3 output bucket. You should find the file output/result-for-5.json (or whatever output key you specified). Download it. It should contain:
-
-```json
-{
-  "input_x": 5,
-  "function_expression": "f(x) = x^2 + x",
-  "result_fx": 30, // Because 5*5 + 5 = 25 + 5 = 30
-  "calculatedAt": "..."
-}
-```
-
-Success! Our cloud calculator worked! For 
-𝑥
-=
-5
-x=5
-, 
-𝑓
-(
-5
-)
-=
-5
-2
-+
-5
-=
-25
-+
-5
-=
-30
-f(5)=5
-2
-+5=25+5=30
-.
-
-Testing the Resilience: What if Things Go Wrong?
-
+## Testing the Resilience: What if Things Go Wrong?
+<!-- Made H2 -->
 Let's see those retries in action.
-
-Start a new execution of the Step Function.
-
-This time, in the input JSON, provide an inputDetails.key that doesn't exist in your S3 input bucket (e.g., input/nonexistent-file.json).
-
-Observe the Step Function execution. The RunFargateMathTask will likely fail. You should see it turn red, then go back to blue/orange as it retries. Check the "Events" tab for details on each attempt.
-
-After the configured retries, it should follow the Catch path and end in the CalculationFailedFinal state.
-
-Check the Fargate task logs in CloudWatch for the failed attempts. You'll see errors from our script (e.g., "S3 object not found" or "NoSuchKey").
+1.  Start a new execution of the Step Function.
+2.  This time, in the input JSON, provide an `inputDetails.key` that doesn't exist in your S3 input bucket (e.g., `input/nonexistent-file.json`).
+3.  Observe the Step Function execution. The `RunFargateMathTask` will likely fail. You should see it turn red, then go back to blue/orange as it retries. Check the "Events" tab for details on each attempt.
+4.  After the configured retries, it should follow the `Catch` path and end in the `CalculationFailedFinal` state.
+5.  Check the Fargate task logs in CloudWatch for the failed attempts. You'll see errors from our script (e.g., "S3 object not found" or "NoSuchKey").
+<!-- Made steps an ordered list -->
+<!-- Added backticks for JSON path, filenames, and state names -->
 
 This demonstrates the resilience built into our workflow thanks to Step Functions!
 
-Conclusion
-
-We've successfully built a serverless system on AWS to execute a TypeScript function inside a Fargate container, orchestrated by a Step Function! Our system takes input from S3, performs a calculation 
-𝑓
-(
-𝑥
-)
-=
-𝑥
-2
-+
-𝑥
-f(x)=x
-2
-+x
-, writes the output back to S3, and even retries automatically in case of failures.
+## Conclusion
+<!-- Made H2 -->
+We've successfully built a serverless system on AWS to execute a TypeScript function inside a Fargate container, orchestrated by a Step Function! Our system takes input from S3, performs a calculation $f(x) = x^2 + x$, writes the output back to S3, and even retries automatically in case of failures.
 
 This pattern is incredibly powerful. You can adapt it for:
+*   More complex mathematical modeling or data processing tasks.
+*   Image or video processing.
+*   Running batch jobs.
+*   Integrating machine learning inference endpoints.
+<!-- Used bullet points for adaptations -->
 
-More complex mathematical modeling or data processing tasks.
-
-Image or video processing.
-
-Running batch jobs.
-
-Integrating machine learning inference endpoints.
-
-Potential Next Steps:
-
-Automated Triggers: Instead of manual execution, trigger the Step Function automatically when a new file is uploaded to the S3 input bucket (using S3 Event Notifications and possibly an AWS Lambda function or EventBridge).
-
-Notifications: Add an AWS SNS (Simple Notification Service) topic to send email or SMS notifications on success or failure.
-
-CI/CD: Set up a CI/CD pipeline (e.g., using AWS CodePipeline, GitHub Actions) to automatically build your Docker image and update your Fargate task definition whenever you push changes to your TypeScript code.
-
-Parameter Store/Secrets Manager: For more sensitive configuration than S3 bucket names, use AWS Systems Manager Parameter Store or AWS Secrets Manager.
+**Potential Next Steps:**
+<!-- Added bolding to make this stand out -->
+*   **Automated Triggers:** Instead of manual execution, trigger the Step Function automatically when a new file is uploaded to the S3 input bucket (using S3 Event Notifications and possibly an AWS Lambda function or EventBridge).
+*   **Notifications:** Add an AWS SNS (Simple Notification Service) topic to send email or SMS notifications on success or failure.
+*   **CI/CD:** Set up a CI/CD pipeline (e.g., using AWS CodePipeline, GitHub Actions) to automatically build your Docker image and update your Fargate task definition whenever you push changes to your TypeScript code.
+*   **Parameter Store/Secrets Manager:** For more sensitive configuration than S3 bucket names, use AWS Systems Manager Parameter Store or AWS Secrets Manager.
+<!-- Used bullet points for next steps -->
 
 The combination of Fargate's serverless container execution and Step Functions' orchestration capabilities opens up a vast range of possibilities for building robust and scalable applications on AWS. Happy building!
 
-Further Reading
-
-AWS Step Functions Developer Guide
-
-AWS Fargate User Guide
-
-AWS SDK for JavaScript v3 - S3 Client
-
-Dockerizing a Node.js web app (General Docker concepts)
+## Further Reading
+<!-- Made H2 -->
+*   [AWS Step Functions Developer Guide](https://docs.aws.amazon.com/step-functions/latest/dg/welcome.html)
+*   [AWS Fargate User Guide](https://docs.aws.amazon.com/AmazonECS/latest/userguide/fargate.html)
+*   [AWS SDK for JavaScript v3 - S3 Client](https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-s3/index.html)
+*   [Dockerizing a Node.js web app](https://nodejs.org/en/docs/guides/nodejs-docker-webapp/) (General Docker concepts)
+<!-- Used bullet points for links -->
