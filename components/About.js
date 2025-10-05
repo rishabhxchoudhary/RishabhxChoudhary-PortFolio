@@ -1,7 +1,7 @@
 // components/About.jsx
 import { motion } from "framer-motion";
 import ProfileImage from "./ProfileImage";
-import { FaGraduationCap, FaYoutube } from "react-icons/fa";
+import { FaGraduationCap } from "react-icons/fa";
 
 // FaGlobe, FaRobot, FaDatabase
 
@@ -57,7 +57,6 @@ const About = () => {
           <h2 className="text-4xl font-semibold mb-6 text-text-light">
             About Me
           </h2>
-
           {/* Introduction */}
           <motion.p
             className="text-lg md:text-xl mb-6"
@@ -66,12 +65,11 @@ const About = () => {
             transition={{ duration: 1, delay: 0.2 }}
             viewport={{ once: true }}
           >
-            I'm a software engineer with a passion for building products that
-            make a real impact. Currently, I'm a Founding Engineer at
-            ContraVault AI, where I'm helping build the next generation of
+            I&apos;m a software engineer with a passion for building products that
+            make a real impact. Currently, I&apos;m a Founding Engineer at
+            ContraVault AI, where I&apos;m helping build the next generation of
             tender analysis technology infrastructure.
           </motion.p>
-
           <motion.p
             className="text-lg md:text-xl mb-6"
             initial={{ opacity: 0 }}
@@ -81,11 +79,10 @@ const About = () => {
           >
             My journey in tech started with a B.Tech in Electronics and
             Communication Engineering from NSUT, where I specialized in IoT.
-            Since then, I've worked across the full stack - from crafting
+            Since then, I&apos;ve worked across the full stack - from crafting
             intuitive user interfaces to designing robust backend systems that
             handle thousands of requests daily.
           </motion.p>
-
           <motion.p
             className="text-lg md:text-xl mb-6"
             initial={{ opacity: 0 }}
@@ -95,11 +92,10 @@ const About = () => {
           >
             I believe in writing clean, maintainable code and building systems
             that scale. My expertise includes cloud architecture, distributed
-            systems, and modern web technologies. When I'm not coding, you can
+            systems, and modern web technologies. When I&apos;m not coding, you can
             find me creating educational content on my YouTube channel or
             exploring new technologies.
           </motion.p>
-
           {/* Educational Background */}
           <div className="mb-6">
             <h3 className="text-2xl font-bold mb-4 text-text-light flex items-center space-x-2">
@@ -141,7 +137,6 @@ const About = () => {
               ))}
             </ul>
           </div>
-
           YouTube Channel
           {/* <div className="mb-6">
             <h3 className="text-2xl font-bold mb-4 text-text-light flex items-center space-x-2">
