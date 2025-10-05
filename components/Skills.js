@@ -4,16 +4,6 @@ import { FaCode, FaDatabase, FaGlobe } from "react-icons/fa";
 // import ReactTooltip from 'react-tooltip';
 
 const skills = {
-  "Programming Languages": [
-    "Java",
-    "Spring Boot",
-    "Go",
-    "C++",
-    "Python",
-    "TypeScript",
-    "JavaScript",
-    "LaTeX",
-  ],
   "Backend & APIs": [
     "Node.js",
     "Express",
@@ -25,19 +15,14 @@ const skills = {
     "SQS",
     "Distributed Systems",
   ],
-  "Databases & Search": [
+  Databases: [
     "DynamoDB",
     "PostgreSQL",
-    "MySQL",
-    "MongoDB",
     "Firebase",
     "Redis",
-    "OpenSearch",
-    "Elasticsearch",
     "ChromaDB",
     "pgvector",
     "Qdrant",
-    "AWS DocumentDB",
   ],
   "Cloud & DevOps": [
     "AWS ECS",
@@ -46,11 +31,18 @@ const skills = {
     "AWS IAM",
     "AWS S3",
     "CloudWatch",
-    "Docker",
-    "Kubernetes",
-    "Nginx",
-    "Linux",
-    "CI/CD",
+    "AWS CloudFormation",
+    "Many more",
+  ],
+  "Programming Languages": [
+    "Java",
+    "Spring Boot",
+    "Go",
+    "C++",
+    "Python",
+    "TypeScript",
+    "JavaScript",
+    "Rust",
   ],
   Frontend: [
     "React.js",
