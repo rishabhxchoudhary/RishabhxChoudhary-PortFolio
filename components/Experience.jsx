@@ -5,23 +5,33 @@ import { useState } from "react";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 
 const experiences = [
-  {
-    title: "Competitive Programming Lead",
-    organization: "Google DSC NSUT",
-    duration: "January 2023 - August 2023",
-    location: "New Delhi, Delhi, India",
+    {
+    title: "Founding Engineer",
+    organization: "ContraVault AI",
+    duration: "October 2024 - Present",
+    location: "Bengaluru, Karnataka",
+    type: "Full-time",
     responsibilities: [
-      "Organized and curated programming contests, including problem creation and solution verifications.",
+      "Built and optimized low-latency backend APIs with server-side caching, SQS queues, and SSE streaming, improving real-time updates for 22k+ daily financial tenders and reducing median latency",
+      "Designed and operated AWS infrastructure (ECS, Lambda, Step Functions, IAM, S3, CloudWatch, Nginx) with security controls aligned to SOC 2, GDPR, CERT-IN, and ISO 27001 practices",
+      "Integrated OpenSearch for fast document retrieval and DynamoDB single-table design with Redis for scalable, fault-tolerant data modeling",
+      "Built and scaled customer-facing dashboards using React + TypeScript, ensuring responsive UI and smooth data visualization with end-to-end REST API integration",
+      "Delivered credit-based free/paid access model for B2C customers and collaborated with designers to turn Figma mockups into production-ready features",
+      "Advocated engineering excellence: type-safe contracts, code reviews, unit/integration tests (Pytest/Jest), and structured observability (logs, metrics, alerts)",
     ],
-    icon: <FaUniversity size={20} color="#FBBF24" />,
+    icon: <FaBriefcase size={20} color="#14B8A6" />,
   },
   {
-    title: "Full Stack Web Development Intern",
-    organization: "InGelt",
-    duration: "February 2023 - March 2023",
-    location: "New Delhi, Delhi, India",
+    title: "Software Developer Intern",
+    organization: "Blozum",
+    duration: "May 2024 - Present",
+    location: "Remote",
+    type: "Internship",
     responsibilities: [
-      "Engaged in full-stack web development, focusing on both front-end and back-end solutions.",
+      "Developed and deployed WhatsApp bots using RML API, Facebook Graph API, and Google Calendar API for scheduling interviews and interactive sessions.",
+      "Created a LinkedIn automation tool with Selenium and Python, saving the team 30 hours weekly.",
+      "Designed an automated contract template solution, saving over 60 hours monthly.",
+      "Worked with Vector Databases and different approaches for efficient and effective querying from large vector database.",
     ],
     icon: <FaBriefcase size={20} color="#14B8A6" />,
   },
@@ -37,26 +47,36 @@ const experiences = [
     icon: <FaUniversity size={20} color="#FBBF24" />,
   },
   {
+    title: "Full Stack Web Developer Intern",
+    organization: "InGelt",
+    duration: "February 2023 - March 2023",
+    location: "New Delhi, Delhi, India",
+    responsibilities: [
+      "Built production features on the MERN stack, focusing on API design, performance, and responsive UX",
+      "Delivered client websites with UX enhancements and responsive layouts",
+      "Collaborated with product/design to iterate quickly while maintaining code quality",
+    ],
+    icon: <FaBriefcase size={20} color="#14B8A6" />,
+  },
+  {
+    title: "Competitive Programming Lead",
+    organization: "Google DSC NSUT",
+    duration: "January 2023 - August 2023",
+    location: "New Delhi, Delhi, India",
+    responsibilities: [
+      "Organized and curated programming contests, including problem creation and solution verifications.",
+    ],
+    icon: <FaUniversity size={20} color="#FBBF24" />,
+  },
+  {
     title: "YouTuber",
     organization: "Codenzyme",
     duration: "May 2022 - July 2024",
     location: "India",
     responsibilities: [
       "Created and published educational content on algorithms and various programming topics, amassing over 12000 views on the first video.",
-      "Provided tutorials on using torrents via Google Colab, aiding NSUT students during network restrictions."
-    ],
-    icon: <FaBriefcase size={20} color="#14B8A6" />,
-  },
-  {
-    title: "Software Developer Intern",
-    organization: "Blozum",
-    duration: "June 2024 - Present",
-    location: "New Delhi, India",
-    responsibilities: [
-      "Developed and deployed WhatsApp bots using RML API, Facebook Graph API, and Google Calendar API for scheduling interviews and interactive sessions.",
-      "Created a LinkedIn automation tool with Selenium and Python, saving the team 30 hours weekly.",
-      "Designed an automated contract template solution, saving over 60 hours monthly.",
-      "Worked with Vector Databases and different approaches for efficient and effective querying from large vector database."
+      "Provided tutorials on using torrents via Google Colab, aiding NSUT students during network restrictions.",
+      "Produced content on competitive programming, data structures, and algorithms to help students enhance their coding skills.",
     ],
     icon: <FaBriefcase size={20} color="#14B8A6" />,
   },
@@ -70,7 +90,11 @@ const ExperienceItem = ({ exp, index }) => {
   return (
     <motion.div
       className={`flex flex-col md:flex-row items-start ${
-        isCentered ? "md:flex-row" : index % 2 === 1 ? "md:flex-row-reverse" : "md:flex-row"
+        isCentered
+          ? "md:flex-row"
+          : index % 2 === 1
+            ? "md:flex-row-reverse"
+            : "md:flex-row"
       }`}
       initial={{ opacity: 0, x: index % 2 === 1 ? 100 : -100 }}
       whileInView={{ opacity: 1, x: 0 }}
@@ -80,7 +104,9 @@ const ExperienceItem = ({ exp, index }) => {
       {/* Connector Dot with Expand/Collapse */}
       <div className="relative flex flex-col items-center">
         {/* Connector Line */}
-        <div className={`hidden md:block absolute top-0 ${isCentered ? "h-full" : "h-full"} border-l-2 border-accent`}></div>
+        <div
+          className={`hidden md:block absolute top-0 ${isCentered ? "h-full" : "h-full"} border-l-2 border-accent`}
+        ></div>
 
         {/* Connector Dot */}
         <div
@@ -110,15 +136,21 @@ const ExperienceItem = ({ exp, index }) => {
       </div>
 
       {/* Content */}
-      <div onClick={()=>{
-        setIsOpen(!isOpen);
-      }} className={`z-10 mt-4 cursor-pointer md:mt-0 md:px-6 lg:px-12 w-full ${isCentered ? "md:w-1/2" : "md:w-1/2"}`}>
+      <div
+        onClick={() => {
+          setIsOpen(!isOpen);
+        }}
+        className={`z-10 mt-4 cursor-pointer md:mt-0 md:px-6 lg:px-12 w-full ${isCentered ? "md:w-1/2" : "md:w-1/2"}`}
+      >
         <div className="bg-background-dark p-6 rounded-lg shadow-lg hover:shadow-3xl transition-shadow duration-300">
           <h3 className="text-2xl font-bold text-text-light">{exp.title}</h3>
           <span className="text-gray-400">
             {exp.organization} | {exp.duration} | {exp.location}
+            {exp.type && ` | ${exp.type}`}
           </span>
-          <ul className={`mt-4 list-disc list-inside text-text ${isOpen ? "block" : "hidden"}`}>
+          <ul
+            className={`mt-4 list-disc list-inside text-text ${isOpen ? "block" : "hidden"}`}
+          >
             {exp.responsibilities.map((item, idx) => (
               <li key={idx} className="mb-2">
                 {item}
@@ -171,11 +203,7 @@ const Experience = () => {
           {/* Experience Items */}
           <div className="space-y-12">
             {experiences.map((exp, index) => (
-              <ExperienceItem
-                key={index}
-                exp={exp}
-                index={index}
-              />
+              <ExperienceItem key={index} exp={exp} index={index} />
             ))}
           </div>
         </div>

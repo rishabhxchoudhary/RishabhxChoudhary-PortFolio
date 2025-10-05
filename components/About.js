@@ -29,7 +29,10 @@ const education = [
 
 const About = () => {
   return (
-    <section id="about" className="min-h-screen flex flex-col justify-center  bg-background text-text py-20">
+    <section
+      id="about"
+      className="min-h-screen flex flex-col justify-center  bg-background text-text py-20"
+    >
       <div className="container mx-auto px-4 flex flex-col justify-center lg:flex-row items-center">
         {/* Profile Image */}
         <motion.div
@@ -51,7 +54,9 @@ const About = () => {
           viewport={{ once: true }}
         >
           {/* Section Header */}
-          <h2 className="text-4xl font-semibold mb-6 text-text-light">About Me</h2>
+          <h2 className="text-4xl font-semibold mb-6 text-text-light">
+            About Me
+          </h2>
 
           {/* Introduction */}
           <motion.p
@@ -61,7 +66,38 @@ const About = () => {
             transition={{ duration: 1, delay: 0.2 }}
             viewport={{ once: true }}
           >
-            I am a passionate B.Tech graduate in Electronics and Communication Engineering with a specialization in IoT from Netaji Subhas University of Technology. I have hands-on experience in developing software solutions, automating workflows, web3 and creating innovative web applications.
+            I'm a software engineer with a passion for building products that
+            make a real impact. Currently, I'm a Founding Engineer at
+            ContraVault AI, where I'm helping build the next generation of
+            tender analysis technology infrastructure.
+          </motion.p>
+
+          <motion.p
+            className="text-lg md:text-xl mb-6"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 1, delay: 0.3 }}
+            viewport={{ once: true }}
+          >
+            My journey in tech started with a B.Tech in Electronics and
+            Communication Engineering from NSUT, where I specialized in IoT.
+            Since then, I've worked across the full stack - from crafting
+            intuitive user interfaces to designing robust backend systems that
+            handle thousands of requests daily.
+          </motion.p>
+
+          <motion.p
+            className="text-lg md:text-xl mb-6"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 1, delay: 0.4 }}
+            viewport={{ once: true }}
+          >
+            I believe in writing clean, maintainable code and building systems
+            that scale. My expertise includes cloud architecture, distributed
+            systems, and modern web technologies. When I'm not coding, you can
+            find me creating educational content on my YouTube channel or
+            exploring new technologies.
           </motion.p>
 
           {/* Educational Background */}
@@ -83,33 +119,54 @@ const About = () => {
                   <div className="mr-4 mt-1">{edu.icon}</div>
                   {/* Education Details */}
                   <div>
-                    <h4 className="text-xl font-semibold text-text-light">{edu.degree}</h4>
+                    <h4 className="text-xl font-semibold text-text-light">
+                      {edu.degree}
+                    </h4>
                     <p className="text-gray-400">{edu.institution}</p>
-                    {edu.specialization && <p className="text-gray-400">Specialization: {edu.specialization}</p>}
-                    {edu.cgpa && <p className="text-gray-400">CGPA: {edu.cgpa}</p>}
-                    {edu.percentage && <p className="text-gray-400">Percentage: {edu.percentage}</p>}
+                    {edu.specialization && (
+                      <p className="text-gray-400">
+                        Specialization: {edu.specialization}
+                      </p>
+                    )}
+                    {edu.cgpa && (
+                      <p className="text-gray-400">CGPA: {edu.cgpa}</p>
+                    )}
+                    {edu.percentage && (
+                      <p className="text-gray-400">
+                        Percentage: {edu.percentage}
+                      </p>
+                    )}
                   </div>
                 </motion.li>
               ))}
             </ul>
           </div>
 
-          {/* YouTube Channel */}
-          <div className="mb-6">
+          YouTube Channel
+          {/* <div className="mb-6">
             <h3 className="text-2xl font-bold mb-4 text-text-light flex items-center space-x-2">
-              <FaYoutube /> <span>My YouTube Channel</span>
+              <FaYoutube /> <span>Content Creator</span>
             </h3>
             <motion.p
               className="text-lg md:text-xl"
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
-              transition={{ duration: 1, delay: 0.4 }}
+              transition={{ duration: 1, delay: 0.5 }}
               viewport={{ once: true }}
             >
-              I run a YouTube channel called <a href="https://www.youtube.com/@rishabhxchoudhary" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">Codenzyme</a>, where I post regular content about competitive programming and development. Join me to enhance your coding skills and stay updated with the latest in technology!
+              I share my knowledge through my YouTube channel{" "}
+              <a
+                href="https://www.youtube.com/@rishabhxchoudhary"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-accent hover:underline"
+              >
+                Codenzyme
+              </a>
+              , where I create educational content on programming, algorithms,
+              and software development best practices.
             </motion.p>
-          </div>
-          
+          </div> */}
         </motion.div>
       </div>
     </section>

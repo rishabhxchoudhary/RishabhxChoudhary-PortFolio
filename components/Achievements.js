@@ -7,6 +7,37 @@ import { FaAward } from "react-icons/fa";
 
 const achievements = [
   {
+    title:
+      "Built scalable infrastructure handling 22k+ daily financial transactions",
+    team: "Achieved sub-second latency with AWS ECS, Lambda, and OpenSearch",
+    icon: <FaAward size={20} color="#FBBF24" />,
+  },
+  {
+    title: "Major Production Contributor - 5.9+ Lakh Lines of Code",
+    team: "Core contributor to ContraVault AI's financial data platform",
+    icon: <FaAward size={20} color="#FBBF24" />,
+  },
+  {
+    title: "Implemented SSE Streaming for Real-time Data Loading",
+    team: "Progressive data loading in single API call across all product sections",
+    icon: <FaAward size={20} color="#FBBF24" />,
+  },
+  {
+    title: "Designed Parallel S3 Upload System with Progress Tracking",
+    team: "Improved folder upload speed with file-level progress monitoring UI",
+    icon: <FaAward size={20} color="#FBBF24" />,
+  },
+  {
+    title: "Built AI-Powered Risk Assessment System",
+    team: "Heatmaps, cost impact scores, likelihood analysis with Tavily API integration",
+    icon: <FaAward size={20} color="#FBBF24" />,
+  },
+  {
+    title: "Scaled Processing Infrastructure with AWS ECS",
+    team: "Docker containers with load balancers for high-throughput document processing",
+    icon: <FaAward size={20} color="#FBBF24" />,
+  },
+  {
     title: "Best Project Award on Blockchain at HackNSUT",
     team: "Team Keyboard Warriors",
     icon: <FaAward size={20} color="#FBBF24" />,

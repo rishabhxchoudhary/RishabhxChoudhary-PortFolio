@@ -1,11 +1,22 @@
 // components/Home.jsx
 import { motion } from "framer-motion";
-import { FaLinkedin, FaGithub, FaEnvelope, FaDownload, FaYoutube } from "react-icons/fa";
-import { useTypewriter, Cursor } from 'react-simple-typewriter';
+import {
+  FaLinkedin,
+  FaGithub,
+  FaEnvelope,
+  FaDownload,
+  FaYoutube,
+} from "react-icons/fa";
+import { useTypewriter, Cursor } from "react-simple-typewriter";
 
 const Home = () => {
   const [text] = useTypewriter({
-    words: ['Software Developer', 'DevOps Engineer','Competitive Programmer','YouTuber'],
+    words: [
+      "Founding Engineer",
+      "Full-Stack Developer",
+      "Problem Solver",
+      "Tech Enthusiast",
+    ],
     loop: 0, // 0 = infinite
     typeSpeed: 70,
     deleteSpeed: 50,
@@ -13,8 +24,10 @@ const Home = () => {
   });
 
   return (
-    <section id="home" className="min-h-screen flex flex-col justify-center items-center bg-background text-text p-4 sm:p-6 relative overflow-hidden">
-      
+    <section
+      id="home"
+      className="min-h-screen flex flex-col justify-center items-center bg-background text-text p-4 sm:p-6 relative overflow-hidden"
+    >
       {/* Overlay for better readability if needed */}
       <div className="absolute inset-0 bg-opacity-10 bg-gradient-to-r from-transparent to-black pointer-events-none"></div>
 
@@ -25,7 +38,6 @@ const Home = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1 }}
       >
-        
         {/* Left Column: Text Content */}
         <div className="flex flex-col items-start space-y-4">
           {/* Main Heading */}
@@ -46,7 +58,9 @@ const Home = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5, duration: 1 }}
           >
-            Passionate about developing innovative solutions and automating workflows to enhance productivity.
+            Building innovative solutions at ContraVault AI. Passionate
+            about creating scalable systems and solving complex technical
+            challenges.
           </motion.p>
 
           {/* Call to Action Button */}
@@ -54,7 +68,9 @@ const Home = () => {
             className="mt-6 px-5 sm:px-6 py-2 sm:py-3 bg-accent text-background rounded-full shadow-lg hover:bg-accent-light transition text-sm sm:text-base"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            onClick={() => window.scrollTo({ top: window.innerHeight, behavior: "smooth" })}
+            onClick={() =>
+              window.scrollTo({ top: window.innerHeight, behavior: "smooth" })
+            }
             aria-label="Explore My Work"
           >
             Explore My Work
