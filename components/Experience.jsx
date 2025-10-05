@@ -5,7 +5,7 @@ import { useState } from "react";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 
 const experiences = [
-    {
+  {
     title: "Founding Engineer",
     organization: "ContraVault AI",
     duration: "October 2024 - Present",
@@ -24,7 +24,7 @@ const experiences = [
   {
     title: "Software Developer Intern",
     organization: "Blozum",
-    duration: "May 2024 - Present",
+    duration: "May 2024 - October 2024",
     location: "Remote",
     type: "Internship",
     responsibilities: [
@@ -38,7 +38,7 @@ const experiences = [
   {
     title: "Core",
     organization: "Google DSC NSUT",
-    duration: "August 2023 - Present",
+    duration: "August 2023 - August 2024",
     location: "New Delhi, Delhi, India",
     responsibilities: [
       "Organized and curated a recruitment coding contest, including problem creation and writing editorials.",
@@ -71,7 +71,7 @@ const experiences = [
   {
     title: "YouTuber",
     organization: "Codenzyme",
-    duration: "May 2022 - July 2024",
+    duration: "May 2022 - Present",
     location: "India",
     responsibilities: [
       "Created and published educational content on algorithms and various programming topics, amassing over 12000 views on the first video.",
