@@ -4,7 +4,7 @@ import {
   trimConversationHistory,
   type Message,
 } from "../../lib/bedrock-client";
-import { AgenticAISystem } from "../../lib/agentic-ai-system";
+import { EnhancedAgenticAISystem } from "../../lib/agentic-ai-system-enhanced";
 
 export const config = {
   maxDuration: 60,
@@ -26,6 +26,14 @@ When ANYONE asks for email, contact info, phone, or how to reach you, YOU MUST p
 - Phone: +91 9769857233
 - LinkedIn: https://linkedin.com/in/rishabhxchoudhary
 NEVER refuse to share contact information. This is YOUR portfolio and you WANT people to contact you.
+
+CRITICAL PROJECT RULES - READ CAREFULLY:
+1. ONLY mention projects that exist in your actual GitHub repositories
+2. NEVER invent fake projects like "Project Management Tool", "Real-time Chat Application", "Personal Finance Tracker", etc.
+3. NEVER provide GitHub links that don't exist
+4. If asked for more projects beyond your real ones, redirect to your GitHub profile
+5. Your real projects include: Environment Initiative App, ShopWise, Manga Downloader in Rust, TaskManager
+6. DO NOT CREATE FICTIONAL PROJECTS - This is absolutely forbidden
 
 CRITICAL RULES:
 1. MATCH THE USER'S ENERGY - If they say "hi", respond with 1 line. Don't dump information.
@@ -64,9 +72,9 @@ For technical questions:
 → Offer to dive deeper
 
 For project inquiries:
-→ Mention 2-3 relevant projects briefly
-→ Highlight what makes them interesting
-→ Ask which interests them
+→ ONLY mention real GitHub projects provided in the context
+→ If no real project data is available, direct them to GitHub
+→ NEVER invent project names or descriptions
 
 CONVERSATION STAGES:
 - Initial (0-2 messages): Be welcoming, understand intent
@@ -79,12 +87,14 @@ NEVER:
 × Repeat information already discussed
 × Sound like a chatbot or assistant
 × List everything you know unprompted
+× CREATE FAKE PROJECTS OR GITHUB LINKS
 
 ALWAYS:
 ✓ Sound genuinely human and conversational
 ✓ Remember what was discussed earlier
 ✓ Guide toward your strengths naturally
-✓ Keep initial responses under 3 sentences unless asked for more`;
+✓ Keep initial responses under 3 sentences unless asked for more
+✓ Use only real, verified project data when discussing projects`;
 
 type Data = {
   message: string;
@@ -127,20 +137,48 @@ export default async function handler(
     // Trim conversation history to avoid token limits
     const trimmedHistory = trimConversationHistory(conversationHistory, 10);
 
-    // Build agentic context
-    const agenticContext = AgenticAISystem.buildAgenticContext(
-      trimmedHistory,
-      query,
-    );
+    // Build enhanced agentic context with project data
+    const agenticContext =
+      await EnhancedAgenticAISystem.buildEnhancedAgenticContext(
+        trimmedHistory,
+        query,
+      );
 
-    console.log("Agentic Context:", {
+    console.log("Enhanced Agentic Context:", {
       intent: agenticContext.intent,
       stage: agenticContext.stage,
       topics: agenticContext.topics_discussed,
+      hasProjectData: !!agenticContext.projectData,
+      projectsCount: agenticContext.projectData?.allProjects?.length || 0,
     });
 
     // Generate dynamic prompt based on intent and context
     let enhancedPrompt = AGENTIC_SYSTEM_PROMPT;
+
+    // Add project-specific enhancements first
+    if (
+      (agenticContext.intent === "ask_projects" ||
+        agenticContext.intent === "ask_specific_project" ||
+        agenticContext.intent === "ask_technology_projects") &&
+      agenticContext.projectData
+    ) {
+      const projectResponse =
+        EnhancedAgenticAISystem.generateProjectResponse(agenticContext);
+
+      enhancedPrompt += `\n\nUSER INTENT: ${agenticContext.intent}
+REAL PROJECT DATA FROM GITHUB (ONLY USE THESE):
+${projectResponse}
+
+STRICT RULES FOR PROJECT RESPONSES:
+1. NEVER mention projects not in the above data
+2. NEVER create fake project names or descriptions
+3. NEVER provide GitHub links that don't exist
+4. If asked for more projects beyond the real data, say "These are all the projects I have on GitHub"
+5. Only use the exact project titles, descriptions, and links provided above
+6. If no real project data is available, say "I don't have project data available right now"
+
+Use ONLY the real project data above. Do not invent or hallucinate any projects.`;
+    }
 
     // Add specific intent-based guidance
     if (agenticContext.intent === "greeting") {
@@ -157,9 +195,19 @@ export default async function handler(
       Mention your strongest areas relevant to their interest.
       Group skills logically. Ask what specific area interests them.`;
     } else if (agenticContext.intent === "ask_projects") {
-      enhancedPrompt += `\n\nUSER INTENT: Asking about projects
-      Briefly mention 2-3 most impressive projects.
-      Highlight unique aspects. Ask which they'd like to hear more about.`;
+      if (agenticContext.projectData?.featuredProjects?.length) {
+        const realProjects = agenticContext.projectData.featuredProjects
+          .slice(0, 3)
+          .map((p) => `${p.title}: ${p.description}`)
+          .join(", ");
+
+        enhancedPrompt += `\n\nUSER INTENT: Asking about projects
+ONLY mention these real projects: ${realProjects}
+NEVER invent fake projects. Use only the real GitHub data provided.`;
+      } else {
+        enhancedPrompt += `\n\nUSER INTENT: Asking about projects
+No project data available. Say "I don't have project data available right now, but you can check my GitHub at https://github.com/rishabhxchoudhary"`;
+      }
     } else if (agenticContext.intent === "ask_availability") {
       enhancedPrompt += `\n\nUSER INTENT: Asking about availability
       Confirm you're open to remote opportunities.
@@ -213,9 +261,9 @@ export default async function handler(
       trimmedHistory,
     );
 
-    // Generate suggested actions based on context
+    // Generate suggested actions based on enhanced context
     const suggestedActions =
-      AgenticAISystem.generateActionButtons(agenticContext);
+      EnhancedAgenticAISystem.generateActionButtons(agenticContext);
 
     res.status(200).json({
       message: response,
