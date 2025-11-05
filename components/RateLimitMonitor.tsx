@@ -19,6 +19,16 @@ const RateLimitMonitor = () => {
   const [loading, setLoading] = useState(false);
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
 
+  useEffect(() => {
+    if (isVisible) {
+      fetchRateLimit();
+      // Auto-refresh every 30 seconds when visible
+      const interval = setInterval(fetchRateLimit, 30000);
+      return () => clearInterval(interval);
+    }
+  }, [isVisible]);
+
+
   // Only show in development environment
   if (process.env.NODE_ENV !== 'development') {
     return null;
@@ -38,15 +48,7 @@ const RateLimitMonitor = () => {
     }
   };
 
-  useEffect(() => {
-    if (isVisible) {
-      fetchRateLimit();
-      // Auto-refresh every 30 seconds when visible
-      const interval = setInterval(fetchRateLimit, 30000);
-      return () => clearInterval(interval);
-    }
-  }, [isVisible]);
-
+  
   const getStatusColor = () => {
     if (!rateLimitInfo) return 'text-gray-500';
     const { remaining, limit } = rateLimitInfo.core;
