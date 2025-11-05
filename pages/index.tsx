@@ -10,6 +10,7 @@ import Projects from "../components/Projects";
 import Experience from "../components/Experience";
 import AI from "../components/prompt-layout-with-recent-messages/App";
 import DotsBackground from "../components/DotsBackground";
+import RateLimitMonitor from "../components/RateLimitMonitor";
 
 export default function Home() {
   return (
@@ -58,6 +59,7 @@ export default function Home() {
         <Achievements />
         <AI />
         <Contact />
+        <RateLimitMonitor />
       </main>
     </NextUIProvider>
   );
